@@ -1,86 +1,50 @@
-# 🃏 Bilgi Kartı Oyunu (Flashcard Quiz App)
+# Bilgikarti
 
-## 📝 Proje Tanımı
+![GitHub](https://img.shields.io/github/languages/top/Sertacaga/bilgikarti?style=flat-square) ![GitHub](https://img.shields.io/github/languages/count/Sertacaga/bilgikarti?style=flat-square) ![GitHub](https://img.shields.io/github/issues/Sertacaga/bilgikarti.svg?style=flat-square) ![GitHub](https://img.shields.io/github/license/Sertacaga/bilgikarti?style=flat-square)
 
-Bu proje, HTML, CSS ve saf JavaScript kullanılarak geliştirilmiş basit ve etkileşimli bir Bilgi Kartı (Flashcard) Quiz uygulamasıdır. Kullanıcıların soruları yanıtlaması, kartın arka yüzünde doğru cevabı ve detaylı bilgiyi görmesi üzerine kurulmuştur.
+## Description
+Bilgikarti is a flashcard quiz game designed to help users learn new concepts efficiently. The game includes different difficulty levels, allowing players to choose an appropriate challenge based on their skill level. Furthermore, the scoring system encourages users to improve their performance over time.
 
-## ✨ Temel Özellikler
+## Installation Instructions
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Sertacaga/bilgikarti.git
+   ```
+2. Navigate into the project directory:
+   ```bash
+   cd bilgikarti
+   ```
+3. Install the necessary dependencies:
+   ```bash
+   npm install
+   ```
 
-  * **Kart Çevirme Efekti:** CSS3 `transform` özellikleri kullanılarak akıcı 3D kart çevirme animasyonu.
-  * **Puanlama Sistemi:** Doğru cevaplar için anlık puan güncellemesi.
-  * **Açılış/Bitiş Ekranı:** Oyun başlangıcını ve final skorunu gösteren ayrı ekranlar.
-  * **Geri Bildirim:** Doğru ve yanlış cevaplar için renkli görsel geri bildirim.
-  * **Esnek Veri Yapısı:** Tüm soru ve cevaplar kolayca yönetilebilir bir JavaScript dizisi (`quizCards`) içinde tutulur.
+## Features
+- **Multiple Difficulty Levels**: Choose from Easy, Medium, and Hard levels.
+- **Scoring System**: Keep track of your progress and improve your scores.
+- **User-Friendly Interface**: Intuitive design for a smooth learning experience.
+- **Customizable Flashcards**: Users can create and modify their own flashcards.
+- **Leaderboards**: Compete with friends and other learners.
 
-## 🚀 Nasıl Çalıştırılır?
+## Customization Guide
+You can customize the content of flashcards by modifying the `cards.json` file located in the `src/data` directory. You can add, remove, or edit flashcard entries to suit your learning needs.
 
-Bu uygulama tamamen istemci tabanlı (client-side) olduğu için herhangi bir sunucuya ihtiyaç duymaz.
+## Contributing Guidelines
+We welcome contributions! To contribute:
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+3. Make your changes and commit them:
+   ```bash
+   git commit -m 'Add some feature'
+   ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/YourFeature
+   ```
+5. Open a pull request.
 
-1.  Projeyi indirin veya klonlayın.
-2.  Ana dizindeki **`index.html`** dosyasını herhangi bir modern web tarayıcısında (Chrome, Firefox, Edge vb.) açın.
-
-## 📂 Dosya Yapısı
-
-Proje aşağıdaki temel dosya ve klasörlerden oluşur:
-
-```
-bilgi-kart-oyunu/
-├── index.html          # Ana sayfa yapısı ve DOM
-├── style.css           # Görünüm ve kart çevirme animasyonları
-├── script.js           # Oyun mantığı ve JavaScript kodu
-└── images/             # Tüm soru, açılış ve arka plan resimleri
-    ├── 01.jpg
-    ├── 02.jpg
-    ├── ...
-    └── 26.jpg
-    └── arkaplan.jpg
-    └── opening_image.jpg
-```
-
------
-
-## 🔧 Özelleştirme ve Geliştirme
-
-### Yeni Kart Ekleme
-
-Yeni bir kart eklemek veya mevcut kartları düzenlemek için **`script.js`** dosyasının başındaki **`quizCards`** dizisini düzenleyebilirsiniz.
-
-```javascript
-const quizCards = [
-    {
-        question: "Yeni soru metni buraya gelir?",
-        image: "images/27.jpg", // Yeni resminizin adını yazın
-        options: {
-            A: "Seçenek A",
-            B: "Seçenek B",
-            C: "Seçenek C",
-            D: "Seçenek D"
-        },
-        correctAnswer: "A", 
-        answerDetail: "Doğru cevabın detaylı açıklaması buraya gelir." 
-    },
-    // ... diğer kartlar
-];
-```
-
-### 🖼️ Resim Kuralları
-
-  * Tüm resimler **`images/`** klasöründe olmalıdır.
-  * Kart resimlerinin adları (örn: `01.jpg`, `02.jpg`, `26.jpg`) dosya içindeki `image` alanıyla **tam olarak** eşleşmelidir.
-
-### 📊 Kart Sayısını Güncelleme
-
-Eğer kart sayısını 26'dan farklı bir değere (örneğin 30) çıkarırsanız, `index.html` dosyasındaki Puan Tahtası bölümünü manuel olarak güncellemeniz gerekir:
-
-```html
-<div class="score-board">Puan: <span id="score">0</span> / Kart: <span id="card-index">0</span>/**30**</div>
-```
-
------
-
-## 🛠️ Sorun Giderme
-
-Eğer yaptığınız değişiklikler tarayıcıda görünmüyorsa:
-
-1.  **Hard Refresh (Zorla Yenileme):** Tarayıcı önbelleğini temizlemek için **`Ctrl + F5`** (Windows/Linux) veya **`Cmd + Shift + R`** (Mac) tuşlarına basın.
-2.  **Dosya Yolu Kontrolü:** `script.js` içindeki resim yollarının (`images/01.jpg`) ve dosya uzantılarının (jpg/png) doğru olduğundan emin olun.
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
