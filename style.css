@@ -18,7 +18,10 @@ body {
 
 /* KART DÖNÜŞ SİSTEMİ (3D) */
 .card-flip-container {
-    perspective: 1500px; width: 380px; height: 550px; margin: 20px auto;
+    perspective: 1500px; 
+    width: 380px; 
+    height: 580px; /* DÜZELTME: Kart Uzatıldı (Eski: 550px) */
+    margin: 20px auto;
 }
 
 .card {
@@ -44,21 +47,48 @@ body {
 .card-front { z-index: 2; transform: rotateY(0deg); }
 .front-content { position: relative; z-index: 2; width: 100%; height: 100%; }
 
+/* YENİ: Kategori ve Zorluk Başlığı */
+.card-header {
+    position: absolute;
+    top: 3%; /* En üstte az boşluk */
+    left: 5%;
+    width: 90%;
+    display: flex;
+    justify-content: space-between; /* Solda kategori, sağda zorluk */
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #555; /* Hafif silik renk, arka plana göre ayarlanabilir */
+    z-index: 3;
+}
+
+.category-text { text-transform: uppercase; letter-spacing: 1px; }
+.difficulty-text { background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 10px; }
+
 .character-image-container {
-    position: absolute; top: 5%; left: 10%; width: 80%; height: 35%;
+    position: absolute; 
+    top: 12%; /* DÜZELTME: Aşağı Alındı (Eski: 5%) */
+    left: 10%; 
+    width: 80%; 
+    height: 35%;
     border-radius: 10px; overflow: hidden; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 .character-image { width: 100%; height: 100%; object-fit: cover; }
 
 .question-text {
-    position: absolute; top: 43%; left: 5%; width: 90%;
+    position: absolute; 
+    top: 52%; /* DÜZELTME: Aşağı Alındı (Eski: 43%) */
+    left: 5%; 
+    width: 90%;
     background: rgba(255,255,255,0.92); padding: 12px; border-radius: 10px;
     font-size: 0.95em; font-weight: bold; color: #222; box-sizing: border-box;
     border: 1px solid #ddd;
 }
 
 .options-container {
-    position: absolute; bottom: 5%; left: 5%; width: 90%;
+    position: absolute; 
+    bottom: 10%; /* DÜZELTME: Yukarı Alındı (Soruya Yaklaştırıldı, Eski: 5%) */
+    left: 5%; 
+    width: 90%;
     display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
 }
 
