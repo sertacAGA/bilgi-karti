@@ -26,8 +26,19 @@ const uiTranslations = {
 // --- SORU VERİ HAVUZU (26 Soru) ---
 const quizData = {
     tr: [
-        { question: "Salyangozlar genellikle yağmurdan sonra neden dışarı çıkarlar?", image: "images/01.jpg", options: { A: "Nemli hava", B: "Parlaklık", C: "Enerji", D: "Güneş" }, correctAnswer: "A", answerDetail: "Nemli havalar kurumadan hareket etmeleri için idealdir." },
-        { question: "Kamp ateşini güvenli yakmak için ilk ne yapılmalıdır?", image: "images/02.jpg", options: { A: "Büyük odunlar", B: "Kuru çember", C: "Ot üstü", D: "Yakıt" }, correctAnswer: "B", answerDetail: "Kontrol için önce kuru dallardan bir temel oluşturulmalıdır." },
+        { 
+            // YENİ EKLENEN VERİLER:
+            category: "DOĞA & HAYVANLAR", 
+            difficulty: "KOLAY",
+            // ------------------------
+            question: "Salyangozlar genellikle yağmurdan sonra neden dışarı çıkarlar?", 
+            image: "images/01.jpg", 
+            options: { A: "Nemli hava", B: "Parlaklık", C: "Enerji", D: "Güneş" }, 
+            correctAnswer: "A", 
+            answerDetail: "Nemli havalar kurumadan hareket etmeleri için idealdir." 
+        },
+        { category: "GENEL KÜLTÜR", difficulty: "ORTA", question: "Kamp ateşini güvenli yakmak için ilk ne yapılmalıdır?", image: "images/02.jpg", options: { A: "Büyük odunlar", B: "Kuru çember", C: "Ot üstü", D: "Yakıt" }, correctAnswer: "B", answerDetail: "Kontrol için önce kuru dallardan bir temel oluşturulmalıdır." },
+        // ... DİĞER SORULARA DA category VE difficulty EKLEMELİSİNİZ (Örn: { category: "TARİH", difficulty: "ZOR", question: "..." }) ...
         { question: "Modern moda hangi yüzyılda ortaya çıkmıştır?", image: "images/03.jpg", options: { A: "17.", B: "18.", C: "19.", D: "20." }, correctAnswer: "C", answerDetail: "19. yüzyıl, seri üretimin başlamasıyla modanın doğuşudur." },
         { question: "Mitolojide aslan genellikle neyi temsil eder?", image: "images/04.jpg", options: { A: "Bilgelik", B: "Sadakat", C: "Hırs", D: "Güç" }, correctAnswer: "D", answerDetail: "Aslan, tarih boyunca gücün ve cesaretin simgesi olmuştur." },
         { question: "Ejderhaların yaşadığına dair kanıt var mıdır?", image: "images/05.jpg", options: { A: "Kalıntı var", B: "Sadece efsane", C: "Kanıtlanmıştır", D: "Hala yaşıyorlar" }, correctAnswer: "B", answerDetail: "Ejderhalar efsanevi yaratıklardır; biyolojik kanıtları yoktur." },
@@ -54,8 +65,8 @@ const quizData = {
         { question: "Köpeklerin sadık olma nedeni nedir?", image: "images/26.jpg", options: { A: "Yalnızlık", B: "Yavaşlık", C: "Gececilik", D: "Sürü içgüdüsü" }, correctAnswer: "D", answerDetail: "Sürü içgüdüsüyle insanı lider olarak görürler." }
     ],
     en: [
-        { question: "Why do snails come out after rain?", image: "images/01.jpg", options: { A: "Moist air", B: "Shininess", C: "Energy", D: "Sun" }, correctAnswer: "A", answerDetail: "Moist weather is ideal for their movement." }
-        // Not: İngilizce sorular buraya eklenecek
+        { category: "NATURE & ANIMALS", difficulty: "EASY", question: "Why do snails come out after rain?", image: "images/01.jpg", options: { A: "Moist air", B: "Shininess", C: "Energy", D: "Sun" }, correctAnswer: "A", answerDetail: "Moist weather is ideal for their movement." },
+        // ... (İngilizce sorulara da category/difficulty eklenmelidir) ...
     ]
 };
 
@@ -101,6 +112,11 @@ function loadCardData(index) {
     }
 
     const cardData = currentQuestions[index];
+
+    // YENİ: Kategori ve Zorluk Metinlerini Güncelle (Eğer veri varsa, yoksa boş bırak)
+    document.getElementById('category-text').textContent = cardData.category || "";
+    document.getElementById('difficulty-text').textContent = cardData.difficulty || "";
+    // ------------------------------------------------------------------------
 
     // Metinleri ve Resmi Güncelle
     document.getElementById('question-text').textContent = cardData.question;
