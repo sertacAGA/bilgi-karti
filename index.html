@@ -10,47 +10,58 @@
     <div class="game-container">
         <h1>Bilgi Kartı Oyunu</h1>
 
-<div id="initial-screen">
-    <img id="initial-image" src="images/opening_image.png" alt="Oyun Açılış Resmi">
-    
-    <div class="language-selection">
-        <button class="lang-btn active" onclick="setLanguage('tr')">🇹🇷 Türkçe</button>
-        <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 English</button>
-    </div>
-
-    <h2 id="welcome-text" style="margin:10px 0; color:#555;">Hoş Geldiniz / Welcome</h2>
-    
-    <button id="start-button" class="start-btn" onclick="startGame()">Oyuna Başla</button>
-</div>
+        <div id="initial-screen">
+            <img id="initial-image" src="images/opening_image.png" alt="Oyun Açılış Resmi">
+            <div class="language-selection">
+                <button class="lang-btn active" onclick="setLanguage('tr')">🇹🇷 Türkçe</button>
+                <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 English</button>
+            </div>
+            <button id="start-button" class="start-btn" onclick="startGame()">Oyuna Başla</button>
+        </div>
         
         <div id="game-area"> 
-            
-            <div class="score-board">Puan: <span id="score">0</span> / Kart: <span id="card-index">0</span>/26</div>
+            <div class="score-board">
+                <span id="score-label">Puan</span>: <span id="score">0</span> / 
+                <span id="card-label">Kart</span>: <span id="card-index">0</span>/<span id="total-cards">26</span>
+            </div>
 
             <div class="card-flip-container">
                 <div class="card" id="quiz-card">
-                    <div class="card-face card-front" id="card-front-face"> 
-                        <p class="question-text" id="question-text"></p>
+                    
+                    <div class="card-face card-front"> 
+                        <img class="card-bg-template" src="images/bos_kart_sablonu_on.jpg">
+                        
+                        <div class="front-content">
+                            <div class="character-image-container">
+                                <img class="character-image" id="character-image" src="">
+                            </div>
+                            <p class="question-text" id="question-text"></p>
+                            <div class="options-container" id="options-container">
+                                <button class="option-btn" data-option="A">A</button>
+                                <button class="option-btn" data-option="B">B</button>
+                                <button class="option-btn" data-option="C">C</button>
+                                <button class="option-btn" data-option="D">D</button>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="card-face card-back">
-                        <p class="answer-label">DOĞRU CEVAP:</p>
-                        <p class="correct-answer-text" id="correct-answer-text"></p>
-                        <button class="next-card-btn" onclick="nextCard()">Sonraki Kart</button>
+                        <img class="card-bg-template" src="images/bos_kart_sablonu_arka.jpg">
+                        
+                        <div class="back-content">
+                            <p class="answer-label">DOĞRU CEVAP:</p>
+                            <div class="answer-box">
+                                <p id="correct-answer-text" class="correct-answer-text"></p>
+                            </div>
+                            <button class="next-card-btn" onclick="nextCard()">Sonraki Kart</button>
+                        </div>
                     </div>
+
                 </div>
             </div>
-            
-            <div class="options-container" id="options-container">
-                <button class="option-btn" data-option="A">A)</button>
-                <button class="option-btn" data-option="B">B)</button>
-                <button class="option-btn" data-option="C">C)</button>
-                <button class="option-btn" data-option="D">D)</button>
-            </div>
-            
             <p id="feedback-text" class="feedback-message"></p>
-
         </div> 
-        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

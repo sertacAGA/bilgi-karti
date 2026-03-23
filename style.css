@@ -1,306 +1,92 @@
+/* GENEL AYARLAR */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    min-height: 100vh;
-    background: linear-gradient(135deg, #eceff1 0%, #cfd8dc 100%);
-    padding: 20px;
-    margin: 0;
+    display: flex; justify-content: center; align-items: center; 
+    min-height: 100vh; background: #cfd8dc; margin: 0;
 }
 
 .game-container {
-    width: 100%;
-    max-width: 650px; 
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 18px; 
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); 
-    text-align: center;
-    border: 5px solid #ffcc80; 
+    width: 95%; max-width: 500px; background: #fff; padding: 20px;
+    border-radius: 18px; text-align: center; border: 5px solid #ffcc80;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-h1 {
-    color: #333;
-    margin-bottom: 10px;
-    font-size: 2.2em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+/* GİRİŞ EKRANI */
+#initial-screen { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+#initial-image { width: 100%; max-width: 300px; border-radius: 12px; object-fit: contain; }
+.start-btn { background: #4CAF50; color: white; border: none; padding: 12px 40px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-.score-board {
-    font-size: 1.1em;
-    margin-bottom: 25px;
-    color: #555;
-    font-weight: bold;
-    padding: 5px;
-    background-color: #f0f4c3; 
-    border-radius: 6px;
-}
-
-/* --- Başlangıç Sayfası Görünümü --- */
-
-#initial-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-#initial-image {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.start-btn {
-    padding: 15px 40px;
-    font-size: 1.3em;
-    margin-top: 30px;
-    background-color: #ff9800; 
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    font-weight: bold;
-}
-
-.start-btn:hover {
-    background-color: #fb8c00;
-    transform: translateY(-2px);
-}
-
-/* --- Kart Yapısı ve Dönme Efekti --- */
-
+/* KART DÖNÜŞ SİSTEMİ (3D) */
 .card-flip-container {
-    perspective: 1000px;
-    width: 450px; 
-    height: 450px;
-    margin: 20px auto;
+    perspective: 1500px; width: 380px; height: 550px; margin: 20px auto;
 }
 
 .card {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d; 
-    transition: transform 0.8s; 
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    width: 100%; height: 100%; position: relative;
+    transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card.flipped {
-    transform: rotateY(180deg);
-}
+.card.flipped { transform: rotateY(180deg); }
 
 .card-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; 
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    color: white; 
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); 
+    position: absolute; width: 100%; height: 100%;
+    -webkit-backface-visibility: hidden; backface-visibility: hidden; 
+    border-radius: 15px; overflow: hidden;
 }
 
-/* ÖN YÜZ: Resim Arka Plan Olarak Kullanılacak */
-.card-front {
-    background-color: #00796b; 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat;
-    
-    display: flex; 
-    flex-direction: column;
-    justify-content: flex-end; /* Soru metnini alt kısma hizala */
-    align-items: center;
-    padding-bottom: 30px; 
+/* ŞABLON RESİMLERİ */
+.card-bg-template {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 1; /* En altta kalacak */
 }
+
+/* ÖN YÜZ DÜZENİ */
+.card-front { z-index: 2; transform: rotateY(0deg); }
+.front-content { position: relative; z-index: 2; width: 100%; height: 100%; }
+
+.character-image-container {
+    position: absolute; top: 5%; left: 10%; width: 80%; height: 35%;
+    border-radius: 10px; overflow: hidden; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.character-image { width: 100%; height: 100%; object-fit: cover; }
 
 .question-text {
-    font-size: 1.4em;
-    font-weight: bold;
-    background-color: rgba(0, 0, 0, 0.6); 
-    padding: 10px 15px;
-    border-radius: 8px;
-    width: 90%;
-    box-sizing: border-box;
+    position: absolute; top: 43%; left: 5%; width: 90%;
+    background: rgba(255,255,255,0.92); padding: 12px; border-radius: 10px;
+    font-size: 0.95em; font-weight: bold; color: #222; box-sizing: border-box;
+    border: 1px solid #ddd;
 }
-
-/* ARKA YÜZ: Cevap ve Açıklama */
-.card-back {
-    /* Resim yüklenemezse görünecek yedek renk */
-    background-color: #80cbc4;
-    
-    /* --- YENİ EKLENEN KISIM: ARKA PLAN RESMİ --- */
-    background-image: url('images/arkaplan.jpg');
-    background-size: cover; /* Resmi tüm alana yayar */
-    background-position: center; /* Resmi ortalar */
-    background-repeat: no-repeat;
-    /* ------------------------------------------ */
-
-    color: #333;
-    transform: rotateY(180deg);
-    text-align: center;
-    text-shadow: none; 
-    
-    /* İçeriğin kenarlara yapışmaması için padding */
-    padding: 20px;
-}
-
-/* "DOĞRU CEVAP" etiketini de belirginleştirelim */
-.answer-label {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #fff; /* Yazıyı beyaz yaptık */
-    background-color: #004d40; /* Koyu yeşil şerit */
-    padding: 5px 15px;
-    border-radius: 20px;
-    display: inline-block; /* Kutu kadar yer kaplasın */
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Cevap yazısının okunabilir olması için arkasına kutu ekleyelim */
-.correct-answer-text {
-    font-size: 1.6em;
-    font-weight: bold;
-    margin-bottom: 25px;
-    color: #004d40;
-    
-    /* --- YENİ EKLENEN: OKUNABİLİRLİK KUTUSU --- */
-    background-color: rgba(255, 255, 255, 0.9); /* %90 Görünür Beyaz */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Hafif gölge */
-    /* ----------------------------------------- */
-}
-
-/* --- Düğmeler ve Mesajlar --- */
 
 .options-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px; 
-    margin-top: 25px;
+    position: absolute; bottom: 5%; left: 5%; width: 90%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
 }
 
 .option-btn {
-    padding: 15px;
-    font-size: 1.1em;
-    border: 2px solid #ffcc80; 
-    border-radius: 10px;
-    background-color: #ffb74d; 
-    color: #333;
-    transition: all 0.2s;
-    font-weight: bold;
-    cursor: pointer;
+    padding: 12px 5px; font-weight: bold; border-radius: 8px;
+    border: 2px solid #ffcc80; background: #fff; cursor: pointer; transition: 0.2s;
+}
+.option-btn:hover { background: #fff3e0; }
+
+/* ARKA YÜZ DÜZENİ */
+.card-back { transform: rotateY(180deg); }
+.back-content { 
+    position: relative; z-index: 2; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 20px; box-sizing: border-box;
 }
 
-.option-btn:hover:not(:disabled) {
-    background-color: #ff9800;
-    color: white;
+.answer-box {
+    background: rgba(255, 255, 255, 0.95); padding: 20px;
+    border-radius: 12px; border: 2px solid #4CAF50; width: 85%; margin: 15px 0;
 }
 
-.option-btn:disabled {
-    cursor: default;
-}
+.correct-answer-text { font-size: 1.1em; font-weight: bold; color: #004d40; margin: 0; }
+.answer-label { background: #004d40; color: #fff; padding: 6px 18px; border-radius: 20px; font-size: 0.9em; font-weight: bold; }
+.next-card-btn { background: #ff9800; color: white; border: none; padding: 14px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; }
 
-/* Doğru/Yanlış Renkleri */
-.option-btn.correct-btn {
-    background-color: #4CAF50 !important; 
-    color: white !important;
-}
-.option-btn.wrong-btn {
-    background-color: #F44336 !important; 
-    color: white !important;
-}
-
-.feedback-message {
-    margin-top: 15px;
-    font-weight: bold;
-    min-height: 1.2em; 
-}
-
-.correct {
-    color: #4CAF50;
-}
-
-.wrong {
-    color: #F44336;
-}
-
-.next-card-btn {
-    padding: 12px 25px;
-    font-size: 1.1em;
-    margin-top: 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #ff9800;
-    color: white;
-    transition: background-color 0.3s;
-    font-weight: bold;
-}
-
-/* style.css dosyasındaki hatalı yeri bul ve bununla değiştir: */
-
-/* --- GİZLEME MANTIĞI --- */
-
-/* Oyun Alanı Başlangıçta Gizli */
-#game-area {
-    display: none;
-} /* <-- BU PARANTEZ EKSİKTİ, EKLEDİK */
-
-/* style.css dosyasının en altına ekle */
-
-/* Dil Seçimi Alanı */
-.language-selection {
-    margin: 20px 0;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
-.lang-btn {
-    padding: 10px 20px;
-    border: 2px solid #ccc;
-    background-color: #f9f9f9;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: all 0.3s;
-    font-weight: bold;
-    opacity: 0.6;
-}
-
-.lang-btn.active, .lang-btn:hover {
-    border-color: #ff9800;
-    background-color: #fff3e0;
-    opacity: 1;
-    transform: scale(1.05);
-}
-
-/* Kartın arka planını biraz daha okunaklı yapalım */
-.card-front {
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.5); 
-}
-
-/* Soru metnini biraz daha güzelleştir */
-.question-text {
-    background-color: rgba(255, 255, 255, 0.95);
-    color: #333;
-    border: 2px solid #ff9800;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
+/* DURUMLAR */
+.option-btn.correct-btn { background: #4CAF50 !important; color: white; border-color: #4CAF50; }
+.option-btn.wrong-btn { background: #F44336 !important; color: white; border-color: #F44336; }
+.score-board { background: #f0f4c3; padding: 10px; border-radius: 8px; font-weight: bold; margin-bottom: 10px; }
+#game-area { display: none; }
