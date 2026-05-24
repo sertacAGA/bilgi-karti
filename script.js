@@ -23,22 +23,11 @@ const uiTranslations = {
     }
 };
 
-// --- SORU VERİ HAVUZU (26 Soru) ---
+// --- SORU VERİ HAVUZU (30 Soru) ---
 const quizData = {
     tr: [
-        { 
-            // YENİ EKLENEN VERİLER:
-            category: "Doğa & Hayvanlar", 
-            difficulty: "Kolay",
-            // ------------------------
-            question: "Salyangozlar genellikle yağmurdan sonra neden dışarı çıkarlar?", 
-            image: "images/01.jpg", 
-            options: { A: "Nemli hava", B: "Parlaklık", C: "Enerji", D: "Güneş" }, 
-            correctAnswer: "A", 
-            answerDetail: "Nemli havalar kurumadan hareket etmeleri için idealdir." 
-        },
+        { category: "Doğa & Hayvanlar", difficulty: "Kolay", question: "Salyangozlar genellikle yağmurdan sonra neden dışarı çıkarlar?", image: "images/01.jpg", options: { A: "Nemli hava", B: "Parlaklık", C: "Enerji", D: "Güneş" }, correctAnswer: "A", answerDetail: "Nemli havalar kurumadan hareket etmeleri için idealdir." },
         { category: "Genel Kültür", difficulty: "Orta", question: "Kamp ateşini güvenli yakmak için ilk ne yapılmalıdır?", image: "images/02.jpg", options: { A: "Büyük odunlar", B: "Kuru çember", C: "Ot üstü", D: "Yakıt" }, correctAnswer: "B", answerDetail: "Kontrol için önce kuru dallardan bir temel oluşturulmalıdır." },
-        // ... DİĞER SORULARA DA category VE difficulty EKLEMELİSİNİZ (Örn: { category: "TARİH", difficulty: "ZOR", question: "..." }) ...
         { category: "Kültür Ve Sanat", difficulty: "Orta", question: "Modern moda hangi yüzyılda ortaya çıkmıştır?", image: "images/03.jpg", options: { A: "17.", B: "18.", C: "19.", D: "20." }, correctAnswer: "C", answerDetail: "19. yüzyıl, seri üretimin başlamasıyla modanın doğuşudur." },
         { category: "Tarih", difficulty: "Zor", question: "Mitolojide aslan genellikle neyi temsil eder?", image: "images/04.jpg", options: { A: "Bilgelik", B: "Sadakat", C: "Hırs", D: "Güç" }, correctAnswer: "D", answerDetail: "Aslan, tarih boyunca gücün ve cesaretin simgesi olmuştur." },
         { category: "Fantastik", difficulty: "Kolay", question: "Ejderhaların yaşadığına dair kanıt var mıdır?", image: "images/05.jpg", options: { A: "Kalıntı var", B: "Sadece efsane", C: "Kanıtlanmıştır", D: "Hala yaşıyorlar" }, correctAnswer: "B", answerDetail: "Ejderhalar efsanevi yaratıklardır; biyolojik kanıtları yoktur." },
@@ -50,7 +39,7 @@ const quizData = {
         { category: "Kültür ve Sanat", difficulty: "Kolay", question: "Hollywood ödül heykelciğinin adı nedir?", image: "images/11.jpg", options: { A: "Grammy", B: "Oscar", C: "Emmy", D: "Globe" }, correctAnswer: "B", answerDetail: "Oscar, sinema dünyasının en prestijli ödülüdür." },
         { category: "Doğa", difficulty: "Orta", question: "Çiftçi için tırpanın temel amacı nedir?", image: "images/12.jpg", options: { A: "Biçmek", B: "Karıştırmak", C: "Yönlendirmek", D: "Yaymak" }, correctAnswer: "A", answerDetail: "Tırpan, tahılların hasadında geleneksel olarak kullanılır." },
         { category: "Sağlık", difficulty: "Kolay", question: "Çocuklar neden brokoliyi sevmez?", image: "images/13.jpg", options: { A: "Yeşil renk", B: "Çiğ olması", C: "Acı tadı", D: "Sertliği" }, correctAnswer: "C", answerDetail: "Brokolideki bileşikler çocuklara acı gelebilir." },
-        { category: "Yaşam", difficulty: "Orta", question: "Stres en çok hangi organı etkiler?", image: "images/14.jpg", options: { A: "Kalp", B: "Mide", C: "Akciğer", D: "Karaciğer" }, correctAnswer: "B", answerDetail: "Stres mide asidini artırarak mideye zarar verebilir." },
+        { category: "Yaşam", difficulty: "Orta", question: "Stres en çok hangi organı etkiler?", image: "images/14.jpg", options: { A: "Kalp", B: "Mide", C: "Akciğer", D: "Karaciğer" }, correctAnswer: "B", answerDetail: "Stres mide asidini artırarak mideye zarar verir." },
         { category: "Dünya", difficulty: "Kolay", question: "Filistin'deki çocukların zorluk çekme nedeni?", image: "images/15.jpg", options: { A: "Nüfus", B: "Eğitim", C: "İklim", D: "Soykırım" }, correctAnswer: "D", answerDetail: "İsrail'in saldırıları binlerce çocuğun hayatını etkilemektedir." },
         { category: "Tarih", difficulty: "Orta", question: "Savaşçı kadın kabilelerine ne denir?", image: "images/16.jpg", options: { A: "Amazonlar", B: "Vikingler", C: "Hunlar", D: "Aztekler" }, correctAnswer: "A", answerDetail: "Amazonlar mitolojik, savaşçı kadın topluluklarıdır." },
         { category: "Kültür ve Sanat", difficulty: "Orta", question: "Yeşilçam'ın 4 yapraklı yoncasından biri?", image: "images/17.jpg", options: { A: "Türkan Şoray", B: "N. Yeşilçay", C: "Beren Saat", D: "H. Erçel" }, correctAnswer: "A", answerDetail: "Şoray, Koçyiğit, Akın ve Girik bu gruptadır." },
@@ -60,17 +49,16 @@ const quizData = {
         { category: "Hayvanlar", difficulty: "Kolay", question: "Foklar neden soğuk suda üşümez?", image: "images/21.jpg", options: { A: "Kuyruk", B: "Şarkı", C: "Pul", D: "Vücut yağı" }, correctAnswer: "D", answerDetail: "Kalın yağ tabakaları onları soğuktan korur." },
         { category: "Hayvanlar", difficulty: "Orta", question: "Leylekler yönlerini neyle bulur?", image: "images/22.jpg", options: { A: "Manyetik alan", B: "Akıntı", C: "Takip", D: "Koku" }, correctAnswer: "A", answerDetail: "Dünyanın manyetik alanını pusula gibi kullanırlar." },
         { category: "Hayvanlar", difficulty: "Kolay", question: "Orangutanları ayıran en büyük özellik?", image: "images/23.jpg", options: { A: "Boyun", B: "Uzun kollar", C: "Uçma", D: "Soğuk iklim" }, correctAnswer: "B", answerDetail: "Kolları ağaçlarda süzülmek için çok uzundur." },
-        { category: "Hayvanlar", difficulty: "Zor", question: "Sphynx kedileri neden bu ismi almıştır?", image: "images/24.jpg", options: { A: "Mısır'da doğuş", B: "Güneş", C: "Sfenks benzerliği", D: "Tüysüzlük" }, correctAnswer: "C", answerDetail: "Yüz hatları Sfenks heykeline benzetilmiştir." },
+        { category: "Hayvanlar", difficulty: "Zor", question: "Sphynx kedileri neden bu ismi almıştır?", image: "images/24.jpg", options: { A: "Mısır'da doğuş", B: "Günübirlik", C: "Sfenks benzerliği", D: "Tüysüzlük" }, correctAnswer: "C", answerDetail: "Yüz hatları Sfenks heykeline benzetilmiştir." },
         { category: "Hayvanlar", difficulty: "Kolay", question: "Sincaplar yiyecekleri nereye saklar?", image: "images/25.jpg", options: { A: "Ağaç kovuğu", B: "Su kuyusu", C: "Güneş altı", D: "Taş üstü" }, correctAnswer: "A", answerDetail: "Yiyecekleri ağaç kovuklarına ve toprağa gömerler." },
         { category: "Hayvanlar", difficulty: "Kolay", question: "Köpeklerin sadık olma nedeni nedir?", image: "images/26.jpg", options: { A: "Yalnızlık", B: "Yavaşlık", C: "Gececilik", D: "Sürü içgüdüsü" }, correctAnswer: "D", answerDetail: "Sürü içgüdüsüyle insanı lider olarak görürler." },
-        { category: "Fantastik", difficulty: "Orta", question: "Bir süper kahramanın 'gizli kimlik' kullanmasının sebebi nedir?", image: "images/27.jpg", options: { A: "Maliyeti Azaltmak", B: "Havalı Görünmek", C: "Süper Gücünü Saklamak", D: "Sevdiklerini Korumak" }, correctAnswer: "D", answerDetail: "Pekçok kahraman sevdiklerini korumak için kimliğini gizler." },
+        { category: "Fantastik", difficulty: "Orta", question: "Bir süper kahramanın 'gizli kimlik' kullanmasının sebebi nedir?", image: "images/27.jpg", options: { A: "Maliyeti Azaltmak", B: "Havalı Görünmek", C: "Süper Gücünü Saklamak", D: "Sevdiklerini Korumak" }, correctAnswer: "D", answerDetail: "Pek çok kahraman sevdiklerini korumak için kimliğini gizler." },
         { category: "Sağlık", difficulty: "Orta", question: "Gençlerde mutsuzluğun nedeni ne olabilir?", image: "images/28.jpg", options: { A: "Özgüven Problemleri Sosyal Baskı", B: "Fiziksel Aktivite Azlığı", C: "Az Su İçmek", D: "Ders Çalışmayı Sevmemek" }, correctAnswer: "A", answerDetail: "Sosyal çevre ve akran baskısı duygusal durumu etkiler." },
-        { category: "Canlılar", difficulty: "Başlangıç", question: "Evcil kuşların en rahatsız olduğu şey nedir?", image: "images/29.jpg", options: { A: "Günlük Su Banyosu", B: "Karanlık Yerde Durmaları", C: "Temiz Hava ve Güvenli Ortam", D: "Yüksek Sesli Müzik" }, correctAnswer: "A", answerDetail: "Kuşlar narin hayvanlardır, ses kirliliği ve stres onları etkiler." },
-        { category: "Yaşam", difficulty: "Orta", question: "'Ansiklopedi'nin temel amacı nedir?", image: "images/30.jpg", options: { A: "Genel Bilgileri Sunmak", B: "Eğlenceli Hikayeler Anlatmak", C: "Çizgi Roman Karakterleri Tanıtmak", D: "Matematik Problemi Çözmek" }, correctAnswer: "A", answerDetail: "Ansiklopediler pekçok konuda kısa ve güvenilir bilgiler sunar." }
+        { category: "Canlılar", difficulty: "Başlangıç", question: "Evcil kuşların en rahatsız olduğu şey nedir?", image: "images/29.jpg", options: { A: "Günlük Su Banyosu", B: "Karanlık Yerde Durmaları", C: "Temiz Hava ve Güvenli Ortam", D: "Yüksek Sesli Müzik" }, correctAnswer: "D", answerDetail: "Kuşlar narin hayvanlardır, ses kirliliği ve stres onları etkiler." },
+        { category: "Yaşam", difficulty: "Orta", question: "'Ansiklopedi'nin temel amacı nedir?", image: "images/30.jpg", options: { A: "Genel Bilgileri Sunmak", B: "Eğlenceli Hikayeler Anlatmak", C: "Çizgi Comic Karakterleri", D: "Matematik Problemi Çözmek" }, correctAnswer: "A", answerDetail: "Ansiklopediler pek çok konuda kısa ve güvenilir bilgiler sunar." }
     ],
     en: [
         { category: "Animals", difficulty: "Easy", question: "Why do snails come out after rain?", image: "images/01.jpg", options: { A: "Moist air", B: "Shininess", C: "Energy", D: "Sun" }, correctAnswer: "A", answerDetail: "Moist weather is ideal for their movement." },
-        // ... (İngilizce sorulara da category/difficulty eklenmelidir) ...
         { category: "Culture", difficulty: "Medium", question: "What should be done first to light a campfire safely?", image: "images/02.jpg", options: { A: "Large woods", B: "Dry circle", C: "On weed", D: "Fuel" }, correctAnswer: "B", answerDetail: "For control, a foundation must first be formed from dry branches." },
         { category: "Culture", difficulty: "Medium", question: "In which century did modern fashion emerge?", image: "images/03.jpg", options: { A: "17.", B: "18.", C: "19.", D: "20." }, correctAnswer: "C", answerDetail: "The 19th century is the birth of fashion with the beginning of mass production." },
         { category: "History", difficulty: "Hard", question: "What does the lion usually represent in mythology?", image: "images/04.jpg", options: { A: "Wisdom", B: "Loyalty", C: "Ambition", D: "Power" }, correctAnswer: "D", answerDetail: "The lion has been a symbol of strength and courage throughout history." },
@@ -99,7 +87,7 @@ const quizData = {
         { category: "Fantastic", difficulty: "Medium", question: "What is the reason why a superhero uses a 'secret identity'?", image: "images/27.jpg", options: { A: "Reduce Cost", B: "To Being Fancy", C: "Hiding Your Super Power", D: "Protecting Loved Ones" }, correctAnswer: "D", answerDetail: "Many heroes hide their identity to protect their loved ones." },
         { category: "Health", difficulty: "Medium", question: "What could be the cause of unhappiness in young people?", image: "images/28.jpg", options: { A: "Self-Confidence Problems Social Pressure", B: "Lack of Physical Activity", C: "Drinking Little Water", D: "Not Liking To Study" }, correctAnswer: "A", answerDetail: "Social environment and peer pressure affect the emotional state." },
         { category: "Creatures", difficulty: "Easy", question: "What is the most uncomfortable thing about domestic birds?", image: "images/29.jpg", options: { A: "Daily Water Bath", B: "Standing In The Dark Ground", C: "Clean Air and Safe Environment", D: "Loud Music" }, correctAnswer: "D", answerDetail: "Birds are delicate animals, noise pollution and stress affect them." },
-        { category: "Life", difficulty: "Medium", question: "What is the main purpose of the 'Encyclopedia?', image: "images/30.jpg", options: { A: "Provide General Information", B: "Telling Funny Stories", C: "Introducing Comic Book Characters", D: "Solving a Math Problem" }, correctAnswer: "A", answerDetail: "Encyclopedias provide short and reliable information on many topics." }
+        { category: "Life", difficulty: "Medium", question: "What is the main purpose of the 'Encyclopedia'?", image: "images/30.jpg", options: { A: "Provide General Information", B: "Telling Funny Stories", C: "Introducing Comic Book Characters", D: "Solving a Math Problem" }, correctAnswer: "A", answerDetail: "Encyclopedias provide short and reliable information on many topics." }
     ]
 };
 
@@ -107,9 +95,14 @@ const quizData = {
 
 function setLanguage(lang) {
     currentLang = lang;
-    document.querySelectorAll('.lang-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', (i === 0 && lang === 'tr') || (i === 1 && lang === 'en'));
-    });
+    
+    // Butonların aktiflik durumunu CSS sınıflarına göre güncelle
+    const buttons = document.querySelectorAll('.lang-btn');
+    if(buttons.length >= 2) {
+        buttons[0].classList.toggle('active', lang === 'tr');
+        buttons[1].classList.toggle('active', lang === 'en');
+    }
+    
     document.getElementById('start-button').textContent = uiTranslations[currentLang].startButton;
 }
 
@@ -146,10 +139,9 @@ function loadCardData(index) {
 
     const cardData = currentQuestions[index];
 
-    // YENİ: Kategori ve Zorluk Metinlerini Güncelle (Eğer veri varsa, yoksa boş bırak)
+    // Kategori ve Zorluk Metinlerini Güncelle (Eğer veri varsa, yoksa boş bırak)
     document.getElementById('category-text').textContent = cardData.category || "";
     document.getElementById('difficulty-text').textContent = cardData.difficulty || "";
-    // ------------------------------------------------------------------------
 
     // Metinleri ve Resmi Güncelle
     document.getElementById('question-text').textContent = cardData.question;
