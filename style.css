@@ -1,122 +1,53 @@
-/* GENEL AYARLAR */
+:root {
+    --bg: #0f172a;
+    --panel: #111827;
+    --soft: #1f2937;
+    --text: #f8fafc;
+    --accent: #22c55e;
+}
+* { box-sizing: border-box; }
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex; justify-content: center; align-items: center; 
-    min-height: 100vh; background: #cfd8dc; margin: 0;
+    font-family: Inter, 'Segoe UI', sans-serif;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; background: linear-gradient(120deg, #fff7ed, #fef3c7 40%, #dbeafe); margin: 0; color: var(--text);
 }
-
-.game-container {
-    width: 95%; max-width: 500px; background: #fff; padding: 20px;
-    border-radius: 18px; text-align: center; border: 5px solid #ffcc80;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-/* GİRİŞ EKRANI */
-#initial-screen { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-#initial-image { width: 100%; max-width: 300px; border-radius: 12px; object-fit: contain; }
-.start-btn { background: #4CAF50; color: white; border: none; padding: 12px 40px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
-/* KART DÖNÜŞ SİSTEMİ (3D) */
-.card-flip-container {
-    perspective: 1500px; 
-    width: 380px; 
-    height: 580px; /* DÜZELTME: Kart Uzatıldı (Eski: 550px) */
-    margin: 20px auto;
-}
-
-.card {
-    width: 100%; height: 100%; position: relative;
-    transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card.flipped { transform: rotateY(180deg); }
-
-.card-face {
-    position: absolute; width: 100%; height: 100%;
-    -webkit-backface-visibility: hidden; backface-visibility: hidden; 
-    border-radius: 15px; overflow: hidden;
-}
-
-/* ŞABLON RESİMLERİ */
-.card-bg-template {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: 1; /* En altta kalacak */
-}
-
-/* ÖN YÜZ DÜZENİ */
-.card-front { z-index: 2; transform: rotateY(0deg); }
-.front-content { position: relative; z-index: 2; width: 100%; height: 100%; }
-
-/* YENİ: Kategori ve Zorluk Başlığı */
-.card-header {
-    position: absolute;
-    top: 3%; /* En üstte az boşluk */
-    left: 5%;
-    width: 90%;
-    display: flex;
-    justify-content: space-between; /* Solda kategori, sağda zorluk */
-    font-size: 0.8em;
-    font-weight: bold;
-    color: #555; /* Hafif silik renk, arka plana göre ayarlanabilir */
-    z-index: 3;
-}
-
-.category-text { text-transform: uppercase; letter-spacing: 1px; }
-.difficulty-text { background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 10px; }
-
-.character-image-container {
-    position: absolute; 
-    top: 12%; /* DÜZELTME: Aşağı Alındı (Eski: 5%) */
-    left: 10%; 
-    width: 80%; 
-    height: 35%;
-    border-radius: 10px; overflow: hidden; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-.character-image { width: 100%; height: 100%; object-fit: cover; }
-
-.question-text {
-    position: absolute; 
-    top: 52%; /* DÜZELTME: Aşağı Alındı (Eski: 43%) */
-    left: 5%; 
-    width: 90%;
-    background: rgba(255,255,255,0.92); padding: 12px; border-radius: 10px;
-    font-size: 0.95em; font-weight: bold; color: #222; box-sizing: border-box;
-    border: 1px solid #ddd;
-}
-
-.options-container {
-    position: absolute; 
-    bottom: 10%; /* DÜZELTME: Yukarı Alındı (Soruya Yaklaştırıldı, Eski: 5%) */
-    left: 5%; 
-    width: 90%;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-}
-
-.option-btn {
-    padding: 12px 5px; font-weight: bold; border-radius: 8px;
-    border: 2px solid #ffcc80; background: #fff; cursor: pointer; transition: 0.2s;
-}
-.option-btn:hover { background: #fff3e0; }
-
-/* ARKA YÜZ DÜZENİ */
-.card-back { transform: rotateY(180deg); }
-.back-content { 
-    position: relative; z-index: 2; width: 100%; height: 100%;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box;
-}
-
-.answer-box {
-    background: rgba(255, 255, 255, 0.95); padding: 20px;
-    border-radius: 12px; border: 2px solid #4CAF50; width: 85%; margin: 15px 0;
-}
-
-.correct-answer-text { font-size: 1.1em; font-weight: bold; color: #004d40; margin: 0; }
-.answer-label { background: #004d40; color: #fff; padding: 6px 18px; border-radius: 20px; font-size: 0.9em; font-weight: bold; }
-.next-card-btn { background: #ff9800; color: white; border: none; padding: 14px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; }
-
-/* DURUMLAR */
-.option-btn.correct-btn { background: #4CAF50 !important; color: white; border-color: #4CAF50; }
-.option-btn.wrong-btn { background: #F44336 !important; color: white; border-color: #F44336; }
-.score-board { background: #f0f4c3; padding: 10px; border-radius: 8px; font-weight: bold; margin-bottom: 10px; }
+.game-container { width: min(1100px, 96vw); background: rgba(255,255,255,.88); border: 1px solid #334155; padding: 22px; border-radius: 20px; }
+.title { margin: 0 0 14px; font-size: clamp(1.8rem, 3vw, 2.6rem); text-align:center; color:#0f172a; }
+.panel { background: linear-gradient(140deg, #ffffff, #eff6ff); border-radius: 16px; padding: 18px; border: 1px solid #334155; }
+#welcome-text { margin: 8px 0 0; color: #334155; font-size:1.05rem; }
+#initial-screen { min-height: 420px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+#initial-image { width: 100%; max-width: 560px; border-radius: 14px; border: 2px solid #334155; }
+.language-selection, .start-actions, .leaderboard-form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+button { border: none; border-radius: 12px; padding: 14px 24px; font-weight: 700; font-size: 1rem; cursor: pointer; }
+.start-btn { background: var(--accent); color: #052e16; }
+.secondary-btn, .lang-btn { background: #334155; color: #f8fafc; }
+.lang-btn.active { background: #38bdf8; color: #082f49; }
 #game-area { display: none; }
+.top-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.score-board { background: #dbeafe; color:#0f172a; padding: 10px 14px; border-radius: 10px; font-weight: 700; }
+.separator { margin: 0 8px; color: #94a3b8; }
+.card-flip-container { perspective: 1500px; width: min(92vw, 420px); height: 620px; margin: 16px auto; }
+.card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .7s; }
+.card.flipped { transform: rotateY(180deg); }
+.card-face { position: absolute; width: 100%; height: 100%; border-radius: 15px; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.card-front{z-index:2;}
+.card-back{z-index:1;}
+.card.flipped .card-front{pointer-events:none;}
+.card:not(.flipped) .card-back{pointer-events:none;}
+.card-back { transform: rotateY(180deg); }
+.card-bg-template { position: absolute; width: 100%; height: 100%; object-fit: cover; }
+.front-content, .back-content { position: relative; z-index: 2; width: 100%; height: 100%; }
+.card-header { position: absolute; top: 3%; left: 5%; width: 90%; display: flex; justify-content: space-between; font-weight: 700; }
+.difficulty-text { background: rgba(0,0,0,.3); padding: 4px 8px; border-radius: 999px; }
+.character-image-container { position: absolute; top: 12%; left: 10%; width: 80%; height: 34%; border-radius: 10px; overflow: hidden; }
+.character-image { width: 100%; height: 100%; object-fit: cover; }
+.question-text { position: absolute; top: 50%; left: 5%; width: 90%; padding: 12px; background: rgba(255,255,255,.9); border-radius: 10px; color: #111; font-weight: 700; }
+.options-container { position: absolute; bottom: 8%; left: 5%; width: 90%; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.option-btn { background: #fff; border: 2px solid #f59e0b; }
+.option-btn.correct-btn { background: #22c55e; color: white; border-color: #22c55e; }
+.option-btn.wrong-btn { background: #ef4444; color: white; border-color: #ef4444; }
+.back-content { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.answer-box { background: rgba(255,255,255,.95); color: #111; padding: 16px; border-radius: 12px; width: 85%; }
+.leaderboard { margin-top: 10px; }
+#leaderboard-list { text-align: left; max-width: 450px; margin: 8px auto 0; color: #dbeafe; }
+@media (max-width: 640px) { .game-container { padding: 14px; } .card-flip-container { height: 560px; } }

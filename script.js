@@ -215,3 +215,154 @@ function showEndScreen() {
 
 // Sayfa yüklendiğinde dili ayarla
 window.onload = () => setLanguage('tr');
+
+// --- GELİŞTİRİLMİŞ OYUN AKIŞI ---
+const STORAGE_KEY = 'bilgi-karti-save-v2';
+const BOARD_KEY = 'bilgi-karti-leaderboard-v1';
+const TOTAL_CARDS = 100;
+const CARDS_PER_SECTION = 25;
+const difficultyPoints = {
+    tr: { "Kolay": 1, "Başlangıç": 1, "Orta": 2, "Zor": 3 },
+    en: { "Easy": 1, "Medium": 2, "Hard": 3 }
+};
+
+let canSaveScore = false;
+
+function buildDeck(lang) {
+    const base = quizData[lang];
+    const deck = [];
+    while (deck.length < TOTAL_CARDS) {
+        const shuffled = [...base].sort(() => Math.random() - 0.5);
+        deck.push(...shuffled);
+    }
+    return deck.slice(0, TOTAL_CARDS);
+}
+
+function saveProgress() {
+    const progress = { currentLang, currentCardIndex, score, currentQuestions };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+}
+
+function getProgress() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+}
+
+function startGame(resume = false) {
+    const progress = resume ? getProgress() : null;
+    if (progress) {
+        currentLang = progress.currentLang;
+        currentCardIndex = progress.currentCardIndex;
+        score = progress.score;
+        currentQuestions = progress.currentQuestions;
+    } else {
+        currentQuestions = buildDeck(currentLang);
+        score = 0;
+        currentCardIndex = 0;
+        saveProgress();
+    }
+
+    document.getElementById('initial-screen').style.display = 'none';
+    document.getElementById('game-area').style.display = 'block';
+    updateUITexts();
+    document.getElementById('quiz-card').classList.remove('flipped');
+    loadCardData(currentCardIndex);
+}
+
+function updateUITexts() {
+    const t = uiTranslations[currentLang];
+    document.getElementById('score-label').textContent = t.scoreLabel;
+    document.getElementById('card-label').textContent = t.cardLabel;
+    document.getElementById('section-label').textContent = currentLang === 'tr' ? 'Bölüm' : 'Section';
+    document.querySelector('.next-card-btn').textContent = t.nextButton;
+    document.querySelector('.answer-label').textContent = t.correctLabel;
+    document.getElementById('total-cards').textContent = CARDS_PER_SECTION;
+    document.getElementById('resume-button').style.display = getProgress() ? 'inline-block' : 'none';
+}
+
+function loadCardData(index) {
+    if (index >= currentQuestions.length) return showEndScreen();
+    const cardData = currentQuestions[index];
+    document.getElementById('category-text').textContent = cardData.category || "";
+    document.getElementById('difficulty-text').textContent = `${cardData.difficulty || ""} (+${getDifficultyPoint(cardData.difficulty)})`;
+    document.getElementById('question-text').textContent = cardData.question;
+    document.getElementById('character-image').src = cardData.image;
+    document.getElementById('correct-answer-text').textContent = `${cardData.correctAnswer}) ${cardData.options[cardData.correctAnswer]} - ${cardData.answerDetail}`;
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        const opt = btn.dataset.option;
+        btn.textContent = `${opt}) ${cardData.options[opt]}`;
+        btn.disabled = false;
+        btn.classList.remove('correct-btn', 'wrong-btn');
+        btn.onclick = () => handleAnswer(opt);
+    });
+    document.getElementById('card-index').textContent = (index % CARDS_PER_SECTION) + 1;
+    document.getElementById('section-index').textContent = Math.floor(index / CARDS_PER_SECTION) + 1;
+    document.getElementById('score').textContent = score;
+}
+
+function getDifficultyPoint(diff) {
+    return difficultyPoints[currentLang][diff] || 1;
+}
+
+function handleAnswer(selected) {
+    const cardData = currentQuestions[currentCardIndex];
+    if (selected === cardData.correctAnswer) {
+        score += getDifficultyPoint(cardData.difficulty);
+        document.getElementById('score').textContent = score;
+    }
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.disabled = true;
+        const opt = btn.dataset.option;
+        if (opt === cardData.correctAnswer) btn.classList.add('correct-btn');
+        else if (opt === selected) btn.classList.add('wrong-btn');
+    });
+    saveProgress();
+    setTimeout(() => document.getElementById('quiz-card').classList.add('flipped'), 500);
+}
+
+function nextCard() {
+    document.getElementById('quiz-card').classList.remove('flipped');
+    setTimeout(() => {
+        currentCardIndex++;
+        saveProgress();
+        loadCardData(currentCardIndex);
+    }, 300);
+}
+
+function showEndScreen() {
+    canSaveScore = true;
+    localStorage.removeItem(STORAGE_KEY);
+    alert((currentLang === 'tr' ? 'Oyun bitti! Toplam puanınız: ' : 'Game over! Your total score: ') + score);
+    document.getElementById('initial-screen').style.display = 'flex';
+    document.getElementById('game-area').style.display = 'none';
+}
+
+function saveScore() {
+    if (!canSaveScore) return;
+    const name = document.getElementById('player-name').value.trim() || (currentLang === 'tr' ? 'Anonim' : 'Anonymous');
+    const scores = JSON.parse(localStorage.getItem(BOARD_KEY) || '[]');
+    scores.push({ name, score, date: new Date().toLocaleDateString() });
+    scores.sort((a, b) => b.score - a.score);
+    localStorage.setItem(BOARD_KEY, JSON.stringify(scores.slice(0, 10)));
+    canSaveScore = false;
+    renderLeaderboard();
+}
+
+function renderLeaderboard() {
+    const scores = JSON.parse(localStorage.getItem(BOARD_KEY) || '[]');
+    document.getElementById('leaderboard-list').innerHTML = scores.map(s => `<li>${s.name} - ${s.score}p (${s.date})</li>`).join('') || '<li>Henüz skor yok.</li>';
+}
+
+window.onload = () => {
+    setLanguage('tr');
+    updateUITexts();
+    renderLeaderboard();
+};
+
+function exitToHome() {
+    saveProgress();
+    document.getElementById('quiz-card').classList.remove('flipped');
+    document.getElementById('game-area').style.display = 'none';
+    document.getElementById('initial-screen').style.display = 'flex';
+    updateUITexts();
+}
