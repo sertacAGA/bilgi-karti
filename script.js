@@ -358,3 +358,11 @@ window.onload = () => {
     updateUITexts();
     renderLeaderboard();
 };
+
+function exitToHome() {
+    saveProgress();
+    document.getElementById('quiz-card').classList.remove('flipped');
+    document.getElementById('game-area').style.display = 'none';
+    document.getElementById('initial-screen').style.display = 'flex';
+    updateUITexts();
+}

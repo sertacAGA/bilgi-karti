@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="game-container">
-        <h1>Bilgi Kartı Oyunu</h1>
+        <h1 class="title">Bilgi Kartı Oyunu</h1>
 
         <div id="initial-screen" class="panel">
             <img id="initial-image" src="images/opening_image.png" alt="Oyun Açılış Resmi">
@@ -24,13 +24,13 @@
         </div>
 
         <div id="game-area">
-            <div class="score-board">
+            <div class="top-row"><div class="score-board">
                 <span id="score-label">Puan</span>: <span id="score">0</span>
                 <span class="separator">•</span>
                 <span id="card-label">Kart</span>: <span id="card-index">0</span>/<span id="total-cards">25</span>
                 <span class="separator">•</span>
                 <span id="section-label">Bölüm</span>: <span id="section-index">1</span>/4
-            </div>
+            </div><button id="exit-button" class="secondary-btn" onclick="exitToHome()">Çıkış</button></div>
 
             <div class="card-flip-container">
                 <div class="card" id="quiz-card">
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <div class="leaderboard panel">
+        <div class="leaderboard panel" id="leaderboard-panel">
             <h2 id="leaderboard-title">Skor Tablosu</h2>
             <div class="leaderboard-form">
                 <input id="player-name" type="text" maxlength="20" placeholder="Oyuncu adı">
