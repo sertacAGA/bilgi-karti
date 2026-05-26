@@ -10,33 +10,37 @@
     <div class="game-container">
         <h1>Bilgi Kartı Oyunu</h1>
 
-        <div id="initial-screen">
+        <div id="initial-screen" class="panel">
             <img id="initial-image" src="images/opening_image.png" alt="Oyun Açılış Resmi">
+            <p id="welcome-text" class="welcome-text">4 bölüm, 100 kart, zorluk bazlı puanlama!</p>
             <div class="language-selection">
                 <button class="lang-btn active" onclick="setLanguage('tr')">🇹🇷 Türkçe</button>
                 <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 English</button>
             </div>
-            <button id="start-button" class="start-btn" onclick="startGame()">Oyuna Başla</button>
+            <div class="start-actions">
+                <button id="start-button" class="start-btn" onclick="startGame(false)">Oyuna Başla</button>
+                <button id="resume-button" class="secondary-btn" onclick="startGame(true)">Kaldığın Yerden Devam Et</button>
+            </div>
         </div>
-        
-        <div id="game-area"> 
+
+        <div id="game-area">
             <div class="score-board">
-                <span id="score-label">Puan</span>: <span id="score">0</span> / 
-                <span id="card-label">Kart</span>: <span id="card-index">0</span>/<span id="total-cards">26</span>
+                <span id="score-label">Puan</span>: <span id="score">0</span>
+                <span class="separator">•</span>
+                <span id="card-label">Kart</span>: <span id="card-index">0</span>/<span id="total-cards">25</span>
+                <span class="separator">•</span>
+                <span id="section-label">Bölüm</span>: <span id="section-index">1</span>/4
             </div>
 
             <div class="card-flip-container">
                 <div class="card" id="quiz-card">
-                    
-                    <div class="card-face card-front"> 
+                    <div class="card-face card-front">
                         <img class="card-bg-template" src="images/bos_kart_sablonu_on.jpg">
-                        
                         <div class="front-content">
                             <div class="card-header">
                                 <span class="category-text" id="category-text">Kategori</span>
                                 <span class="difficulty-text" id="difficulty-text">Zorluk</span>
                             </div>
-
                             <div class="character-image-container">
                                 <img class="character-image" id="character-image" src="">
                             </div>
@@ -52,7 +56,6 @@
 
                     <div class="card-face card-back">
                         <img class="card-bg-template" src="images/bos_kart_sablonu_arka.jpg">
-                        
                         <div class="back-content">
                             <p class="answer-label">DOĞRU CEVAP:</p>
                             <div class="answer-box">
@@ -61,11 +64,18 @@
                             <button class="next-card-btn" onclick="nextCard()">Sonraki Kart</button>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <p id="feedback-text" class="feedback-message"></p>
-        </div> 
+        </div>
+
+        <div class="leaderboard panel">
+            <h2 id="leaderboard-title">Skor Tablosu</h2>
+            <div class="leaderboard-form">
+                <input id="player-name" type="text" maxlength="20" placeholder="Oyuncu adı">
+                <button class="secondary-btn" onclick="saveScore()" id="save-score-btn">Skoru Kaydet</button>
+            </div>
+            <ol id="leaderboard-list"></ol>
+        </div>
     </div>
 
     <script src="script.js"></script>
