@@ -12,13 +12,29 @@
 
         <div id="initial-screen" class="panel">
             <img id="initial-image" src="images/opening_image.png" alt="Oyun Açılış Resmi">
-            <p id="welcome-text" class="welcome-text">4 bölüm, 100 kart, zorluk bazlı puanlama!</p>
+            <p id="welcome-text" class="welcome-text">2 bölüm, 50 kart, zorluk bazlı puanlama!</p>
             <div class="language-selection">
                 <button class="lang-btn active" onclick="setLanguage('tr')">🇹🇷 Türkçe</button>
                 <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 English</button>
             </div>
-            <div class="start-actions">
-                <button id="start-button" class="start-btn" onclick="startGame(false)">Oyuna Başla</button>
+            
+            <div id="chapter-selection" class="chapter-selection" style="display: none;">
+                <h3 id="chapter-title">Bölüm Seç</h3>
+                <div class="chapter-buttons">
+                    <button class="chapter-btn" onclick="startGame(false, 1)">
+                        <span class="chapter-number">1</span>
+                        <span id="chapter-1-name">Genel Kültür 1</span>
+                    </button>
+                    <button class="chapter-btn" onclick="startGame(false, 2)">
+                        <span class="chapter-number">2</span>
+                        <span id="chapter-2-name">Genel Kültür 2</span>
+                    </button>
+                </div>
+                <button id="back-button" class="secondary-btn" onclick="backToLanguage()">Geri</button>
+            </div>
+
+            <div class="start-actions" id="start-actions">
+                <button id="start-button" class="start-btn" onclick="showChapterSelection()">Oyuna Başla</button>
                 <button id="resume-button" class="secondary-btn" onclick="startGame(true)">Kaldığın Yerden Devam Et</button>
             </div>
         </div>
@@ -29,7 +45,7 @@
                 <span class="separator">•</span>
                 <span id="card-label">Kart</span>: <span id="card-index">0</span>/<span id="total-cards">25</span>
                 <span class="separator">•</span>
-                <span id="section-label">Bölüm</span>: <span id="section-index">1</span>/4
+                <span id="chapter-label">Bölüm</span>: <span id="chapter-index">1</span>
             </div><button id="exit-button" class="secondary-btn" onclick="exitToHome()">Çıkış</button></div>
 
             <div class="card-flip-container">
