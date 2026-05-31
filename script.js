@@ -4,6 +4,8 @@ let currentCardIndex = 0;
 let score = 0;
 let currentQuestions = [];
 let currentChapter = 1; // Seçilen bölüm (1 veya 2)
+let hasAnsweredCurrentCard = false;
+let selectedAnswer = null;
 
 const uiTranslations = {
     tr: {
@@ -14,7 +16,12 @@ const uiTranslations = {
         correctLabel: "DOĞRU CEVAP:",
         gameOver: "Oyun bitti! Skorunuz: {score} / {total}",
         chapterTitle: "Bölüm Seç",
-        backButton: "Geri"
+        backButton: "Geri",
+        resumeButton: "Kaldığın Yerden Devam Et",
+        noProgress: "Devam edilecek kayıtlı oyun bulunamadı.",
+        scoreSaved: "Skorunuz otomatik kaydedildi.",
+        enterNameToSave: "Skoru kaydetmek için adınızı yazıp Skoru Kaydet'e basın.",
+        finishToSave: "Skor kaydetmek için önce bölümü bitirin."
     },
     en: {
         startButton: "Start Game",
@@ -24,7 +31,12 @@ const uiTranslations = {
         correctLabel: "CORRECT ANSWER:",
         gameOver: "Game Over! Your Score: {score} / {total}",
         chapterTitle: "Select Chapter",
-        backButton: "Back"
+        backButton: "Back",
+        resumeButton: "Continue",
+        noProgress: "No saved game was found to continue.",
+        scoreSaved: "Your score was saved automatically.",
+        enterNameToSave: "Enter your name and press Save Score to save it.",
+        finishToSave: "Finish the chapter before saving a score."
     }
 };
 
@@ -119,6 +131,8 @@ function setLanguage(lang) {
     document.getElementById('chapter-title').textContent = uiTranslations[lang].chapterTitle;
     document.getElementById('back-button').textContent = uiTranslations[lang].backButton;
     document.getElementById('start-button').textContent = uiTranslations[lang].startButton;
+    document.getElementById('resume-button').textContent = uiTranslations[lang].resumeButton;
+    updateResumeButton();
 }
 
 function showChapterSelection() {
@@ -131,18 +145,36 @@ function backToLanguage() {
     document.getElementById('start-actions').style.display = 'flex';
 }
 
+function getChapterName(chapter = currentChapter) {
+    const chapterNames = currentLang === 'tr'
+        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2" }
+        : { 1: "General Culture 1", 2: "General Culture 2" };
+
+    return chapterNames[chapter] || `${currentLang === 'tr' ? 'Bölüm' : 'Chapter'} ${chapter}`;
+}
+
 function startGame(resume = false, chapter = null) {
+    setScoreSaveAvailability(false);
+
     if (chapter) {
         currentChapter = chapter;
     }
     
     const progress = resume ? getProgress() : null;
+    if (resume && !progress) {
+        alert(uiTranslations[currentLang].noProgress);
+        updateResumeButton();
+        return;
+    }
+
     if (progress) {
         currentLang = progress.currentLang;
         currentCardIndex = progress.currentCardIndex;
         score = progress.score;
         currentChapter = progress.currentChapter;
         currentQuestions = progress.currentQuestions;
+        hasAnsweredCurrentCard = Boolean(progress.hasAnsweredCurrentCard);
+        selectedAnswer = progress.selectedAnswer || null;
     } else {
         const chapterData = currentLang === 'tr' 
             ? quizData.tr[`chapter${currentChapter}`]
@@ -150,6 +182,8 @@ function startGame(resume = false, chapter = null) {
         currentQuestions = [...chapterData];
         score = 0;
         currentCardIndex = 0;
+        hasAnsweredCurrentCard = false;
+        selectedAnswer = null;
         saveProgress();
     }
 
@@ -157,9 +191,10 @@ function startGame(resume = false, chapter = null) {
     document.getElementById('initial-screen').style.display = 'none';
     document.getElementById('game-area').style.display = 'block';
     updateUITexts();
+    setLanguage(currentLang);
     
     // Kartı düzelt ve doğru kartı yükle
-    document.getElementById('quiz-card').classList.remove('flipped');
+    document.getElementById('quiz-card').classList.toggle('flipped', hasAnsweredCurrentCard);
     loadCardData(currentCardIndex);
 }
 
@@ -171,11 +206,7 @@ function updateUITexts() {
     document.querySelector('.answer-label').textContent = t.correctLabel;
     document.getElementById('total-cards').textContent = currentQuestions.length;
     
-    const chapterNames = currentLang === 'tr' 
-        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2" }
-        : { 1: "General Culture 1", 2: "General Culture 2" };
-    
-    document.getElementById('chapter-index').textContent = chapterNames[currentChapter];
+    document.getElementById('chapter-index').textContent = getChapterName();
 }
 
 function loadCardData(index) {
@@ -200,10 +231,17 @@ function loadCardData(index) {
     btns.forEach(btn => {
         const opt = btn.getAttribute('data-option');
         btn.textContent = `${opt}) ${cardData.options[opt]}`;
-        btn.disabled = false;
+        btn.disabled = hasAnsweredCurrentCard;
         btn.classList.remove('correct-btn', 'wrong-btn');
+        if (hasAnsweredCurrentCard) {
+            if (opt === cardData.correctAnswer) btn.classList.add('correct-btn');
+            else if (opt === selectedAnswer) btn.classList.add('wrong-btn');
+        }
         btn.onclick = () => handleAnswer(opt);
     });
+
+    document.querySelector('.next-card-btn').disabled = false;
+    document.getElementById('quiz-card').classList.toggle('flipped', hasAnsweredCurrentCard);
 
     // Sayacı ve Skoru Güncelle
     document.getElementById('card-index').textContent = index + 1;
@@ -211,8 +249,12 @@ function loadCardData(index) {
 }
 
 function handleAnswer(selected) {
+    if (hasAnsweredCurrentCard) return;
+
     const cardData = currentQuestions[currentCardIndex];
     const isCorrect = selected === cardData.correctAnswer;
+    selectedAnswer = selected;
+    hasAnsweredCurrentCard = true;
     
     if(isCorrect) {
         score++;
@@ -246,6 +288,8 @@ function nextCard() {
     // 3. Kart havada tam 90 dereceyken (350ms) yazıları değiştir
     setTimeout(() => {
         currentCardIndex++;
+        hasAnsweredCurrentCard = false;
+        selectedAnswer = null;
         saveProgress();
         loadCardData(currentCardIndex);
         
@@ -256,12 +300,25 @@ function nextCard() {
 
 function showEndScreen() {
     const t = uiTranslations[currentLang];
-    const chapterNames = currentLang === 'tr' 
-        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2" }
-        : { 1: "General Culture 1", 2: "General Culture 2" };
-    
-    alert(t.gameOver.replace("{score}", score).replace("{total}", currentQuestions.length));
-    location.reload();
+    const hasPlayerName = document.getElementById('player-name').value.trim().length > 0;
+    const scoreMessage = t.gameOver.replace("{score}", score).replace("{total}", currentQuestions.length);
+
+    localStorage.removeItem(STORAGE_KEY);
+    updateResumeButton();
+
+    if (hasPlayerName) {
+        saveCompletedScore();
+        alert(`${scoreMessage}\n${t.scoreSaved}`);
+    } else {
+        setScoreSaveAvailability(true);
+        alert(`${scoreMessage}\n${t.enterNameToSave}`);
+    }
+
+    document.getElementById('quiz-card').classList.remove('flipped');
+    document.getElementById('game-area').style.display = 'none';
+    document.getElementById('initial-screen').style.display = 'flex';
+    document.getElementById('chapter-selection').style.display = 'none';
+    document.getElementById('start-actions').style.display = 'flex';
 }
 
 // Sayfa yüklendiğinde dili ayarla
@@ -269,6 +326,8 @@ window.onload = () => {
     setLanguage('tr');
     updateUITexts();
     renderLeaderboard();
+    updateResumeButton();
+    setScoreSaveAvailability(false);
 };
 
 // --- İLERLEME KAYDETME ---
@@ -278,37 +337,89 @@ const BOARD_KEY = 'bilgi-karti-leaderboard-v1';
 let canSaveScore = false;
 
 function saveProgress() {
-    const progress = { currentLang, currentCardIndex, score, currentChapter, currentQuestions };
+    const progress = { currentLang, currentCardIndex, score, currentChapter, currentQuestions, hasAnsweredCurrentCard, selectedAnswer };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    updateResumeButton();
 }
 
 function getProgress() {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+
+    try {
+        const progress = JSON.parse(raw);
+        const hasValidQuestions = Array.isArray(progress.currentQuestions) && progress.currentQuestions.length > 0;
+        const hasValidIndex = Number.isInteger(progress.currentCardIndex)
+            && progress.currentCardIndex >= 0
+            && hasValidQuestions
+            && progress.currentCardIndex < progress.currentQuestions.length;
+
+        if (!hasValidQuestions || !hasValidIndex) {
+            localStorage.removeItem(STORAGE_KEY);
+            return null;
+        }
+
+        return progress;
+    } catch (error) {
+        localStorage.removeItem(STORAGE_KEY);
+        return null;
+    }
+}
+
+function updateResumeButton() {
+    const resumeButton = document.getElementById('resume-button');
+    if (!resumeButton) return;
+
+    const hasProgress = Boolean(getProgress());
+    resumeButton.disabled = !hasProgress;
+    resumeButton.title = hasProgress ? '' : uiTranslations[currentLang].noProgress;
 }
 
 function renderLeaderboard() {
     const scores = JSON.parse(localStorage.getItem(BOARD_KEY) || '[]');
-    document.getElementById('leaderboard-list').innerHTML = scores.map(s => `<li>${s.name} - ${s.score}p (${s.date})</li>`).join('') || (currentLang === 'tr' ? '<li>Henüz skor yok.</li>' : '<li>No scores yet.</li>');
+    document.getElementById('leaderboard-list').innerHTML = scores.map(s => {
+        const chapterText = s.chapterName ? ` - ${s.chapterName}` : '';
+        return `<li>${s.name} - ${s.score}p${chapterText} (${s.date})</li>`;
+    }).join('') || (currentLang === 'tr' ? '<li>Henüz skor yok.</li>' : '<li>No scores yet.</li>');
+}
+
+function setScoreSaveAvailability(canSave) {
+    canSaveScore = canSave;
+
+    const saveScoreButton = document.getElementById('save-score-btn');
+    if (saveScoreButton) {
+        saveScoreButton.disabled = !canSave;
+        saveScoreButton.title = canSave ? '' : uiTranslations[currentLang].finishToSave;
+    }
+}
+
+function saveCompletedScore() {
+    const nameInput = document.getElementById('player-name');
+    const name = nameInput.value.trim() || (currentLang === 'tr' ? 'Anonim' : 'Anonymous');
+    const scores = JSON.parse(localStorage.getItem(BOARD_KEY) || '[]');
+    scores.push({ name, score, chapter: currentChapter, chapterName: getChapterName(), date: new Date().toLocaleDateString() });
+    scores.sort((a, b) => b.score - a.score);
+    localStorage.setItem(BOARD_KEY, JSON.stringify(scores.slice(0, 10)));
+    setScoreSaveAvailability(false);
+    nameInput.value = '';
+    renderLeaderboard();
 }
 
 function saveScore() {
     if (!canSaveScore) return;
-    const name = document.getElementById('player-name').value.trim() || (currentLang === 'tr' ? 'Anonim' : 'Anonymous');
-    const scores = JSON.parse(localStorage.getItem(BOARD_KEY) || '[]');
-    scores.push({ name, score, date: new Date().toLocaleDateString() });
-    scores.sort((a, b) => b.score - a.score);
-    localStorage.setItem(BOARD_KEY, JSON.stringify(scores.slice(0, 10)));
-    canSaveScore = false;
-    renderLeaderboard();
+
+    saveCompletedScore();
 }
 
 function exitToHome() {
-    localStorage.removeItem(STORAGE_KEY);
+    saveProgress();
+    hasAnsweredCurrentCard = false;
+    selectedAnswer = null;
     document.getElementById('quiz-card').classList.remove('flipped');
     document.getElementById('game-area').style.display = 'none';
     document.getElementById('initial-screen').style.display = 'flex';
     document.getElementById('chapter-selection').style.display = 'none';
     document.getElementById('start-actions').style.display = 'flex';
     updateUITexts();
+    updateResumeButton();
 }
