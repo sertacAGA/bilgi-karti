@@ -40,11 +40,11 @@ const quizData = {
             { category: "Dünya", difficulty: "Orta", question: "Yılan oynatıcıları en çok hangi ülkede bilinir?", image: "images/06.jpg", options: { A: "Hindistan", B: "Brezilya", C: "Türkiye", D: "Mısır" }, correctAnswer: "A", answerDetail: "Hindistan'da özellikle Hindistan Müzesi'nde ünlü" },
             { category: "Dünya", difficulty: "Orta", question: "Afro saç modeli köken olarak nereye dayanır?", image: "images/07.jpg", options: { A: "Afrika", B: "İskandinav", C: "Çin", D: "Kuzey Amerika" }, correctAnswer: "A", answerDetail: "Afrika'dan kökenini almıştır" },
             { category: "Edebiyat", difficulty: "Zor", question: "Dostoyevski hangi eseriyle tanınır?", image: "images/08.jpg", options: { A: "Sefiller", B: "Suç ve Ceza", C: "M. Cristo", D: "Karenin" }, correctAnswer: "B", answerDetail: "Suç ve Ceza Dostoyevski'nin en ünlü romanı" },
-            { category: "Moda", difficulty: "Zor", question: "Eski dönem zarif giyim tarzına ne ad verilir?", image: "images/09.jpg", options: { A: "Vintage", B: "Futuristik", C: "Sokak", D: "Undergroundü" }, correctAnswer: "A", answerDetail: "Vintage, geçmiş dönem zarif ve değerli eşyaları ifade eder" },
+            { category: "Moda", difficulty: "Zor", question: "Eski dönem zarif giyim tarzına ne ad verilir?", image: "images/09.jpg", options: { A: "Vintage", B: "Futuristik", C: "Sokak", D: "Underground" }, correctAnswer: "A", answerDetail: "Vintage, geçmiş dönem zarif ve değerli eşyaları ifade eder" },
             { category: "Sağlık", difficulty: "Orta", question: "Gençlerde dışlanma korkusu neye yol açar?", image: "images/10.jpg", options: { A: "Sosyal kaygı", B: "Özgüven", C: "Umursamazlık", D: "Verimlilik" }, correctAnswer: "A", answerDetail: "Sosyal kaygı bozukluğu gelişebilir" },
             { category: "Kültür ve Sanat", difficulty: "Kolay", question: "Hollywood ödül heykelciğinin adı nedir?", image: "images/11.jpg", options: { A: "Grammy", B: "Oscar", C: "Emmy", D: "Golden Globe" }, correctAnswer: "B", answerDetail: "Oscar film endüstrisinin en prestijli ödülü" },
-            { category: "Doğa", difficulty: "Orta", question: "Çiftçi için tırpanın temel amacı nedir?", image: "images/12.jpg", options: { A: "Biçmek", B: "Karıştırmak", C: "Yönlendirmek", D: "Eğmek" }, correctAnswer: "A", ansearDetail: "Tırpan tarımda hasatı için kullanılan alet" },
-            { category: "Sağlık", difficulty: "Kolay", question: "Çocuklar neden brokoliyi sevmez?", image: "images/13.jpg", options: { A: "Yeşil renk", B: "Çiğ olması", C: "Acı tadı", D: "Gözükmesi" }, correctAnswer: "C", answerDetail: "Brokolinin acı tadından dolayı çocuklar sevenmiyor" },
+            { category: "Doğa", difficulty: "Orta", question: "Çiftçi için tırpanın temel amacı nedir?", image: "images/12.jpg", options: { A: "Biçmek", B: "Karıştırmak", C: "Yönlendirmek", D: "Eğmek" }, correctAnswer: "A", answerDetail: "Tırpan tarımda hasatı için kullanılan alet" },
+            { category: "Sağlık", difficulty: "Kolay", question: "Çocuklar neden brokoliyi sevmez?", image: "images/13.jpg", options: { A: "Yeşil renk", B: "Çiğ olması", C: "Acı tadı", D: "Gözükmesi" }, correctAnswer: "C", answerDetail: "Brokolinin acı tadından dolayı çocuklar sevmiyor" },
             { category: "Yaşam", difficulty: "Orta", question: "Stres en çok hangi organı etkiler?", image: "images/14.jpg", options: { A: "Kalp", B: "Mide", C: "Akciğer", D: "Karaciğer" }, correctAnswer: "B", answerDetail: "Stres midede asit üretimine neden olur" },
             { category: "Dünya", difficulty: "Kolay", question: "Filistin'deki çocukların zorluk çekme nedeni?", image: "images/15.jpg", options: { A: "Nüfus", B: "Eğitim", C: "İklim", D: "Siyasi durum" }, correctAnswer: "D", answerDetail: "Siyasi ve sosyal sorunlar eğitime etki ediyor" },
             { category: "Tarih", difficulty: "Orta", question: "Savaşçı kadın kabilelerine ne denir?", image: "images/16.jpg", options: { A: "Amazonlar", B: "Vikingler", C: "Hunlar", D: "Aztekler" }, correctAnswer: "A", answerDetail: "Mitolojide Amazonlar savaşçı kadın toplulu" },
@@ -158,9 +158,9 @@ function startGame(resume = false, chapter = null) {
     document.getElementById('game-area').style.display = 'block';
     updateUITexts();
     
-    // Kartı düzelt ve ilk soruyu beklemeden yükle
+    // Kartı düzelt ve doğru kartı yükle
     document.getElementById('quiz-card').classList.remove('flipped');
-    loadCardData(0);
+    loadCardData(currentCardIndex);
 }
 
 function updateUITexts() {
