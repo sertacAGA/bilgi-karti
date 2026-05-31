@@ -140,6 +140,8 @@ function backToLanguage() {
 }
 
 function startGame(resume = false, chapter = null) {
+    setScoreSaveAvailability(false);
+
     if (chapter) {
         currentChapter = chapter;
     }
@@ -295,7 +297,12 @@ function showEndScreen() {
     alert(t.gameOver.replace("{score}", score).replace("{total}", currentQuestions.length));
     localStorage.removeItem(STORAGE_KEY);
     updateResumeButton();
-    location.reload();
+    setScoreSaveAvailability(true);
+    document.getElementById('quiz-card').classList.remove('flipped');
+    document.getElementById('game-area').style.display = 'none';
+    document.getElementById('initial-screen').style.display = 'flex';
+    document.getElementById('chapter-selection').style.display = 'none';
+    document.getElementById('start-actions').style.display = 'flex';
 }
 
 // Sayfa yüklendiğinde dili ayarla
@@ -304,6 +311,7 @@ window.onload = () => {
     updateUITexts();
     renderLeaderboard();
     updateResumeButton();
+    setScoreSaveAvailability(false);
 };
 
 // --- İLERLEME KAYDETME ---
@@ -356,14 +364,27 @@ function renderLeaderboard() {
     document.getElementById('leaderboard-list').innerHTML = scores.map(s => `<li>${s.name} - ${s.score}p (${s.date})</li>`).join('') || (currentLang === 'tr' ? '<li>Henüz skor yok.</li>' : '<li>No scores yet.</li>');
 }
 
+function setScoreSaveAvailability(canSave) {
+    canSaveScore = canSave;
+
+    const saveScoreButton = document.getElementById('save-score-btn');
+    if (saveScoreButton) {
+        saveScoreButton.disabled = !canSave;
+        saveScoreButton.title = canSave ? '' : (currentLang === 'tr' ? 'Skor kaydetmek için önce oyunu bitirin.' : 'Finish the game before saving a score.');
+    }
+}
+
 function saveScore() {
     if (!canSaveScore) return;
-    const name = document.getElementById('player-name').value.trim() || (currentLang === 'tr' ? 'Anonim' : 'Anonymous');
+
+    const nameInput = document.getElementById('player-name');
+    const name = nameInput.value.trim() || (currentLang === 'tr' ? 'Anonim' : 'Anonymous');
     const scores = JSON.parse(localStorage.getItem(BOARD_KEY) || '[]');
     scores.push({ name, score, date: new Date().toLocaleDateString() });
     scores.sort((a, b) => b.score - a.score);
     localStorage.setItem(BOARD_KEY, JSON.stringify(scores.slice(0, 10)));
-    canSaveScore = false;
+    setScoreSaveAvailability(false);
+    nameInput.value = '';
     renderLeaderboard();
 }
 
