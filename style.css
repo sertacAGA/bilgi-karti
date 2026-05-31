@@ -276,6 +276,13 @@ body {
     transform: translateY(-2px);
 }
 
+.secondary-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    transform: none;
+    box-shadow: none;
+}
+
 /* --- OYUN ALANI --- */
 #game-area {
     display: none;
