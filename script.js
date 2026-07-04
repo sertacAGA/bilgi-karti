@@ -223,9 +223,15 @@ function startGame(resume = false, chapter = null) {
         currentCardIndex = progress.currentCardIndex;
         score = progress.score;
         currentChapter = progress.currentChapter;
-        currentQuestions = progress.currentQuestions;
         hasAnsweredCurrentCard = Boolean(progress.hasAnsweredCurrentCard);
         selectedAnswer = progress.selectedAnswer || null;
+        
+        // YENİ EKLENEN KISIM: Kayıtlı oyun bile olsa soruları her zaman ana dosyadan taze olarak çekiyoruz
+        const chapterData = currentLang === 'tr' 
+            ? quizData.tr[`chapter${currentChapter}`]
+            : quizData.en[`chapter${currentChapter}`];
+        currentQuestions = [...chapterData];
+        
     } else {
         const chapterData = currentLang === 'tr' 
             ? quizData.tr[`chapter${currentChapter}`]
@@ -374,7 +380,15 @@ const BOARD_KEY = 'bilgi-karti-leaderboard-v1';
 let canSaveScore = false;
 
 function saveProgress() {
-    const progress = { currentLang, currentCardIndex, score, currentChapter, currentQuestions, hasAnsweredCurrentCard, selectedAnswer };
+    // YENİ EKLENEN KISIM: currentQuestions dizisini LocalStorage'a kaydetmeyi bıraktık
+    const progress = { 
+        currentLang, 
+        currentCardIndex, 
+        score, 
+        currentChapter, 
+        hasAnsweredCurrentCard, 
+        selectedAnswer 
+    };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
     updateResumeButton();
 }
@@ -385,13 +399,18 @@ function getProgress() {
 
     try {
         const progress = JSON.parse(raw);
-        const hasValidQuestions = Array.isArray(progress.currentQuestions) && progress.currentQuestions.length > 0;
+        
+        // YENİ EKLENEN KISIM: Soru sayısı kontrolünü güncel quizData üzerinden yapıyoruz
+        const chapterData = progress.currentLang === 'tr' 
+            ? quizData.tr[`chapter${progress.currentChapter}`]
+            : quizData.en[`chapter${progress.currentChapter}`];
+
         const hasValidIndex = Number.isInteger(progress.currentCardIndex)
             && progress.currentCardIndex >= 0
-            && hasValidQuestions
-            && progress.currentCardIndex < progress.currentQuestions.length;
+            && chapterData
+            && progress.currentCardIndex < chapterData.length;
 
-        if (!hasValidQuestions || !hasValidIndex) {
+        if (!hasValidIndex) {
             localStorage.removeItem(STORAGE_KEY);
             return null;
         }
