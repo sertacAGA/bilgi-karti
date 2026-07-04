@@ -167,14 +167,12 @@ const quizData = {
 function setLanguage(lang) {
     currentLang = lang;
     
-    // Butonların aktiflik durumunu CSS sınıflarına göre güncelle
     const buttons = document.querySelectorAll('.lang-btn');
     if(buttons.length >= 2) {
         buttons[0].classList.toggle('active', lang === 'tr');
         buttons[1].classList.toggle('active', lang === 'en');
     }
     
-    // Bölüm isimlerini güncelle
     const chapterNames = lang === 'tr' 
         ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2" }
         : { 1: "General Culture 1", 2: "General Culture 2" };
@@ -240,13 +238,11 @@ function startGame(resume = false, chapter = null) {
         saveProgress();
     }
 
-    // Arayüzü ayarla
     document.getElementById('initial-screen').style.display = 'none';
     document.getElementById('game-area').style.display = 'block';
     updateUITexts();
     setLanguage(currentLang);
     
-    // Kartı düzelt ve doğru kartı yükle
     document.getElementById('quiz-card').classList.toggle('flipped', hasAnsweredCurrentCard);
     loadCardData(currentCardIndex);
 }
@@ -270,16 +266,13 @@ function loadCardData(index) {
 
     const cardData = currentQuestions[index];
 
-    // Kategori ve Zorluk Metinlerini Güncelle
     document.getElementById('category-text').textContent = cardData.category || "";
     document.getElementById('difficulty-text').textContent = cardData.difficulty || "";
 
-    // Metinleri ve Resmi Güncelle
     document.getElementById('question-text').textContent = cardData.question;
     document.getElementById('character-image').src = cardData.image;
     document.getElementById('correct-answer-text').textContent = `${cardData.correctAnswer}) ${cardData.options[cardData.correctAnswer]} - ${cardData.answerDetail}`;
     
-    // Seçenek Butonlarını Sıfırla ve Doldur
     const btns = document.querySelectorAll('.option-btn');
     btns.forEach(btn => {
         const opt = btn.getAttribute('data-option');
@@ -296,7 +289,6 @@ function loadCardData(index) {
     document.querySelector('.next-card-btn').disabled = false;
     document.getElementById('quiz-card').classList.toggle('flipped', hasAnsweredCurrentCard);
 
-    // Sayacı ve Skoru Güncelle
     document.getElementById('card-index').textContent = index + 1;
     document.getElementById('score').textContent = score;
 }
@@ -314,7 +306,6 @@ function handleAnswer(selected) {
         document.getElementById('score').textContent = score;
     }
 
-    // Butonları Renklendir ve Kilitle
     document.querySelectorAll('.option-btn').forEach(btn => {
         btn.disabled = true;
         const opt = btn.getAttribute('data-option');
@@ -324,21 +315,17 @@ function handleAnswer(selected) {
 
     saveProgress();
     
-    // 0.6 saniye bekleyip kartı arkaya çevir
     setTimeout(() => {
         document.getElementById('quiz-card').classList.add('flipped');
     }, 600);
 }
 
 function nextCard() {
-    // 1. Kartı ön yüzüne döndürmeye başla
     const quizCard = document.getElementById('quiz-card');
     quizCard.classList.remove('flipped');
     
-    // 2. Çoklu tıklamayı önlemek için butonu kilitle
     document.querySelector('.next-card-btn').disabled = true;
 
-    // 3. Kart havada tam 90 dereceyken (350ms) yazıları değiştir
     setTimeout(() => {
         currentCardIndex++;
         hasAnsweredCurrentCard = false;
@@ -346,7 +333,6 @@ function nextCard() {
         saveProgress();
         loadCardData(currentCardIndex);
         
-        // İşlem bitince butonu tekrar aç
         document.querySelector('.next-card-btn').disabled = false;
     }, 350);
 }
@@ -374,7 +360,6 @@ function showEndScreen() {
     document.getElementById('start-actions').style.display = 'flex';
 }
 
-// Sayfa yüklendiğinde dili ayarla
 window.onload = () => {
     setLanguage('tr');
     updateUITexts();
@@ -383,7 +368,6 @@ window.onload = () => {
     setScoreSaveAvailability(false);
 };
 
-// --- İLERLEME KAYDETME ---
 const STORAGE_KEY = 'bilgi-karti-save-v3';
 const BOARD_KEY = 'bilgi-karti-leaderboard-v1';
 
@@ -460,7 +444,6 @@ function saveCompletedScore() {
 
 function saveScore() {
     if (!canSaveScore) return;
-
     saveCompletedScore();
 }
 
