@@ -152,7 +152,6 @@ const chapter1En = chapter1Tr.map((item) => ({ ...item }));
 const chapter2En = chapter2Tr.map((item) => ({ ...item }));
 const chapter3En = chapter3Tr.map((item) => ({ ...item }));
 
-// --- SORU VERİ HAVUZU ---
 const quizData = {
     tr: {
         chapter1: chapter1Tr,
@@ -166,8 +165,6 @@ const quizData = {
     }
 };
 
-// --- TEMEL FONKSİYONLAR ---
-
 function setLanguage(lang) {
     currentLang = lang;
     
@@ -179,7 +176,7 @@ function setLanguage(lang) {
     
     const chapterNames = lang === 'tr'
         ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2", 3: "Genel Kültür 3" }
-        : { 1: "General Culture 1", 2: "General Culture 2", 3: "General Culture 3" };
+        : { 1: "General Knowledge 1", 2: "General Knowledge 2", 3: "General Knowledge 3" };
     
     document.getElementById('chapter-1-name').textContent = chapterNames[1];
     document.getElementById('chapter-2-name').textContent = chapterNames[2];
@@ -204,7 +201,7 @@ function backToLanguage() {
 function getChapterName(chapter = currentChapter) {
     const chapterNames = currentLang === 'tr'
         ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2", 3: "Genel Kültür 3" }
-        : { 1: "General Culture 1", 2: "General Culture 2", 3: "General Culture 3" };
+        : { 1: "General Knowledge 1", 2: "General Knowledge 2", 3: "General Knowledge 3" };
 
     return chapterNames[chapter] || `${currentLang === 'tr' ? 'Bölüm' : 'Chapter'} ${chapter}`;
 }
@@ -230,7 +227,6 @@ function startGame(resume = false, chapter = null) {
         currentChapter = progress.currentChapter;
         hasAnsweredCurrentCard = Boolean(progress.hasAnsweredCurrentCard);
         selectedAnswer = progress.selectedAnswer || null;
-        
         const chapterData = currentLang === 'tr'
             ? quizData.tr[`chapter${currentChapter}`]
             : quizData.en[`chapter${currentChapter}`];
@@ -251,7 +247,6 @@ function startGame(resume = false, chapter = null) {
     document.getElementById('game-area').style.display = 'block';
     updateUITexts();
     setLanguage(currentLang);
-    
     document.getElementById('quiz-card').classList.toggle('flipped', hasAnsweredCurrentCard);
     loadCardData(currentCardIndex);
 }
@@ -322,7 +317,6 @@ function handleAnswer(selected) {
     });
 
     saveProgress();
-    
     setTimeout(() => {
         document.getElementById('quiz-card').classList.add('flipped');
     }, 600);
@@ -331,7 +325,6 @@ function handleAnswer(selected) {
 function nextCard() {
     const quizCard = document.getElementById('quiz-card');
     quizCard.classList.remove('flipped');
-    
     document.querySelector('.next-card-btn').disabled = true;
 
     setTimeout(() => {
@@ -340,7 +333,6 @@ function nextCard() {
         selectedAnswer = null;
         saveProgress();
         loadCardData(currentCardIndex);
-        
         document.querySelector('.next-card-btn').disabled = false;
     }, 350);
 }
@@ -382,13 +374,13 @@ const BOARD_KEY = 'bilgi-karti-leaderboard-v1';
 let canSaveScore = false;
 
 function saveProgress() {
-    const progress = { 
-        currentLang, 
-        currentCardIndex, 
-        score, 
-        currentChapter, 
-        hasAnsweredCurrentCard, 
-        selectedAnswer 
+    const progress = {
+        currentLang,
+        currentCardIndex,
+        score,
+        currentChapter,
+        hasAnsweredCurrentCard,
+        selectedAnswer
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
     updateResumeButton();
