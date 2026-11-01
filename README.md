@@ -22,7 +22,7 @@ Bilgikarti, kullanıcıların yeni kavramları verimli bir şekilde öğrenmeler
 ## Özellikler
 
 - **Çoklu Zorluk Seviyeleri**: Kolay, Orta ve Zor seviyeler arasından seçim yapın.
-- ** Puanlama Sistemi**: İlerlemenizi takip edin ve puanlarınızı iyileştirin.
+- **Puanlama Sistemi**: İlerlemenizi takip edin ve puanlarınızı iyileştirin.
 - **Kullanıcı Dostu Arayüz**: Sorunsuz bir öğrenme deneyimi için sezgisel tasarım.
 - **Özelleştirilebilir Flashcards**: Kullanıcılar kendi bilgi kartlarını oluşturabilir ve değiştirebilir.
 - **Liderlik Tabloları**: Arkadaşlarınızla ve diğer öğrencilerle yarışın.
