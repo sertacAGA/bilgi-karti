@@ -2,10 +2,10 @@
 
 ![GitHub](https://img.shields.io/github/languages/top/Sertacaga/bilgikarti?style=flat-square) ![GitHub](https://img.shields.io/github/languages/count/Sertacaga/bilgikarti?style=flat-square) ![GitHub](https://img.shields.io/github/issues/Sertacaga/bilgikarti.svg?style=flat-square) ![GitHub](https://img.shields.io/github/license/Sertacaga/bilgikarti?style=flat-square)
 
-## Description
-Bilgikarti is a flashcard quiz game designed to help users learn new concepts efficiently. The game includes different difficulty levels, allowing players to choose an appropriate challenge based on their skill level. Furthermore, the scoring system encourages users to improve their performance over time.
+## Açıklama
+Bilgikarti, kullanıcıların yeni kavramları verimli bir şekilde öğrenmelerine yardımcı olmak için tasarlanmış bir bilgi kartı test oyunudur. Oyun, oyuncuların beceri seviyelerine göre uygun bir meydan okuma seçmelerine olanak tanıyan farklı zorluk seviyeleri içerir. Ayrıca, puanlama sistemi kullanıcıları zaman içinde performanslarını iyileştirmeye teşvik eder.
 
-## Installation Instructions
+## Kurulum Talimatları
 1. Clone the repository:
    ```bash
    git clone https://github.com/Sertacaga/bilgikarti.git
@@ -19,32 +19,32 @@ Bilgikarti is a flashcard quiz game designed to help users learn new concepts ef
    npm install
    ```
 
-## Features
-- **Multiple Difficulty Levels**: Choose from Easy, Medium, and Hard levels.
-- **Scoring System**: Keep track of your progress and improve your scores.
-- **User-Friendly Interface**: Intuitive design for a smooth learning experience.
-- **Customizable Flashcards**: Users can create and modify their own flashcards.
-- **Leaderboards**: Compete with friends and other learners.
+## Özellikler
 
-## Customization Guide
-You can customize the content of flashcards by modifying the `cards.json` file located in the `src/data` directory. You can add, remove, or edit flashcard entries to suit your learning needs.
+- **Çoklu Zorluk Seviyeleri**: Kolay, Orta ve Zor seviyeler arasından seçim yapın.
+- ** Puanlama Sistemi**: İlerlemenizi takip edin ve puanlarınızı iyileştirin.
+- **Kullanıcı Dostu Arayüz**: Sorunsuz bir öğrenme deneyimi için sezgisel tasarım.
+- **Özelleştirilebilir Flashcards**: Kullanıcılar kendi bilgi kartlarını oluşturabilir ve değiştirebilir.
+- **Liderlik Tabloları**: Arkadaşlarınızla ve diğer öğrencilerle yarışın.
 
-## Contributing Guidelines
-We welcome contributions! To contribute:
-1. Fork the repository.
-2. Create a new branch:
+## Özelleştirme Kılavuzu
+`src/data` dizininde bulunan `cards.json` dosyasını değiştirerek bilgi kartlarının içeriğini özelleştirebilirsiniz. Öğrenme ihtiyaçlarınıza uyacak şekilde bilgi kartı girişleri ekleyebilir, kaldırabilir veya düzenleyebilirsiniz.
+
+## Katkıda Bulunma Yönergeleri
+Katkıları memnuniyetle karşılıyoruz! Katkıda bulunmak için:
+1. Depoyu çatalla.2. Create a new branch:
    ```bash
    git checkout -b feature/YourFeature
    ```
-3. Make your changes and commit them:
+3. Değişikliklerinizi yapın ve bunları taahhüt edin:
    ```bash
    git commit -m 'Add some feature'
    ```
-4. Push to the branch:
+4. Şubeye itin:
    ```bash
    git push origin feature/YourFeature
    ```
-5. Open a pull request.
+5. Bir çekme isteği açın.
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+## Lisans
+Bu proje MIT Lisansı kapsamında lisanslanmıştır. Daha fazla ayrıntı için [LİSANS](LİSANS) dosyasına bakın.
