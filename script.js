@@ -3,7 +3,7 @@ let currentLang = 'tr';
 let currentCardIndex = 0;
 let score = 0;
 let currentQuestions = [];
-let currentChapter = 1; // Seçilen bölüm (1, 2 veya 3)
+let currentChapter = 1; // Seçilen bölüm (1 veya 2)
 let hasAnsweredCurrentCard = false;
 let selectedAnswer = null;
 
@@ -40,130 +40,129 @@ const uiTranslations = {
     }
 };
 
-const chapter1Tr = [
-    { category: "Genel Kültür", difficulty: "Kolay", question: "Dünyanın en büyük okyanusu hangisidir?", image: "images/01.jpg", options: { A: "Atlantik", B: "Hint", C: "Pasifik", D: "Arktik" }, correctAnswer: "C", answerDetail: "Pasifik Okyanusu, dünyanın en büyük okyanusudur." },
-    { category: "Tarih", difficulty: "Kolay", question: "Atatürk'ün doğum yılı nedir?", image: "images/02.jpg", options: { A: "1881", B: "1886", C: "1890", D: "1901" }, correctAnswer: "A", answerDetail: "Mustafa Kemal Atatürk 19 Mayıs 1881'de doğmuştur." },
-    { category: "Bilim", difficulty: "Kolay", question: "Güneş sistemindeki en büyük gezegen hangisidir?", image: "images/03.jpg", options: { A: "Mars", B: "Jüpiter", C: "Dünya", D: "Satürn" }, correctAnswer: "B", answerDetail: "Jüpiter, Güneş Sistemi'nin en büyük gezegenidir." },
-    { category: "Sağlık", difficulty: "Kolay", question: "Günlük su tüketimi için en doğru öneri hangisidir?", image: "images/04.jpg", options: { A: "Sadece açken", B: "Düzenli ve yeterli", C: "Sadece kahve ile", D: "Yalnızca yazın" }, correctAnswer: "B", answerDetail: "Su düzenli ve yeterli miktarda tüketilmelidir." },
-    { category: "Hayvanlar", difficulty: "Kolay", question: "Penguenler en çok hangi ortamda yaşarlar?", image: "images/05.jpg", options: { A: "Çöller", B: "Tropik ormanlar", C: "Soğuk kutup bölgeleri", D: "Dağ zirveleri" }, correctAnswer: "C", answerDetail: "Penguenler çoğunlukla soğuk kutup bölgelerinde yaşar." },
-    { category: "Müzik", difficulty: "Kolay", question: "Bir müzik parçasının hızını belirten kavram hangisidir?", image: "images/06.jpg", options: { A: "Ritim", B: "Tempo", C: "Melodi", D: "Harmoni" }, correctAnswer: "B", answerDetail: "Tempo, müziğin hızını ve akışını belirler." },
-    { category: "Spor", difficulty: "Kolay", question: "Futbolda kırmızı kart görünce ne olur?", image: "images/07.jpg", options: { A: "Uyarı verilir", B: "Oyuncu sahadan atılır", C: "Maç durur", D: "Serbest vuruş verilir" }, correctAnswer: "B", answerDetail: "Kırmızı kart, oyuncunun maçtan atılmasına neden olur." },
-    { category: "Edebiyat", difficulty: "Orta", question: "Şiirde duyguyu en güçlü şekilde ifade eden unsur hangisidir?", image: "images/08.jpg", options: { A: "Tema", B: "Duygu", C: "Metrik", D: "Kafiye" }, correctAnswer: "B", answerDetail: "Şiirde duygusal anlatım okuyucunun duygusal tepkisini artırır." },
-    { category: "Kültür & Sanat", difficulty: "Orta", question: "El yazması eserlerin saklandığı ve korunduğu yapıya ne denir?", image: "images/09.jpg", options: { A: "Müze", B: "Kütüphane", C: "Tiyatro", D: "Müzayede" }, correctAnswer: "B", answerDetail: "Kütüphaneler, yazılı eserlerin korunması ve erişimi için önemlidir." },
-    { category: "Bilim", difficulty: "Orta", question: "Fotosentez en çok hangi canlılarda görülür?", image: "images/10.jpg", options: { A: "Hayvanlar", B: "Mantarlar", C: "Bitkiler", D: "Bakteriler" }, correctAnswer: "C", answerDetail: "Bitkiler klorofil sayesinde fotosentez yapar." },
-    { category: "Din", difficulty: "Kolay", question: "İslam'da günde kaç vakit namaz kılınır?", image: "images/11.jpg", options: { A: "2", B: "3", C: "4", D: "5" }, correctAnswer: "D", answerDetail: "Günlük namaz beş vakit olarak kılınır." },
-    { category: "Yaşam", difficulty: "Kolay", question: "Sağlıklı büyüme için en temel ihtiyaç hangisidir?", image: "images/12.jpg", options: { A: "Yalnızca oyun", B: "Düzenli beslenme", C: "Sürekli uyku", D: "Sadece eğlence" }, correctAnswer: "B", answerDetail: "Dengeli beslenme, sağlığın temel taşlarından biridir." },
-    { category: "Teknoloji", difficulty: "Kolay", question: "Bilgisayarın ana işlem birimi hangisidir?", image: "images/13.jpg", options: { A: "Ekran", B: "RAM", C: "CPU", D: "Klavye" }, correctAnswer: "C", answerDetail: "CPU, bilgisayarın işlem yapma merkezidir." },
-    { category: "Doğa", difficulty: "Orta", question: "Bir nehrin taşıdığı maddelerin birikmesiyle oluşan alanlara ne denir?", image: "images/14.jpg", options: { A: "Dağ", B: "Delta", C: "Vadi", D: "Plato" }, correctAnswer: "B", answerDetail: "Delta, nehir taşıyan alüvyonların denize ulaştığı yerde oluşur." },
-    { category: "Hayvanlar", difficulty: "Orta", question: "Kaplumbağalar çoğunlukla nasıl hareket eder?", image: "images/15.jpg", options: { A: "Uçarak", B: "Yüzerken", C: "Yürüyerek", D: "Atlayarak" }, correctAnswer: "C", answerDetail: "Kaplumbağalar çoğunlukla karada yürür." },
-    { category: "Tarih", difficulty: "Orta", question: "İlk yazılı iletişim araçlarından biri olan tabletler hangi medeniyete aittir?", image: "images/16.jpg", options: { A: "Roma", B: "Mısır", C: "Yunan", D: "Hun" }, correctAnswer: "B", answerDetail: "Mısır medeniyetinde kil tabletler yazı aracı olarak kullanılmıştır." },
-    { category: "Spor", difficulty: "Orta", question: "Tenis maçlarında set kazanmak için gereken puan sınırı kaçtır?", image: "images/17.jpg", options: { A: "15", B: "21", C: "30", D: "40" }, correctAnswer: "D", answerDetail: "Teniste puan sistemi 15-30-40 şeklindedir." },
-    { category: "Müzik", difficulty: "Orta", question: "Bir orkestrada yaylı çalgıları yöneten kişiye ne denir?", image: "images/18.jpg", options: { A: "Şarkıcı", B: "Orkestra şefi", C: "Besteci", D: "Saz sanatçısı" }, correctAnswer: "B", answerDetail: "Orkestra şefi, müzisyeni yönetir ve eseri yönlendirir." },
-    { category: "Bilim", difficulty: "Kolay", question: "Gezegenlerin Güneş etrafında dönmesini sağlayan kuvvet hangisidir?", image: "images/19.jpg", options: { A: "Mıknatıs kuvveti", B: "Yerçekimi", C: "Elektrik", D: "Sürtünme" }, correctAnswer: "B", answerDetail: "Yerçekimi gezegenleri Güneş etrafında tutar." },
-    { category: "Sağlık", difficulty: "Orta", question: "Düzenli uyku eksikliği en çok hangi duruma yol açar?", image: "images/20.jpg", options: { A: "Uzun süreli hafıza", B: "Yorgunluk ve dikkat azalması", C: "Aşırı enerji", D: "Sağlıklı kilo artışı" }, correctAnswer: "B", answerDetail: "Yetersiz uyku dikkat ve konsantrasyonu olumsuz etkiler." },
-    { category: "Kültür & Sanat", difficulty: "Kolay", question: "Ressamların boyaları uygularken en çok kullandığı araç hangisidir?", image: "images/21.jpg", options: { A: "Fırça", B: "Kamera", C: "Makas", D: "Bıçak" }, correctAnswer: "A", answerDetail: "Fırça, resim sanatında boya uygulamak için kullanılır." },
-    { category: "Dünya", difficulty: "Kolay", question: "En yüksek dağ hangisidir?", image: "images/22.jpg", options: { A: "K2", B: "Everest", C: "Kilimanjaro", D: "Fuji" }, correctAnswer: "B", answerDetail: "Everest, Dünya'nın en yüksek dağıdır." },
-    { category: "Teknoloji", difficulty: "Orta", question: "İnternetin temel veri iletişim standartları için kullanılan kavram hangisidir?", image: "images/23.jpg", options: { A: "Protokol", B: "Tarayıcı", C: "Sunucu", D: "Ana kart" }, correctAnswer: "A", answerDetail: "Protokoller, cihazların haberleşme kurallarını belirler." },
-    { category: "Edebiyat", difficulty: "Kolay", question: "Kısa ve öz, genellikle derin anlam taşıyan sözlere ne denir?", image: "images/24.jpg", options: { A: "Masal", B: "Atasözü", C: "Roman", D: "Destan" }, correctAnswer: "B", answerDetail: "Atasözleri halkın deneyimlerini ve öğütlerini anlatır." },
-    { category: "Bilim", difficulty: "Kolay", question: "Canlıların dışarıdan aldığı enerjinin kaynağı nedir?", image: "images/25.jpg", options: { A: "Toprak", B: "Güneş", C: "Ay", D: "Su" }, correctAnswer: "B", answerDetail: "Güneş enerjisi yaşam zincirinin temel kaynağıdır." },
-    { category: "Tarih", difficulty: "Orta", question: "Osmanlı Devleti'ndeki en üst yönetim organı hangisidir?", image: "images/26.jpg", options: { A: "Meclis", B: "Padişah", C: "Divan-ı Hümayun", D: "Beylerbeyi" }, correctAnswer: "C", answerDetail: "Divan-ı Hümayun, Osmanlı devlet yönetiminde önemli bir karar organıydı." },
-    { category: "Spor", difficulty: "Kolay", question: "Voleybolda bir takımın seti kazanması için kaç puan gerekir?", image: "images/27.jpg", options: { A: "15", B: "21", C: "25", D: "30" }, correctAnswer: "C", answerDetail: "Voleybolda setler genellikle 25 sayıya ulaşan takım tarafından kazanılır." },
-    { category: "Hayvanlar", difficulty: "Kolay", question: "Zürafaların uzun boyunun temel faydası nedir?", image: "images/28.jpg", options: { A: "Hızlanma", B: "Yüksek yapraklara erişim", C: "Gizlenme", D: "Yüzme" }, correctAnswer: "B", answerDetail: "Uzun boyunları sayesinde zürafalar yüksek yapraklara ulaşabilir." },
-    { category: "Din", difficulty: "Orta", question: "Ramazan Bayramı hangi inanç için özel bir bayramdır?", image: "images/29.jpg", options: { A: "Hristiyanlık", B: "İslam", C: "Hinduizm", D: "Budizm" }, correctAnswer: "B", answerDetail: "Ramazan Bayramı, İslam'da büyük bir bayramdır." },
-    { category: "Dünya", difficulty: "Kolay", question: "Hangi kıta en fazla ülkeye sahiptir?", image: "images/30.jpg", options: { A: "Asya", B: "Afrika", C: "Avrupa", D: "Güney Amerika" }, correctAnswer: "B", answerDetail: "Afrika, ülkeler açısından en fazla çeşitliliğe sahip kıtalardan biridir." },
-    { category: "Kültür & Sanat", difficulty: "Orta", question: "Bir oyunun sahnede canlandırılması için en temel öge hangisidir?", image: "images/31.jpg", options: { A: "Senaryo", B: "Kitap", C: "Müzik", D: "Soru" }, correctAnswer: "A", answerDetail: "Senaryo, tiyatro ve sinema için temel anlatı yapısını oluşturur." },
-    { category: "Müzik", difficulty: "Kolay", question: "Enstrümanın sesini çıkarmak için telleri çalan alete ne denir?", image: "images/32.jpg", options: { A: "Mizrap", B: "Mikrofon", C: "Piyano", D: "Akort" }, correctAnswer: "A", answerDetail: "Mizrap, telli çalgılarda sesi çıkarmak için kullanılır." },
-    { category: "Sağlık", difficulty: "Kolay", question: "Ağız ve diş sağlığı için en önemli alışkanlık hangisidir?", image: "images/33.jpg", options: { A: "Düzenli fırçalama", B: "Sadece şeker yeme", C: "Geceleri su içmeme", D: "Sürekli sigara içmek" }, correctAnswer: "A", answerDetail: "Düzenli diş fırçalama ağız hijyenini korur." },
-    { category: "Teknoloji", difficulty: "Orta", question: "Bir ağın internet üzerinden veri iletmesine izin veren sistem hangisidir?", image: "images/34.jpg", options: { A: "Kablosuz modem", B: "İnternet", C: "Router", D: "Yazıcı" }, correctAnswer: "C", answerDetail: "Router, cihazların ağa bağlanmasını sağlar." }
-];
-
-const chapter2Tr = [
-    { category: "Doğa", difficulty: "Kolay", question: "Bir bitkinin kökleri en çok hangi işlevi görür?", image: "images/35.jpg", options: { A: "Güneş yakalar", B: "Su ve minerali emer", C: "Çiçek açar", D: "Hava solur" }, correctAnswer: "B", answerDetail: "Kökler, topraktan su ve mineralleri emer." },
-    { category: "Edebiyat", difficulty: "Orta", question: "Bir metnin ana düşüncesini belirten kısım hangisidir?", image: "images/36.jpg", options: { A: "Tema", B: "Gövde", C: "Kısa özet", D: "Kenar notu" }, correctAnswer: "A", answerDetail: "Tema, metnin ana fikrini ve mesajını anlatır." },
-    { category: "Spor", difficulty: "Orta", question: "Koşu sporunda en kısa mesafe için kullanılan birim hangisidir?", image: "images/37.jpg", options: { A: "Metre", B: "Kilometre", C: "Santimetre", D: "Saat" }, correctAnswer: "A", answerDetail: "Kısa mesafeler metre ve santimetre gibi birimlerle ölçülür." },
-    { category: "Hayvanlar", difficulty: "Orta", question: "Kelebeklerin yaşam döngüsünde en belirgin evre hangisidir?", image: "images/38.jpg", options: { A: "Yavrulama", B: "Pupa", C: "Yumurtlama", D: "Sürünme" }, correctAnswer: "B", answerDetail: "Pupa, gelişim sürecinin önemli bir aşamasıdır." },
-    { category: "Bilim", difficulty: "Zor", question: "Hava sıcaklığının etkisiyle oluşan yağmur, kar ve dolu gibi doğal olaylara ne ad verilir?", image: "images/39.jpg", options: { A: "İklim", B: "Hava durumu", C: "Meteoroloji", D: "Jenerasyon" }, correctAnswer: "B", answerDetail: "Hava durumu, anlık atmosfer koşullarını ifade eder." },
-    { category: "Tarih", difficulty: "Zor", question: "Mısır'ın ünlü antik yapılarından biri olan piramitler hangi döneme aittir?", image: "images/40.jpg", options: { A: "Modern çağ", B: "Antik çağ", C: "Orta çağ", D: "Rönesans" }, correctAnswer: "B", answerDetail: "Piramitler Antik Mısır medeniyetine aittir." },
-    { category: "Yaşam", difficulty: "Kolay", question: "İnsanların birbirleriyle iletişim kurmasını sağlayan en önemli araç hangisidir?", image: "images/41.jpg", options: { A: "Dil", B: "Araç", C: "Yemek", D: "Kupa" }, correctAnswer: "A", answerDetail: "Dil, insan iletişiminin temel aracıdır." },
-    { category: "Teknoloji", difficulty: "Kolay", question: "Kullanıcıların internet sitelerini görüntülemesini sağlayan programlara ne denir?", image: "images/42.jpg", options: { A: "Yazıcı", B: "Tarayıcı", C: "Klima", D: "Sensör" }, correctAnswer: "B", answerDetail: "Tarayıcı, web sayfalarını kullanıcıya sunar." },
-    { category: "Kültür & Sanat", difficulty: "Orta", question: "Mimari eserlerde estetik ve işlevi birleştiren kişiler kimlerdir?", image: "images/43.jpg", options: { A: "Mimarlar", B: "Doktorlar", C: "Şairler", D: "Avukatlar" }, correctAnswer: "A", answerDetail: "Mimarlar, yapının biçim ve işlev dengesini planlar." },
-    { category: "Bilim", difficulty: "Kolay", question: "Bitki kökleri neyi kendilerine çeker?", image: "images/44.jpg", options: { A: "Güneşi", B: "Su ve mineralleri", C: "Kumu", D: "Yaprakları" }, correctAnswer: "B", answerDetail: "Bitkiler kökleriyle su ve mineralleri emer." },
-    { category: "Dünya", difficulty: "Kolay", question: "En büyük canlı tür çeşitliliğine sahip orman türü hangisidir?", image: "images/45.jpg", options: { A: "Çöl", B: "Tropikal orman", C: "Bozkır", D: "Tundra" }, correctAnswer: "B", answerDetail: "Tropikal ormanlar en zengin biyolojik çeşitliliğe sahiptir." },
-    { category: "Spor", difficulty: "Zor", question: "Bir basketbol maçında serbest atış için süre sınırlaması kaç saniyedir?", image: "images/46.jpg", options: { A: "5", B: "8", C: "10", D: "12" }, correctAnswer: "C", answerDetail: "Basketbolda serbest atış için süre 10 saniyedir." },
-    { category: "Müzik", difficulty: "Orta", question: "Bir şarkının söz kısmına ne ad verilir?", image: "images/47.jpg", options: { A: "Melodi", B: "Şarkı sözü", C: "Refrain", D: "Ton" }, correctAnswer: "B", answerDetail: "Şarkı sözü, müziğe eşlik eden anlatım kısmıdır." },
-    { category: "Bilim", difficulty: "Orta", question: "Ay'ın Dünya etrafında dönmesini sağlayan kuvvet hangisidir?", image: "images/48.jpg", options: { A: "Kütleçekim", B: "Güneş rüzgarı", C: "Manyetik alan", D: "Su basıncı" }, correctAnswer: "A", answerDetail: "Dünya'nın kütleçekimi Ay'ın yörüngede kalmasını sağlar." },
-    { category: "Tarih", difficulty: "Orta", question: "İnsanlık tarihinde ilk yazı sistemlerinden biri hangi uygarlığa aittir?", image: "images/49.jpg", options: { A: "Roma", B: "Mısır", C: "İskit", D: "Hun" }, correctAnswer: "B", answerDetail: "Mısır uygarlığı ilk yazı sistemlerinden birini geliştirmiştir." },
-    { category: "Sağlık", difficulty: "Orta", question: "Düzenli egzersiz yapmanın en önemli faydası nedir?", image: "images/50.jpg", options: { A: "Uyku ihtiyacını azaltır", B: "Kardiyovasküler sağlığı korur", C: "Sadece kasları büyütür", D: "Açlık hissini artırır" }, correctAnswer: "B", answerDetail: "Düzenli egzersiz kalp ve damar sağlığını destekler." },
-    { category: "Kültür", difficulty: "Kolay", question: "Yeryüzünde en çok konuşulan dillerden biri hangisidir?", image: "images/51.jpg", options: { A: "Almanca", B: "İngilizce", C: "Fransızca", D: "Arapça" }, correctAnswer: "B", answerDetail: "İngilizce dünya genelinde en yaygın konuşulan dillerden biridir." },
-    { category: "Dünya", difficulty: "Kolay", question: "Hangi gezegenin halkaları en belirgin şekilde görülür?", image: "images/52.jpg", options: { A: "Mars", B: "Venüs", C: "Satürn", D: "Jüpiter" }, correctAnswer: "C", answerDetail: "Satürn'ün halkaları, en belirgin ve ünlü olanlardandır." },
-    { category: "Doğa", difficulty: "Orta", question: "Büyük bir nehir denize döküldüğünde taşıdığı malzemelerin birikmesiyle oluşan alan nedir?", image: "images/53.jpg", options: { A: "Vadi", B: "Delta", C: "Yamaç", D: "Tepe" }, correctAnswer: "B", answerDetail: "Delta, nehir taşıyan alüvyonların denize ulaştığı yerde oluşur." },
-    { category: "Tarih", difficulty: "Orta", question: "İlk uygarlıklardan biri olan Sümerler nerede yaşamıştır?", image: "images/01.jpg", options: { A: "Mısır", B: "Mezopotamya", C: "İspanya", D: "Çin" }, correctAnswer: "B", answerDetail: "Sümerler, Mezopotamya'da yaşamıştır." },
-    { category: "Bilim", difficulty: "Orta", question: "Her canlı hücrede bulunan ve genetik bilgiyi taşıyan yapı hangisidir?", image: "images/02.jpg", options: { A: "Mitokondri", B: "DNA", C: "Klorofil", D: "Ribozom" }, correctAnswer: "B", answerDetail: "DNA, canlıların genetik bilgilerini taşıyan moleküldür." },
-    { category: "Sağlık", difficulty: "Kolay", question: "Düzenli el yıkamanın en önemli faydası nedir?", image: "images/03.jpg", options: { A: "Ağrı kesmek", B: "Enfeksiyon riskini azaltmak", C: "Kilo vermek", D: "Kas yapmak" }, correctAnswer: "B", answerDetail: "El yıkama, bakterilerin yayılmasını önler." },
-    { category: "Edebiyat", difficulty: "Kolay", question: "Roman, hikâye ve şiir gibi yazı türlerine ortak olan ana unsur nedir?", image: "images/04.jpg", options: { A: "Müzik", B: "Anlatı", C: "Resim", D: "Aritmetik" }, correctAnswer: "B", answerDetail: "Edebiyat eserlerinin temelinde anlatı ve ifade gücü vardır." },
-    { category: "Kültür", difficulty: "Orta", question: "Bir toplumun değerlerini, adetlerini ve davranışlarını taşıyan en önemli unsur nedir?", image: "images/05.jpg", options: { A: "Para", B: "Kültür", C: "Güneş", D: "Teknoloji" }, correctAnswer: "B", answerDetail: "Kültür, toplumun yaşam biçimini ve değerlerini yansıtır." },
-    { category: "Spor", difficulty: "Orta", question: "Yüzmede en çok kullanılan temel teknik hangisidir?", image: "images/06.jpg", options: { A: "Koşu", B: "Serbest stil", C: "Atlama", D: "Kısa pas" }, correctAnswer: "B", answerDetail: "Serbest stil, yüzmede en yaygın kullanılan tekniktir." },
-    { category: "Dünya", difficulty: "Kolay", question: "Dünyanın en kalabalık nüfusa sahip ülkesi hangisidir?", image: "images/07.jpg", options: { A: "ABD", B: "Hindistan", C: "Çin", D: "Endonezya" }, correctAnswer: "C", answerDetail: "Çin, dünyanın en kalabalık nüfusuna sahip ülkesidir." },
-    { category: "Yaşam", difficulty: "Kolay", question: "Bir öğrencinin ders çalışırken en çok ihtiyacı olan şey nedir?", image: "images/08.jpg", options: { A: "Ders çalışma düzeni", B: "Oyuncak", C: "Sürekli eğlence", D: "Dışarı çıkmak" }, correctAnswer: "A", answerDetail: "Düzenli çalışma, öğrenmeyi kolaylaştırır." },
-    { category: "Bilim", difficulty: "Kolay", question: "Canlıların hücrelerde enerji ürettiği yapı hangisidir?", image: "images/09.jpg", options: { A: "Mitokondri", B: "Yaprak", C: "Kök", D: "Diş" }, correctAnswer: "A", answerDetail: "Mitokondri hücrelerde enerji üretiminden sorumludur." }
-];
-
-const chapter3Tr = [
-    { category: "Tarih", difficulty: "Kolay", question: "İlk kez insanın aya ayak bastığı tarih hangisidir?", image: "images/10.jpg", options: { A: "1969", B: "1975", C: "1981", D: "1959" }, correctAnswer: "A", answerDetail: "Apollo 11 göreviyle 1969'da Ay'a ilk adım atıldı." },
-    { category: "Bilim", difficulty: "Kolay", question: "Dünyanın etrafında dolanan doğal uydunun adı nedir?", image: "images/11.jpg", options: { A: "Titan", B: "Ay", C: "Phobos", D: "Europa" }, correctAnswer: "B", answerDetail: "Ay, Dünya'nın tek doğal uydusudur." },
-    { category: "Sağlık", difficulty: "Kolay", question: "En yaygın temel besin gruplarından biri hangisidir?", image: "images/12.jpg", options: { A: "Protein", B: "Kömür", C: "Bakır", D: "Demir" }, correctAnswer: "A", answerDetail: "Protein, vücudun yapı taşıdır." },
-    { category: "Müzik", difficulty: "Kolay", question: "Bir şarkıda tekrar eden ana melodiye ne denir?", image: "images/13.jpg", options: { A: "Nakarat", B: "Tını", C: "Tempo", D: "Vuruş" }, correctAnswer: "A", answerDetail: "Nakarat, şarkının en sık tekrarlanan bölümüdür." },
-    { category: "Spor", difficulty: "Kolay", question: "Maça başlamak için atılan ilk vuruşa ne denir?", image: "images/14.jpg", options: { A: "Başlama vuruşu", B: "Korner", C: "Serbest vuruş", D: "Köşe" }, correctAnswer: "A", answerDetail: "Başlama vuruşu, oyunun başlatıldığı ilk vuruştur." },
-    { category: "Dünya", difficulty: "Kolay", question: "Kızıldeniz hangi kıtada yer alır?", image: "images/15.jpg", options: { A: "Asya", B: "Afrika", C: "Avrupa", D: "Okyanusya" }, correctAnswer: "A", answerDetail: "Kızıldeniz, Asya ve Afrika arasında yer alır." },
-    { category: "Edebiyat", difficulty: "Orta", question: "Bir eserin konusunu en kısa şekilde anlatan öge nedir?", image: "images/16.jpg", options: { A: "Tema", B: "Sahne", C: "Diyalog", D: "Kurgusal zaman" }, correctAnswer: "A", answerDetail: "Tema, eserin temel fikrini ve mesajını ifade eder." },
-    { category: "Teknoloji", difficulty: "Orta", question: "Bir dosyayı bilgisayarda saklamak için kullanılan birim hangisidir?", image: "images/17.jpg", options: { A: "MB", B: "Dag", C: "Klasör", D: "SSID" }, correctAnswer: "C", answerDetail: "Klasörler, dosyaların ve verilerin düzenli şekilde saklandığı yerdir." },
-    { category: "Hayvanlar", difficulty: "Orta", question: "Yunusların iletişim kurma şekli en çok nedir?", image: "images/18.jpg", options: { A: "Elektrik sinyali", B: "Sesi ve ıslık", C: "Koku", D: "Dans" }, correctAnswer: "B", answerDetail: "Yunuslar, ıslık ve seslerle iletişim kurar." },
-    { category: "Bilim", difficulty: "Kolay", question: "Yeryüzünde en çok bulunan element hangisidir?", image: "images/19.jpg", options: { A: "Helyum", B: "Oksijen", C: "Demir", D: "Hidrojen" }, correctAnswer: "D", answerDetail: "Evrenin büyük bölümünde hidrojen en bol elementtir." },
-    { category: "Tarih", difficulty: "Orta", question: "İnsanlığın ilk şehirlerinden biri olan Ur hangi medeniyete aittir?", image: "images/20.jpg", options: { A: "Sümer", B: "İskit", C: "Yunan", D: "Roma" }, correctAnswer: "A", answerDetail: "Ur, Sümer medeniyetinin önemli şehirlerindendir." },
-    { category: "Sağlık", difficulty: "Kolay", question: "Düzenli uyku için en uygun süre kaç saattir?", image: "images/21.jpg", options: { A: "3-4 saat", B: "5-6 saat", C: "7-9 saat", D: "10-12 saat" }, correctAnswer: "C", answerDetail: "Çoğu yetişkin için 7-9 saat uyku önerilir." },
-    { category: "Müzik", difficulty: "Orta", question: "Bir müziğin eşlik eden enine düzeni için kullanılan kavram nedir?", image: "images/22.jpg", options: { A: "Ritim", B: "Harmoni", C: "Tempo", D: "Ton" }, correctAnswer: "B", answerDetail: "Harmoni, farklı notaların birlikte seslendirilmesidir." },
-    { category: "Dünya", difficulty: "Kolay", question: "En büyük çöl hangi kıtada bulunur?", image: "images/23.jpg", options: { A: "Afrika", B: "Asya", C: "Avrupa", D: "Güney Amerika" }, correctAnswer: "A", answerDetail: "Sahra Çölü, Afrika'dadır ve en büyük sıcak çöldür." },
-    { category: "Kültür & Sanat", difficulty: "Orta", question: "Ülkenin sembolik değer taşıyan en eski ve önemli sanatsal eserleri genelde nerede sergilenir?", image: "images/24.jpg", options: { A: "Müze", B: "Market", C: "Kütüphane", D: "Hastane" }, correctAnswer: "A", answerDetail: "Müzeler, sanat ve tarih eserlerinin sergilendiği önemli mekânlardır." },
-    { category: "Spor", difficulty: "Orta", question: "Basketbolda topu potaya sokan oyuncunun yaptığı hareket adını ne alır?", image: "images/25.jpg", options: { A: "Şut", B: "Topaç", C: "Blok", D: "Kale" }, correctAnswer: "A", answerDetail: "Şut, basketbolda topu potaya atma hareketidir." },
-    { category: "Bilim", difficulty: "Orta", question: "Bitkilerin güneşten enerji elde etmesini sağlayan pigment hangisidir?", image: "images/26.jpg", options: { A: "Klorofil", B: "Hemoglobin", C: "Melanin", D: "Karoten" }, correctAnswer: "A", answerDetail: "Klorofil, bitkilerin fotosentez yapmasını sağlar." },
-    { category: "Tarih", difficulty: "Orta", question: "İlk kez kütüphane kuran uygarlık hangisidir?", image: "images/27.jpg", options: { A: "Sümerler", B: "Mısırlılar", C: "Romalılar", D: "Hunlar" }, correctAnswer: "A", answerDetail: "Sümerler, yazı ve bilgi depolama için önemli adımlar attı." },
-    { category: "Sağlık", difficulty: "Kolay", question: "Kan dolaşımını düzenleyen en önemli organ hangisidir?", image: "images/28.jpg", options: { A: "Beyin", B: "Kalp", C: "Karaciğer", D: "Böbrek" }, correctAnswer: "B", answerDetail: "Kalp, vücudun kan dolaşımını sağlar." },
-    { category: "Kültür", difficulty: "Kolay", question: "Bir toplumun ortak dili ve yazısı neyi gösterir?", image: "images/29.jpg", options: { A: "Ekonomi", B: "Kültürel kimlik", C: "İklim", D: "Harita" }, correctAnswer: "B", answerDetail: "Dil ve yazı, bir toplumun kültürel kimliğini taşıyan unsurlardır." },
-    { category: "Dünya", difficulty: "Orta", question: "Dünyanın en derin deniz çukuru hangisidir?", image: "images/30.jpg", options: { A: "Mariana Çukuru", B: "Bengal Çukuru", C: "Java Çukuru", D: "Atlantik Çukuru" }, correctAnswer: "A", answerDetail: "Mariana Çukuru, dünyanın en derin noktasıdır." },
-    { category: "Edebiyat", difficulty: "Kolay", question: "Bir edebi metindeki olayların sıralanışı hangisidir?", image: "images/31.jpg", options: { A: "Kronoloji", B: "Metrik", C: "Kafiye", D: "Diyalog" }, correctAnswer: "A", answerDetail: "Kronoloji, olayların zaman sırasını belirler." },
-    { category: "Bilim", difficulty: "Orta", question: "Elektriğin akışını sağlayan maddeye ne denir?", image: "images/32.jpg", options: { A: "Yalıtkan", B: "İletken", C: "Mıknatıs", D: "Kalıp" }, correctAnswer: "B", answerDetail: "İletken maddeler elektriği iyi iletir." },
-    { category: "Müzik", difficulty: "Kolay", question: "Düzenli tekrar eden ses ve sessizlik örüntüsüne ne denir?", image: "images/33.jpg", options: { A: "Ritim", B: "Tempo", C: "Melodi", D: "Ton" }, correctAnswer: "A", answerDetail: "Ritim, seslerin düzenli olarak tekrarlanmasıdır." },
-    { category: "Spor", difficulty: "Orta", question: "Bir futbol maçında penaltı atışı nasıl başlatılır?", image: "images/34.jpg", options: { A: "Serbest vuruş", B: "Köşe vuruşu", C: "Penaltı", D: "Taç atışı" }, correctAnswer: "C", answerDetail: "Penaltı, ceza sahası içinde verilen özel atıştır." },
-    { category: "Teknoloji", difficulty: "Kolay", question: "İnternet sayfalarını görüntüleyen uygulamalara ne denir?", image: "images/35.jpg", options: { A: "Tarayıcı", B: "Yazıcı", C: "Sunucu", D: "Modem" }, correctAnswer: "A", answerDetail: "Tarayıcılar, web sayfalarını kullanıcıya gösterir." },
-    { category: "Tarih", difficulty: "Orta", question: "Büyük İskender hangi ülkeyi fethetmeye başlamıştır?", image: "images/36.jpg", options: { A: "İran", B: "Yunanistan", C: "Mısır", D: "Türkiye" }, correctAnswer: "B", answerDetail: "Büyük İskender, Yunanistan'da doğmuş ve geniş fetihler yapmıştır." },
-    { category: "Dünya", difficulty: "Kolay", question: "Dünyaya en yakın gezegen hangisidir?", image: "images/37.jpg", options: { A: "Mars", B: "Venüs", C: "Jüpiter", D: "Merkür" }, correctAnswer: "B", answerDetail: "Venüs, Dünya'ya en yakın gezegendir." },
-    { category: "Sağlık", difficulty: "Orta", question: "Hücrelerde su dengesini koruyan en önemli yapı hangisidir?", image: "images/38.jpg", options: { A: "Beyin", B: "Hücre zarı", C: "Kemik", D: "Tendon" }, correctAnswer: "B", answerDetail: "Hücre zarı, hücrenin iç ve dış ortamını ayırır." },
-    { category: "Bilim", difficulty: "Kolay", question: "Güneş ışığı doğrudan bir kaynaktan alınırsa buna ne denir?", image: "images/39.jpg", options: { A: "Alternatif enerji", B: "Güneş enerjisi", C: "Yeryüzü enerjisi", D: "Nükleer enerji" }, correctAnswer: "B", answerDetail: "Güneş enerjisi, doğrudan güneş ışığından elde edilen enerjidir." },
-    { category: "Kültür", difficulty: "Kolay", question: "Bir topluluğun ortak yemek, giysi ve adetleri hangi kavramla ifade edilir?", image: "images/40.jpg", options: { A: "Ekonomi", B: "Kültür", C: "Coğrafya", D: "Meteoroloji" }, correctAnswer: "B", answerDetail: "Kültür, bir topluluğun yaşam biçimini ve geleneklerini anlatır." },
-    { category: "Edebiyat", difficulty: "Orta", question: "Bir eserin baş karakteri ve olayların merkezindeki kişiye ne denir?", image: "images/41.jpg", options: { A: "Yazar", B: "Ana karakter", C: "Editör", D: "Tema" }, correctAnswer: "B", answerDetail: "Ana karakter, hikâyenin merkezindeki kişidir." },
-    { category: "Doğa", difficulty: "Kolay", question: "Bir bitkinin yaprakları en çok ne ile beslenir?", image: "images/42.jpg", options: { A: "Su ve güneş ışığı", B: "Taş ve toprak", C: "Kaya ve maden", D: "Elektrik" }, correctAnswer: "A", answerDetail: "Yapraklar güneş ışığı ve su yardımıyla beslenir." },
-    { category: "Spor", difficulty: "Orta", question: "Futbolda topu rakibin kalesine sokma hareketi ne ad alır?", image: "images/43.jpg", options: { A: "Gol", B: "Faul", C: "Taç", D: "Ofsayt" }, correctAnswer: "A", answerDetail: "Gol, maça puan kazandıran atıştır." },
-    { category: "Teknoloji", difficulty: "Kolay", question: "Verileri depolayan küçük elektronik parça hangisidir?", image: "images/44.jpg", options: { A: "USB", B: "Disket", C: "SSD", D: "Klavye" }, correctAnswer: "C", answerDetail: "SSD, verileri uzun süre depolayan hafıza birimidir." },
-    { category: "Bilim", difficulty: "Kolay", question: "Hava içindeki su buharı en çok hangi olaya yol açar?", image: "images/45.jpg", options: { A: "Yağmur", B: "Deprem", C: "Volkan", D: "Güneş tutulması" }, correctAnswer: "A", answerDetail: "Su buharının yoğunlaşması yağmur oluşumuna neden olur." },
-    { category: "Müzik", difficulty: "Kolay", question: "Bir şarkıda seslerin yüksekliğini belirleyen kavram nedir?", image: "images/46.jpg", options: { A: "Ton", B: "Ritim", C: "Yavaşlık", D: "Hız" }, correctAnswer: "A", answerDetail: "Ton, sesin yüksekliğini ifade eder." }
-];
-
-const chapter1En = chapter1Tr.map((item) => ({ ...item }));
-const chapter2En = chapter2Tr.map((item) => ({ ...item }));
-const chapter3En = chapter3Tr.map((item) => ({ ...item }));
-
+// --- SORU VERİ HAVUZU (25 Soru x 2 Bölüm + 13 Ekstra) ---
 const quizData = {
     tr: {
-        chapter1: chapter1Tr,
-        chapter2: chapter2Tr,
-        chapter3: chapter3Tr
+        chapter1: [
+            { category: "Doğa & Hayvanlar", difficulty: "Kolay", question: "Salyangozlar genellikle yağmurdan sonra neden dışarı çıkarlar?", image: "images/01.jpg", options: { A: "Nemli hava", B: "Yemek bulmak", C: "Sosyal toplanma", D: "Ev yapmak" }, correctAnswer: "B", answerDetail: "Yağmur toprağı yumuşatır ve yemek bulunması kolaylaşır." },
+            { category: "Genel Kültür", difficulty: "Orta", question: "Kamp ateşini güvenli yakmak için ilk ne yapılmalıdır?", image: "images/02.jpg", options: { A: "Büyük odunlar", B: "Güvenli alan hazırlama", C: "Hemen yakma", D: "Su hazırlama" }, correctAnswer: "B", answerDetail: "Ateş yakacak alanın güvenli olması önemlidir." },
+            { category: "Kültür Ve Sanat", difficulty: "Orta", question: "Modern moda hangi yüzyılda ortaya çıkmıştır?", image: "images/03.jpg", options: { A: "17.", B: "18.", C: "19.", D: "20." }, correctAnswer: "C", answerDetail: "Modern moda 19. yüzyılda endüstriyel üretimle başlamıştır." },
+            { category: "Tarih", difficulty: "Zor", question: "Mitolojide aslan genellikle neyi temsil eder?", image: "images/04.jpg", options: { A: "Bilgelik", B: "Sadakat", C: "Hırs", D: "Güç" }, correctAnswer: "D", answerDetail: "Aslan gücü, cesareti ve liderliği temsil eder." },
+            { category: "Fantastik", difficulty: "Kolay", question: "Ejderhaların yaşadığına dair kanıt var mıdır?", image: "images/05.jpg", options: { A: "Kalıntı var", B: "Sadece efsane", C: "Hala yaşıyor", D: "Soyu tükenmiş" }, correctAnswer: "B", answerDetail: "Ejderhalar mitoloji ve efsanelerde yer alır." },
+            { category: "Dünya", difficulty: "Orta", question: "Yılan oynatıcıları en çok hangi ülkede bilinir?", image: "images/06.jpg", options: { A: "Hindistan", B: "Brezilya", C: "Türkiye", D: "Mısır" }, correctAnswer: "A", answerDetail: "Hindistan'da yılan oynatıcılığı geleneksel bir sanat formudur." },
+            { category: "Dünya", difficulty: "Orta", question: "Afro saç modeli köken olarak nereye dayanır?", image: "images/07.jpg", options: { A: "Afrika", B: "İskandinav", C: "Çin", D: "Meksika" }, correctAnswer: "A", answerDetail: "Afro saç, Afrika kökenli insanların doğal saç yapısıdır." },
+            { category: "Edebiyat", difficulty: "Zor", question: "Dostoyevski hangi eseriyle tanınır?", image: "images/08.jpg", options: { A: "Sefiller", B: "Suç ve Ceza", C: "M. Cristo", D: "Kara Şal" }, correctAnswer: "B", answerDetail: "Suç ve Ceza Dostoyevski'nin en ünlü eseridir." },
+            { category: "Moda", difficulty: "Zor", question: "Eski dönem zarif giyim tarzına ne ad verilir?", image: "images/09.jpg", options: { A: "Vintage", B: "Futuristik", C: "Sokak", D: "Üniforman" }, correctAnswer: "A", answerDetail: "Vintage geçmiş dönemlerin stil ve moda öğelerini ifade eder." },
+            { category: "Sağlık", difficulty: "Orta", question: "Gençlerde dışlanma korkusu neye yol açar?", image: "images/10.jpg", options: { A: "Sosyal kaygı", B: "Özgüven", C: "Umursamazlık", D: "Hiperaktivite" }, correctAnswer: "A", answerDetail: "Dışlanma korkusu sosyal kaygı bozukluğuna neden olabilir." },
+            { category: "Kültür ve Sanat", difficulty: "Kolay", question: "Hollywood ödül heykelciğinin adı nedir?", image: "images/11.jpg", options: { A: "Grammy", B: "Oscar", C: "Emmy", D: "Golden Globe" }, correctAnswer: "B", answerDetail: "Oscar (Academy Award) sinema endüstrisinin en prestijli ödülüdür." },
+            { category: "Doğa", difficulty: "Orta", question: "Çiftçi için tırpanın temel amacı nedir?", image: "images/12.jpg", options: { A: "Biçmek", B: "Karıştırmak", C: "Yönlendirmek", D: "Eğmek" }, correctAnswer: "A", answerDetail: "Tırpan tarım aletlerinde hasat için kullanılır." },
+            { category: "Sağlık", difficulty: "Kolay", question: "Çocuklar neden brokoliyi sevmez?", image: "images/13.jpg", options: { A: "Yeşil renk", B: "Çiğ olması", C: "Acı tadı", D: "Yapısı" }, correctAnswer: "C", answerDetail: "Brokoli sülfür bileşikleri nedeniyle hafif acı tada sahiptir." },
+            { category: "Yaşam", difficulty: "Orta", question: "Stres en çok hangi organı etkiler?", image: "images/14.jpg", options: { A: "Kalp", B: "Mide", C: "Akciğer", D: "Karaciğer" }, correctAnswer: "B", answerDetail: "Stres mide sağlığını olumsuz yönde etkiler." },
+            { category: "Dünya", difficulty: "Kolay", question: "Filistin'deki çocukların zorluk çekme nedeni?", image: "images/15.jpg", options: { A: "Nüfus", B: "Eğitim", C: "İklim", D: "Çatışma" }, correctAnswer: "D", answerDetail: "Filistin'deki çocuklar coğrafi çatışmalardan etkilenir." },
+            { category: "Tarih", difficulty: "Orta", question: "Savaşçı kadın kabilelerine ne denir?", image: "images/16.jpg", options: { A: "Amazonlar", B: "Vikingler", C: "Hunlar", D: "Aztekler" }, correctAnswer: "A", answerDetail: "Amazonlar mitolojide sadece kadın savaşçılardan oluşan bir kabiledir." },
+            { category: "Kültür ve Sanat", difficulty: "Orta", question: "Yeşilçam'ın 4 yapraklı yoncasından biri?", image: "images/17.jpg", options: { A: "Türkan Şoray", B: "Nejat Saydam", C: "Kerem Çalışkan", D: "Ş. Gül" }, correctAnswer: "A", answerDetail: "Türkan Şoray Yeşilçam'ın en önemli oyuncularından biridir." },
+            { category: "Dünya", difficulty: "Kolay", question: "Anime kültürü hangi ülkede doğmuştur?", image: "images/18.jpg", options: { A: "G. Kore", B: "Çin", C: "Japonya", D: "Tayland" }, correctAnswer: "C", answerDetail: "Anime Japonya'da kaynaklanmış bir sanat formudur." },
+            { category: "Tarih", difficulty: "Zor", question: "Tarihin ilk kadın savaşçı hükümdarlarından?", image: "images/19.jpg", options: { A: "Kleopatra", B: "Tomris Hatun", C: "Jeanne d'Arc", D: "Büyük Katerina" }, correctAnswer: "B", answerDetail: "Tomris Hatun Saka kraliçesi ve ünlü savaşçıdır." },
+            { category: "Tarih", difficulty: "Orta", question: "Saray palyaçolarının temel görevi neydi?", image: "images/20.jpg", options: { A: "Taktik", B: "Eğlendirmek", C: "Yasa", D: "Savunma" }, correctAnswer: "B", answerDetail: "Saray palyaçoları imparatorları eğlendirmek için vardı." },
+            { category: "Hayvanlar", difficulty: "Kolay", question: "Foklar neden soğuk suda üşümez?", image: "images/21.jpg", options: { A: "Kuyruk", B: "Şarkı", C: "Pul", D: "Vücut yağı" }, correctAnswer: "D", answerDetail: "Fokalarda kalın yağ tabakası ısı yalıtımı sağlar." },
+            { category: "Hayvanlar", difficulty: "Orta", question: "Leylekler yönlerini neyle bulur?", image: "images/22.jpg", options: { A: "Manyetik alan", B: "Akıntı", C: "Takip", D: "Koku" }, correctAnswer: "A", answerDetail: "Leylekler göç ederken Dünya'nın manyetik alanını kullanırlar." },
+            { category: "Hayvanlar", difficulty: "Kolay", question: "Orangutanları ayıran en büyük özellik?", image: "images/23.jpg", options: { A: "Boyun", B: "Uzun kollar", C: "Uçma", D: "Kuyruk" }, correctAnswer: "B", answerDetail: "Orangutanların vücutlarından daha uzun kolları vardır." },
+            { category: "Hayvanlar", difficulty: "Zor", question: "Sphynx kedileri neden bu ismi almıştır?", image: "images/24.jpg", options: { A: "Mısır'da doğuş", B: "Günübirlik", C: "Sphinx benzerliği", D: "Tarihçi adı" }, correctAnswer: "C", answerDetail: "Sphynx kedileri Mısır'ın büyük heykeline benzetilerek adlandırılmıştır." },
+            { category: "Hayvanlar", difficulty: "Kolay", question: "Sincaplar yiyecekleri nereye saklar?", image: "images/25.jpg", options: { A: "Ağaç kovuğu", B: "Su kuyusu", C: "Güneş altında", D: "Toprak" }, correctAnswer: "A", answerDetail: "Sincaplar kışa hazırlanmak için ağaç kovuklarında yiyecek saklar." }
+        ],
+        chapter2: [
+            { category: "Canlılar", difficulty: "Kolay", question: "Köpeklerin \"sadık hayvanlar\" olarak anılmasının en önemli nedeni nedir?", image: "images/26.jpg", options: { A: "Tek başına yaşaması", B: "Sahibine bağlılığı", C: "Hızlı koşması", D: "Akıllı olması" }, correctAnswer: "B", answerDetail: "Köpekler sahiplerine karşı gösterdikleri bağlılık ile tanınırlar." },
+            { category: "Fantastik", difficulty: "Orta", question: "Bir süper kahramanın \"gizli kimlik\" kullanmasının temel nedeni nedir?", image: "images/27.jpg", options: { A: "Kostüm maliyeti", B: "Aileyi koruma", C: "Modaya uyma", D: "Gizem yaratma" }, correctAnswer: "B", answerDetail: "Gizli kimlik süper kahraman ve ailelerinin güvenliğini korur." },
+            { category: "Sağlık", difficulty: "Orta", question: "Gençlerde uzun süreli mutsuzluğun en yaygın nedeni hangisidir?", image: "images/28.jpg", options: { A: "Özgüven problemleri", B: "Yalnızlık hissi", C: "Sosyal medya", D: "Ekonomik sorunlar" }, correctAnswer: "A", answerDetail: "Düşük özgüven gençlerde depresyona neden olabilir." },
+            { category: "Canlılar", difficulty: "Kolay", question: "Evcil kuşların en çok dikkat edilmesi gereken ihtiyacı nedir?", image: "images/29.jpg", options: { A: "Günlük su banyosu", B: "Taze su ve beslenme", C: "Kostüm giydirilmesi", D: "Müzik dinletme" }, correctAnswer: "B", answerDetail: "Kuşlar taze su ve dengeli beslenme gerekir." },
+            { category: "Yaşam", difficulty: "Orta", question: "\"Ansiklopedinin\" temel amacı nedir?", image: "images/30.jpg", options: { A: "Genel bilgileri sistemli şekilde sunmak", B: "Sadece tarih anlatmak", C: "Hikaye yazıştırmak", D: "Denklem çözmek" }, correctAnswer: "A", answerDetail: "Ansiklopedi genel bilgileri düzenli ve kapsamlı şekilde sunar." },
+            { category: "Sağlık", difficulty: "Zor", question: "Vücudun ısı kaybetme hızının artması ve çekirdek sıcaklığının düşmesiyle karakterize edilen tıbbi durumun adı nedir?", image: "images/31.jpg", options: { A: "Hipertermia", B: "Hipotermia", C: "Ateş", D: "Şok" }, correctAnswer: "B", answerDetail: "Hipotermia düşük vücut ısısıyla ilgili tehlikeli bir durumdur." },
+            { category: "Bilim", difficulty: "Orta", question: "Ders çalışırken \"not almak\" ne işe yarar?", image: "images/32.jpg", options: { A: "Sadece defteri süslemek için", B: "Dersi anlamayı ve hatırlamayı güçlendirmek", C: "Zamanı doldurmak", D: "Öğretmeni etkilemek" }, correctAnswer: "B", answerDetail: "Not almak öğrenmeyi pekiştirir ve hatırlamayı artırır." },
+            { category: "Kültür & Sanat", difficulty: "Zor", question: "Afrika'da hikâyeleri sözlü olarak aktaran geleneksel anlatıcılara ne ad verilir?", image: "images/33.jpg", options: { A: "Şarkıcı", B: "Griot", C: "Müzisyen", D: "Oyuncu" }, correctAnswer: "B", answerDetail: "Griot Afrika'nın geleneksel sözlü hikaye anlatıcısıdır." },
+            { category: "Tarih", difficulty: "Orta", question: "Fransa tarihinde, Yüz Yıl Savaşı sırasında orduyu motive etmesiyle tanınan ünlü kadın savaşçı kimdir?", image: "images/34.jpg", options: { A: "Boudicca", B: "Tomris", C: "Jeanne d'Arc", D: "Artemisia" }, correctAnswer: "C", answerDetail: "Jeanne d'Arc, Fransız halkının ilham kaynağı olmuş bir savaşçıdır." },
+            { category: "Kültür & Sanat", difficulty: "Zor", question: "Pençeli süper kahramanların en belirgin özelliği genellikle nedir?", image: "images/35.jpg", options: { A: "Zıplama kabiliyetleri", B: "Görünmez olmaları", C: "Zamanı durdurmaları", D: "Hızlı iyileşme güçleri" }, correctAnswer: "D", answerDetail: "Pençe temalı kahramanlar, hücre yenilenmesi sayesinde hızla iyileşir." },
+            { category: "Fantastik", difficulty: "Zor", question: "Ejderhaların efsanelerde çoğu zaman koruduğuna inanılan ve volkanik hareketlerle oluşan, silisli minerallerin katmanlanmasıyla meydana gelen değerli taş aşağıdakilerden hangisidir?", image: "images/36.jpg", options: { A: "Safir", B: "Ametist", C: "Zümrüt", D: "Opal" }, correctAnswer: "B", answerDetail: "Ametist, kuvars ailesinden, mor tonlarıyla bilinen değerli bir taştır." },
+            { category: "Tarih", difficulty: "Orta", question: "Antik Roma'da gladyatör dövüşleri en çok hangi amaçla düzenlenirdi?", image: "images/37.jpg", options: { A: "Asker yetiştirmek", B: "Dini tören yapmak", C: "Halkı eğlendirmek", D: "Suçluları cezalandırmak" }, correctAnswer: "C", answerDetail: "Gladyatör dövüşleri Roma'da büyük arenalarda halk eğlencesi olarak yapılırdı." },
+            { category: "Fantastik", difficulty: "Zor", question: "Kedi temalı kadın karakter Catwoman hangi film evreninde yer alır?", image: "images/38.jpg", options: { A: "DC Comics", B: "Star Wars", C: "Marvel", D: "Matrix" }, correctAnswer: "A", answerDetail: "Catwoman, Batman evreninin en ikonik karakterlerinden biridir." },
+            { category: "Fantastik", difficulty: "Orta", question: "Masal ve fantastik hikâyelerde dilek gerçekleştiren karakterler genellikle hangisi olarak tasvir edilir?", image: "images/39.jpg", options: { A: "Şövalye", B: "Ejderha", C: "Dev", D: "Peri" }, correctAnswer: "D", answerDetail: "Periler, özellikle Avrupa masallarında dilek ve büyüyle ilişkilendirilir." },
+            { category: "Tarih", difficulty: "Kolay", question: "Telefon ve internetten önce insanlar en çok hangi yöntemle uzak mesafeden haberleşirdi?", image: "images/40.jpg", options: { A: "Telgraf", B: "Mektup", C: "Radyo", D: "Güvercin" }, correctAnswer: "B", answerDetail: "Mektuplar yüzyıllar boyunca en yaygın haberleşme yöntemi olmuştur." },
+            { category: "Müzik", difficulty: "Orta", question: "Punk rock müzik akımı ilk olarak hangi ülkede ortaya çıkmıştır?", image: "images/41.jpg", options: { A: "Amerika", B: "Almanya", C: "İngiltere", D: "Fransa" }, correctAnswer: "C", answerDetail: "1970'lerde İngiltere'de ortaya çıkan punk, sisteme karşı bir duruş sergiler." },
+            { category: "Fantastik", difficulty: "Orta", question: "Orclar en çok hangi fantastik dünyaya ait varlıklar olarak bilinir?", image: "images/42.jpg", options: { A: "Orta Dünya", B: "Narnia", C: "Westeros", D: "Pandora" }, correctAnswer: "A", answerDetail: "Orclar, J.R.R. Tolkien'in Orta Dünya evreninin karanlık yaratıklarıdır." },
+            { category: "Bilim", difficulty: "Kolay", question: "Siber ajanlar veya hackerlar en çok hangi alanda faaliyet gösterir?", image: "images/43.jpg", options: { A: "Fiziksel güvenlik", B: "Siber güvenlik ve veri sistemleri", C: "İnşaat sektörü", D: "Tarım teknolojileri" }, correctAnswer: "B", answerDetail: "Siber ajanlar, dijital sistemleri koruma veya analiz etme amacıyla çalışır." },
+            { category: "Fantastik", difficulty: "Orta", question: "Metali manyetik güçlerle kontrol edebilen çizgi roman karakteri hangisidir?", image: "images/44.jpg", options: { A: "Iron Man", B: "Thor", C: "Hulk", D: "Magneto" }, correctAnswer: "D", answerDetail: "Magneto, manyetizma temelli güçleriyle tanınan bir X-Men karakteridir." },
+            { category: "Din", difficulty: "Orta", question: "Hz. Musa'nın mucizevi şekilde ikiye yardığına inanılan yer neresidir?", image: "images/45.jpg", options: { A: "Kızıldeniz", B: "Lut Gölü", C: "Nil Nehri", D: "Ürdün Nehri" }, correctAnswer: "A", answerDetail: "Bu olay, Tevrat ve Kur'an'da anlatılan önemli mucizelerden biridir." },
+            { category: "Tarih", difficulty: "Orta", question: "Orta Çağ'da insanlar hastalıkları iyileştirmek için en çok ne kullanırdı?", image: "images/46.jpg", options: { A: "Antibiyotik", B: "Kimyasal ilaçlar", C: "Aşılar", D: "Bitkisel karışımlar" }, correctAnswer: "D", answerDetail: "Şifalı bitkiler ve doğal karışımlar, Orta Çağ tıbbının temelini oluştururdu." },
+            { category: "Bilim", difficulty: "Orta", question: "ABD'de uzaylılar ve UFO araştırmalarıyla ilişkilendirilen gizli askeri bölgenin adı nedir?", image: "images/47.jpg", options: { A: "Area 49", B: "Area 50", C: "Area 52", D: "Area 51" }, correctAnswer: "D", answerDetail: "Area 51, özellikle UFO komplo teorileriyle ünlenmiştir." },
+            { category: "Spor", difficulty: "Kolay", question: "Sörf sporu en çok hangi doğal koşullarda yapılır?", image: "images/48.jpg", options: { A: "Durgun göllerde", B: "Karlı bölgelerde", C: "Yüksek ve güçlü dalgalarda", D: "Nehirlerde" }, correctAnswer: "C", answerDetail: "Sörf, okyanus dalgalarının güçlü olduğu kıyılarda yapılır." },
+            { category: "Spor", difficulty: "Zor", question: "NBA tarihinde tek bir maçta en fazla sayı atan basketbolcu kimdir?", image: "images/49.jpg", options: { A: "Michael Jordan", B: "Wilt Chamberlain", C: "Kobe Bryant", D: "Julius Erving" }, correctAnswer: "B", answerDetail: "Wilt Chamberlain, 1962'de bir maçta 100 sayı atmıştır." },
+            { category: "Tarih", difficulty: "Kolay", question: "\"Düşünüyorum, öyleyse varım\" sözü hangi filozofa aittir?", image: "images/50.jpg", options: { A: "Descartes", B: "Platon", C: "Sokrates", D: "Nietzsche" }, correctAnswer: "A", answerDetail: "Bu ifade modern felsefenin temel taşlarından biridir." },
+            { category: "Tarih", difficulty: "Kolay", question: "Yılbaşı veya özel kutlamalarda hindi tüketilmesinin temel nedeni nedir?", image: "images/51.jpg", options: { A: "Bereket ve paylaşımı simgelemesi", B: "Hızlı pişmesi", C: "Ucuz olması", D: "Dinsel zorunluluk" }, correctAnswer: "A", answerDetail: "Hindi, Batı kültüründe bolluk ve kutlama sembolüdür." },
+            { category: "Hayvanlar", difficulty: "Kolay", question: "Dünyada evcil hayvan olarak en çok tercih edilen hayvan hangisidir?", image: "images/52.jpg", options: { A: "Köpek", B: "Kuş", C: "Balık", D: "Kedi" }, correctAnswer: "D", answerDetail: "Kediler, bağımsız yapıları ve bakımlarının kolay olmasıyla tercih edilir." },
+            { category: "Spor", difficulty: "Zor", question: "Olimpiyat Oyunları tarihinde jimnastikte ilk kez 10.00 tam puan alan sporcu kimdir?", image: "images/53.jpg", options: { A: "Olga Korbut", B: "Larisa Latynina", C: "Nadia Comăneci", D: "Simone Biles" }, correctAnswer: "C", answerDetail: "1976 Montreal Olimpiyatları'nda Nadia Comăneci'nin aldığı 10.00 puan, skor tabelalarında gösterilememiştir." }
+        ]
     },
     en: {
-        chapter1: chapter1En,
-        chapter2: chapter2En,
-        chapter3: chapter3En
+        chapter1: [
+            { category: "Animals", difficulty: "Easy", question: "Why do snails come out after rain?", image: "images/01.jpg", options: { A: "Moist air", B: "Finding food", C: "Social meeting", D: "Making home" }, correctAnswer: "B", answerDetail: "Rain softens soil making it easier for snails to find food." },
+            { category: "Culture", difficulty: "Medium", question: "What should be done first to light a campfire safely?", image: "images/02.jpg", options: { A: "Large woods", B: "Prepare safe area", C: "Start immediately", D: "Prepare water" }, correctAnswer: "B", answerDetail: "A safe area is important before lighting a fire." },
+            { category: "Culture", difficulty: "Medium", question: "In which century did modern fashion emerge?", image: "images/03.jpg", options: { A: "17.", B: "18.", C: "19.", D: "20." }, correctAnswer: "C", answerDetail: "Modern fashion began in the 19th century with industrial production." },
+            { category: "History", difficulty: "Hard", question: "What does the lion usually represent in mythology?", image: "images/04.jpg", options: { A: "Wisdom", B: "Loyalty", C: "Ambition", D: "Power" }, correctAnswer: "D", answerDetail: "Lions represent strength, courage, and leadership in mythology." },
+            { category: "Fantastic", difficulty: "Easy", question: "Is there evidence that dragons live?", image: "images/05.jpg", options: { A: "There are remains", B: "Just legends", C: "Still alive", D: "Extinct" }, correctAnswer: "B", answerDetail: "Dragons exist in mythology and folklore." },
+            { category: "World", difficulty: "Medium", question: "In which country are snake charmers best known?", image: "images/06.jpg", options: { A: "India", B: "Brazil", C: "Turkey", D: "Egypt" }, correctAnswer: "A", answerDetail: "Snake charming is a traditional art form in India." },
+            { category: "World", difficulty: "Medium", question: "Where is the Afro hairstyle based on the origin?", image: "images/07.jpg", options: { A: "Africa", B: "Scandinavian", C: "China", D: "Mexico" }, correctAnswer: "A", answerDetail: "Afro hair is based on the natural hair structure of people from Africa." },
+            { category: "Literature", difficulty: "Hard", question: "Which work is Dostoevsky known for?", image: "images/08.jpg", options: { A: "Miserables", B: "Crime and Punishment", C: "M. Cristo", D: "Black Shawl" }, correctAnswer: "B", answerDetail: "Crime and Punishment is Dostoevsky's most famous work." },
+            { category: "Fashion", difficulty: "Hard", question: "What is the name given to the old period elegant clothing style?", image: "images/09.jpg", options: { A: "Vintage", B: "Futuristic", C: "Street", D: "Uniform" }, correctAnswer: "A", answerDetail: "Vintage refers to style and fashion elements from past periods." },
+            { category: "Health", difficulty: "Medium", question: "What leads to the fear of exclusion in young people?", image: "images/10.jpg", options: { A: "Social anxiety", B: "Self-confidence", C: "Indifference", D: "Hyperactivity" }, correctAnswer: "A", answerDetail: "Fear of exclusion can lead to social anxiety disorder." },
+            { category: "Culture", difficulty: "Easy", question: "What is the name of the Hollywood award statuette?", image: "images/11.jpg", options: { A: "Grammy", B: "Oscar", C: "Emmy", D: "Golden Globe" }, correctAnswer: "B", answerDetail: "Oscar (Academy Award) is cinema's most prestigious award." },
+            { category: "World", difficulty: "Medium", question: "What is the main purpose of the scythe for the farmer?", image: "images/12.jpg", options: { A: "To mow", B: "To mix", C: "To direct", D: "To bend" }, correctAnswer: "A", answerDetail: "The scythe is used for harvesting in agriculture." },
+            { category: "Health", difficulty: "Easy", question: "Why don't children like broccoli?", image: "images/13.jpg", options: { A: "Green color", B: "Being raw", C: "Bitter taste", D: "Texture" }, correctAnswer: "C", answerDetail: "Broccoli has a slightly bitter taste due to sulfur compounds." },
+            { category: "World", difficulty: "Medium", question: "Which organ does stress affect the most?", image: "images/14.jpg", options: { A: "Heart", B: "Stomach", C: "Lung", D: "Liver" }, correctAnswer: "B", answerDetail: "Stress negatively affects stomach health." },
+            { category: "World", difficulty: "Easy", question: "The reason for the difficulties of children in Palestine?", image: "images/15.jpg", options: { A: "Population", B: "Education", C: "Climate", D: "Conflict" }, correctAnswer: "D", answerDetail: "Children in Palestine are affected by geographical conflicts." },
+            { category: "History", difficulty: "Medium", question: "What are warrior women tribes called?", image: "images/16.jpg", options: { A: "Amazons", B: "Vikings", C: "Huns", D: "Aztecs" }, correctAnswer: "A", answerDetail: "Amazons are a tribe of female warriors in mythology." },
+            { category: "Culture", difficulty: "Medium", question: "One of Yeşilçam's 4-leaf clover?", image: "images/17.jpg", options: { A: "Türkan Şoray", B: "Nejat Saydam", C: "Kerem Çalışkan", D: "Ş. Gül" }, correctAnswer: "A", answerDetail: "Türkan Şoray is one of Yeşilçam's most important actors." },
+            { category: "World", difficulty: "Easy", question: "In which country was anime culture born?", image: "images/18.jpg", options: { A: "S. Korea", B: "China", C: "Japan", D: "Thailand" }, correctAnswer: "C", answerDetail: "Anime is an art form that originated in Japan." },
+            { category: "History", difficulty: "Hard", question: "One of the first female warrior rulers in history?", image: "images/19.jpg", options: { A: "Cleopatra", B: "Tomris Hatun", C: "Jeanne d'Arc", D: "Catherine the Great" }, correctAnswer: "B", answerDetail: "Tomris Hatun was a Saka queen and famous warrior." },
+            { category: "History", difficulty: "Medium", question: "What was the main task of the palace clowns?", image: "images/20.jpg", options: { A: "Tactics", B: "To Entertain", C: "Law", D: "Defense" }, correctAnswer: "B", answerDetail: "Palace clowns existed to entertain rulers." },
+            { category: "Animals", difficulty: "Easy", question: "Why don't seals get cold in cold water?", image: "images/21.jpg", options: { A: "Tail", B: "Song", C: "Seal", D: "Body fat" }, correctAnswer: "D", answerDetail: "Seals have a thick layer of fat that provides heat insulation." },
+            { category: "Animals", difficulty: "Medium", question: "How do storks find their way?", image: "images/22.jpg", options: { A: "Magnetic field", B: "Flow", C: "Following", D: "Smell" }, correctAnswer: "A", answerDetail: "Storks use Earth's magnetic field when migrating." },
+            { category: "Animals", difficulty: "Easy", question: "The biggest feature that distinguishes orangutans?", image: "images/23.jpg", options: { A: "Neck", B: "Long arms", C: "Flying", D: "Tail" }, correctAnswer: "B", answerDetail: "Orangutans have arms longer than their body." },
+            { category: "Animals", difficulty: "Hard", question: "Why did Sphynx cats get this name?", image: "images/24.jpg", options: { A: "Birth in Egypt", B: "Daytime", C: "Sphinx similarity", D: "Historian name" }, correctAnswer: "C", answerDetail: "Sphynx cats were named after the Great Sphinx of Egypt." },
+            { category: "Animals", difficulty: "Easy", question: "Where do squirrels hide food?", image: "images/25.jpg", options: { A: "Tree hollow", B: "Water well", C: "Sunlight", D: "Underground" }, correctAnswer: "A", answerDetail: "Squirrels store food in tree hollows to prepare for winter." }
+        ],
+        chapter2: [
+            { category: "Animals", difficulty: "Easy", question: "What is the most important reason why dogs are called \"loyal animals\"?", image: "images/26.jpg", options: { A: "Living alone", B: "Loyalty to owner", C: "Fast running", D: "Intelligence" }, correctAnswer: "B", answerDetail: "Dogs are known for their loyalty to their owners." },
+            { category: "Fantastic", difficulty: "Medium", question: "What is the basic reason for a superhero using a \"secret identity\"?", image: "images/27.jpg", options: { A: "Costume cost", B: "Protecting family", C: "Following fashion", D: "Creating mystery" }, correctAnswer: "B", answerDetail: "Secret identity protects superheroes and their families." },
+            { category: "Health", difficulty: "Medium", question: "What is the most common cause of prolonged unhappiness in young people?", image: "images/28.jpg", options: { A: "Self-confidence issues", B: "Loneliness", C: "Social media", D: "Economic problems" }, correctAnswer: "A", answerDetail: "Low self-esteem can lead to depression in young people." },
+            { category: "Animals", difficulty: "Easy", question: "What is the most important need to pay attention to for pet birds?", image: "images/29.jpg", options: { A: "Daily water bath", B: "Fresh water and nutrition", C: "Wearing costume", D: "Playing music" }, correctAnswer: "B", answerDetail: "Birds need fresh water and balanced nutrition." },
+            { category: "Life", difficulty: "Medium", question: "What is the main purpose of an \"encyclopedia\"?", image: "images/30.jpg", options: { A: "Present general information systematically", B: "Only tell history", C: "Write stories", D: "Solve equations" }, correctAnswer: "A", answerDetail: "Encyclopedia presents general information in an organized and comprehensive way." },
+            { category: "Health", difficulty: "Hard", question: "What is the medical condition characterized by increased heat loss and drop in core body temperature?", image: "images/31.jpg", options: { A: "Hyperthermia", B: "Hypothermia", C: "Fever", D: "Shock" }, correctAnswer: "B", answerDetail: "Hypothermia is a dangerous condition related to low body temperature." },
+            { category: "Science", difficulty: "Medium", question: "What is the purpose of \"taking notes\" while studying?", image: "images/32.jpg", options: { A: "Only to decorate notebook", B: "Strengthen understanding and memory", C: "Fill time", D: "Impress teacher" }, correctAnswer: "B", answerDetail: "Note-taking reinforces learning and improves retention." },
+            { category: "Culture & Art", difficulty: "Hard", question: "What is the name given to traditional storytellers in Africa who pass down stories orally?", image: "images/33.jpg", options: { A: "Singer", B: "Griot", C: "Musician", D: "Actor" }, correctAnswer: "B", answerDetail: "Griot is Africa's traditional oral storyteller." },
+            { category: "History", difficulty: "Medium", question: "Who is the famous female warrior known for motivating the army during the Hundred Years' War in French history?", image: "images/34.jpg", options: { A: "Boudicca", B: "Tomris", C: "Jeanne d'Arc", D: "Artemisia" }, correctAnswer: "C", answerDetail: "Jeanne d'Arc was a source of inspiration for the French people." },
+            { category: "Culture & Art", difficulty: "Hard", question: "What is the most distinctive feature of clawed superheroes?", image: "images/35.jpg", options: { A: "Jumping ability", B: "Invisibility", C: "Time stopping", D: "Fast healing power" }, correctAnswer: "D", answerDetail: "Clawed heroes have the ability to heal rapidly through cell regeneration." },
+            { category: "Fantastic", difficulty: "Hard", question: "What is the precious stone that dragons are believed to guard in legends, formed by volcanic activity and the layering of silica minerals?", image: "images/36.jpg", options: { A: "Sapphire", B: "Amethyst", C: "Emerald", D: "Opal" }, correctAnswer: "B", answerDetail: "Amethyst is a precious stone from the quartz family, known for its purple tones." },
+            { category: "History", difficulty: "Medium", question: "What was the main purpose of gladiator fights in ancient Rome?", image: "images/37.jpg", options: { A: "To train soldiers", B: "To perform religious ceremony", C: "To entertain people", D: "To punish criminals" }, correctAnswer: "C", answerDetail: "Gladiator fights were held in large arenas as entertainment for the people of Rome." },
+            { category: "Fantastic", difficulty: "Hard", question: "In which film universe does the cat-themed female character Catwoman appear?", image: "images/38.jpg", options: { A: "DC Comics", B: "Star Wars", C: "Marvel", D: "Matrix" }, correctAnswer: "A", answerDetail: "Catwoman is one of the most iconic characters in the Batman universe." },
+            { category: "Fantastic", difficulty: "Medium", question: "In fairy tales and fantasy stories, which character is usually depicted as granting wishes?", image: "images/39.jpg", options: { A: "Knight", B: "Dragon", C: "Giant", D: "Fairy" }, correctAnswer: "D", answerDetail: "Fairies are especially associated with wishes and magic in European fairy tales." },
+            { category: "History", difficulty: "Easy", question: "Before the telephone and internet, what was the most common method for people to communicate over long distances?", image: "images/40.jpg", options: { A: "Telegraph", B: "Letter", C: "Radio", D: "Pigeon" }, correctAnswer: "B", answerDetail: "Letters were the most common method of communication for centuries." },
+            { category: "Music", difficulty: "Medium", question: "In which country did the punk rock movement first emerge?", image: "images/41.jpg", options: { A: "America", B: "Germany", C: "England", D: "France" }, correctAnswer: "C", answerDetail: "Emerging in the 1970s in England, punk was a stance against the system." },
+            { category: "Fantastic", difficulty: "Medium", question: "Orcs are most commonly known as creatures belonging to which fantasy world?", image: "images/42.jpg", options: { A: "Middle Earth", B: "Narnia", C: "Westeros", D: "Pandora" }, correctAnswer: "A", answerDetail: "Orcs are dark creatures in J.R.R. Tolkien's Middle Earth universe." },
+            { category: "Science", difficulty: "Easy", question: "Cyber agents or hackers primarily operate in which field?", image: "images/43.jpg", options: { A: "Physical security", B: "Cybersecurity and data systems", C: "Construction industry", D: "Agricultural technology" }, correctAnswer: "B", answerDetail: "Cyber agents work to protect or analyze digital systems." },
+            { category: "Fantastic", difficulty: "Medium", question: "Which comic book character can control metal with magnetic powers?", image: "images/44.jpg", options: { A: "Iron Man", B: "Thor", C: "Hulk", D: "Magneto" }, correctAnswer: "D", answerDetail: "Magneto is an X-Men character known for his magnetic powers." },
+            { category: "Religion", difficulty: "Medium", question: "Where is the place that Moses is believed to have miraculously parted?", image: "images/45.jpg", options: { A: "Red Sea", B: "Dead Sea", C: "Nile River", D: "Jordan River" }, correctAnswer: "A", answerDetail: "This event is mentioned in the Torah and Quran as an important miracle." },
+            { category: "History", difficulty: "Medium", question: "What did people most commonly use to treat illnesses in the Middle Ages?", image: "images/46.jpg", options: { A: "Antibiotics", B: "Chemical drugs", C: "Vaccines", D: "Herbal mixtures" }, correctAnswer: "D", answerDetail: "Medicinal herbs and natural mixtures formed the basis of Medieval medicine." },
+            { category: "Science", difficulty: "Medium", question: "What is the name of the secret military base in the US associated with alien and UFO research?", image: "images/47.jpg", options: { A: "Area 49", B: "Area 50", C: "Area 52", D: "Area 51" }, correctAnswer: "D", answerDetail: "Area 51 is particularly famous for UFO conspiracy theories." },
+            { category: "Sports", difficulty: "Easy", question: "In which natural conditions is surfing most commonly practiced?", image: "images/48.jpg", options: { A: "Calm lakes", B: "Snowy areas", C: "High and powerful waves", D: "Rivers" }, correctAnswer: "C", answerDetail: "Surfing is practiced on coastal areas with powerful ocean waves." },
+            { category: "Sports", difficulty: "Hard", question: "Who is the basketball player that scored the most points in a single NBA game?", image: "images/49.jpg", options: { A: "Michael Jordan", B: "Wilt Chamberlain", C: "Kobe Bryant", D: "Julius Erving" }, correctAnswer: "B", answerDetail: "Wilt Chamberlain scored 100 points in a single game in 1962." },
+            { category: "History", difficulty: "Easy", question: "Who is credited with the famous quote \"I think, therefore I am\"?", image: "images/50.jpg", options: { A: "Descartes", B: "Plato", C: "Socrates", D: "Nietzsche" }, correctAnswer: "A", answerDetail: "This statement is one of the cornerstones of modern philosophy." },
+            { category: "History", difficulty: "Easy", question: "What is the primary reason for consuming turkey at holidays and special celebrations?", image: "images/51.jpg", options: { A: "Symbolizing abundance and sharing", B: "Quick cooking time", C: "Inexpensive", D: "Religious obligation" }, correctAnswer: "A", answerDetail: "Turkey symbolizes abundance and celebration in Western culture." },
+            { category: "Animals", difficulty: "Easy", question: "Which animal is the most commonly chosen as a pet worldwide?", image: "images/52.jpg", options: { A: "Dog", B: "Bird", C: "Fish", D: "Cat" }, correctAnswer: "D", answerDetail: "Cats are preferred for their independence and easy care requirements." },
+            { category: "Sports", difficulty: "Hard", question: "Who was the first athlete to score a perfect 10.00 in gymnastics at the Olympics?", image: "images/53.jpg", options: { A: "Olga Korbut", B: "Larisa Latynina", C: "Nadia Comăneci", D: "Simone Biles" }, correctAnswer: "C", answerDetail: "At the 1976 Montreal Olympics, Nadia Comăneci's perfect 10.00 score could not be displayed on the scoreboard." }
+        ]
     }
 };
+
+// --- TEMEL FONKSİYONLAR ---
 
 function setLanguage(lang) {
     currentLang = lang;
@@ -174,13 +173,12 @@ function setLanguage(lang) {
         buttons[1].classList.toggle('active', lang === 'en');
     }
     
-    const chapterNames = lang === 'tr'
-        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2", 3: "Genel Kültür 3" }
-        : { 1: "General Knowledge 1", 2: "General Knowledge 2", 3: "General Knowledge 3" };
+    const chapterNames = lang === 'tr' 
+        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2" }
+        : { 1: "General Culture 1", 2: "General Culture 2" };
     
     document.getElementById('chapter-1-name').textContent = chapterNames[1];
     document.getElementById('chapter-2-name').textContent = chapterNames[2];
-    document.getElementById('chapter-3-name').textContent = chapterNames[3];
     document.getElementById('chapter-title').textContent = uiTranslations[lang].chapterTitle;
     document.getElementById('back-button').textContent = uiTranslations[lang].backButton;
     document.getElementById('start-button').textContent = uiTranslations[lang].startButton;
@@ -200,8 +198,8 @@ function backToLanguage() {
 
 function getChapterName(chapter = currentChapter) {
     const chapterNames = currentLang === 'tr'
-        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2", 3: "Genel Kültür 3" }
-        : { 1: "General Knowledge 1", 2: "General Knowledge 2", 3: "General Knowledge 3" };
+        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2" }
+        : { 1: "General Culture 1", 2: "General Culture 2" };
 
     return chapterNames[chapter] || `${currentLang === 'tr' ? 'Bölüm' : 'Chapter'} ${chapter}`;
 }
@@ -227,12 +225,15 @@ function startGame(resume = false, chapter = null) {
         currentChapter = progress.currentChapter;
         hasAnsweredCurrentCard = Boolean(progress.hasAnsweredCurrentCard);
         selectedAnswer = progress.selectedAnswer || null;
-        const chapterData = currentLang === 'tr'
+        
+        // YENİ EKLENEN KISIM: Kayıtlı oyun bile olsa soruları her zaman ana dosyadan taze olarak çekiyoruz
+        const chapterData = currentLang === 'tr' 
             ? quizData.tr[`chapter${currentChapter}`]
             : quizData.en[`chapter${currentChapter}`];
         currentQuestions = [...chapterData];
+        
     } else {
-        const chapterData = currentLang === 'tr'
+        const chapterData = currentLang === 'tr' 
             ? quizData.tr[`chapter${currentChapter}`]
             : quizData.en[`chapter${currentChapter}`];
         currentQuestions = [...chapterData];
@@ -247,6 +248,7 @@ function startGame(resume = false, chapter = null) {
     document.getElementById('game-area').style.display = 'block';
     updateUITexts();
     setLanguage(currentLang);
+    
     document.getElementById('quiz-card').classList.toggle('flipped', hasAnsweredCurrentCard);
     loadCardData(currentCardIndex);
 }
@@ -258,6 +260,7 @@ function updateUITexts() {
     document.querySelector('.next-card-btn').textContent = t.nextButton;
     document.querySelector('.answer-label').textContent = t.correctLabel;
     document.getElementById('total-cards').textContent = currentQuestions.length;
+    
     document.getElementById('chapter-index').textContent = getChapterName();
 }
 
@@ -317,6 +320,7 @@ function handleAnswer(selected) {
     });
 
     saveProgress();
+    
     setTimeout(() => {
         document.getElementById('quiz-card').classList.add('flipped');
     }, 600);
@@ -325,6 +329,7 @@ function handleAnswer(selected) {
 function nextCard() {
     const quizCard = document.getElementById('quiz-card');
     quizCard.classList.remove('flipped');
+    
     document.querySelector('.next-card-btn').disabled = true;
 
     setTimeout(() => {
@@ -333,6 +338,7 @@ function nextCard() {
         selectedAnswer = null;
         saveProgress();
         loadCardData(currentCardIndex);
+        
         document.querySelector('.next-card-btn').disabled = false;
     }, 350);
 }
@@ -374,13 +380,14 @@ const BOARD_KEY = 'bilgi-karti-leaderboard-v1';
 let canSaveScore = false;
 
 function saveProgress() {
-    const progress = {
-        currentLang,
-        currentCardIndex,
-        score,
-        currentChapter,
-        hasAnsweredCurrentCard,
-        selectedAnswer
+    // YENİ EKLENEN KISIM: currentQuestions dizisini LocalStorage'a kaydetmeyi bıraktık
+    const progress = { 
+        currentLang, 
+        currentCardIndex, 
+        score, 
+        currentChapter, 
+        hasAnsweredCurrentCard, 
+        selectedAnswer 
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
     updateResumeButton();
@@ -392,7 +399,9 @@ function getProgress() {
 
     try {
         const progress = JSON.parse(raw);
-        const chapterData = progress.currentLang === 'tr'
+        
+        // YENİ EKLENEN KISIM: Soru sayısı kontrolünü güncel quizData üzerinden yapıyoruz
+        const chapterData = progress.currentLang === 'tr' 
             ? quizData.tr[`chapter${progress.currentChapter}`]
             : quizData.en[`chapter${progress.currentChapter}`];
 
