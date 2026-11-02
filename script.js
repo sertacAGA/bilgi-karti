@@ -3,7 +3,7 @@ let currentLang = 'tr';
 let currentCardIndex = 0;
 let score = 0;
 let currentQuestions = [];
-let currentChapter = 1; // Seçilen bölüm (1 veya 2)
+let currentChapter = 1; // Seçilen bölüm (1, 2 veya 3)
 let hasAnsweredCurrentCard = false;
 let selectedAnswer = null;
 
@@ -21,7 +21,667 @@ const uiTranslations = {
         noProgress: "Devam edilecek kayıtlı oyun bulunamadı.",
         scoreSaved: "Skorunuz otomatik kaydedildi.",
         enterNameToSave: "Skoru kaydetmek için adınızı yazıp Skoru Kaydet'e basın.",
-        finishToSave: "Skor kaydetmek için önce bölümü bitirin."
+        finishToSave: "Skor kaydetmek için önce bölümü bitirin.",
+        chapter3: [
+            {
+                "category": "Bilim",
+                "difficulty": "Kolay",
+                "question": "Güneş Sistemi'ndeki en büyük gezegen hangisidir?",
+                "image": "images/54.jpg",
+                "options": {
+                    "A": "Mars",
+                    "B": "Jüpiter",
+                    "C": "Dünya",
+                    "D": "Satürn"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Jüpiter, Güneş Sistemi'ndeki en büyük gezegendir."
+            },
+            {
+                "category": "Tarih",
+                "difficulty": "Orta",
+                "question": "Osmanlı Devleti'nin 34. padişahı ve son döneminin en uzun süre tahtta kalan hükümdarı kimdir?",
+                "image": "images/55.jpg",
+                "options": {
+                    "A": "V. Murad",
+                    "B": "II. Abdülhamid",
+                    "C": "II. Mahmud",
+                    "D": "V. Mehmed Reşad"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "II. Abdülhamid, Osmanlı Devleti'nin 34. padişahıdır ve 1876–1909 yılları arasında hüküm sürmüştür."
+            },
+            {
+                "category": "Sağlık",
+                "difficulty": "Kolay",
+                "question": "İnsan vücudu sıcak havalarda terleyerek nasıl serinler?",
+                "image": "images/56.jpg",
+                "options": {
+                    "A": "Terin buharlaşmasıyla vücuttan ısı uzaklaşır",
+                    "B": "Ter, vücut sıcaklığını doğrudan yükseltir",
+                    "C": "Terleme kan dolaşımını durdurur",
+                    "D": "Ter, vücuttaki oksijen miktarını artırır"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Ter cilt yüzeyinden buharlaşırken ısı enerjisi alır ve vücudun soğumasına yardımcı olur."
+            },
+            {
+                "category": "Dünya",
+                "difficulty": "Kolay",
+                "question": "Yüzölçümü bakımından dünyanın en büyük okyanusu hangisidir?",
+                "image": "images/57.jpg",
+                "options": {
+                    "A": "Atlas Okyanusu",
+                    "B": "Hint Okyanusu",
+                    "C": "Büyük Okyanus (Pasifik)",
+                    "D": "Arktik Okyanusu"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Büyük Okyanus (Pasifik), yüzölçümü bakımından dünyanın en büyük okyanusudur."
+            },
+            {
+                "category": "Hayvanlar",
+                "difficulty": "Kolay",
+                "question": "Penguenler doğal olarak en çok hangi yarım kürede yaşar?",
+                "image": "images/58.jpg",
+                "options": {
+                    "A": "Kuzey Yarım Küre",
+                    "B": "Güney Yarım Küre",
+                    "C": "Her iki yarım kürede eşit olarak",
+                    "D": "Yalnızca Ekvator çevresinde"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Penguen türlerinin doğal yaşam alanları ağırlıklı olarak Güney Yarım Küre'dedir."
+            },
+            {
+                "category": "Müzik",
+                "difficulty": "Kolay",
+                "question": "Bir müzik eserinin hızlı veya yavaş çalınmasını belirleyen kavram hangisidir?",
+                "image": "images/59.jpg",
+                "options": {
+                    "A": "Melodi",
+                    "B": "Tempo",
+                    "C": "Harmoni",
+                    "D": "Tını"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Tempo, müziğin icra edilme hızını ifade eder."
+            },
+            {
+                "category": "Spor",
+                "difficulty": "Kolay",
+                "question": "Futbolda bir oyuncu kırmızı kart gördüğünde ne olur?",
+                "image": "images/60.jpg",
+                "options": {
+                    "A": "Oyuncu yalnızca uyarılır",
+                    "B": "Oyuncu oyundan çıkarılır",
+                    "C": "Takım penaltı kullanır",
+                    "D": "Maç yeniden başlatılır"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Kırmızı kart gören oyuncu oyun alanını terk eder ve yerine başka oyuncu alınamaz."
+            },
+            {
+                "category": "Edebiyat",
+                "difficulty": "Orta",
+                "question": "Şiirde dizelerin sonunda benzer seslerin tekrarlanmasına ne denir?",
+                "image": "images/61.jpg",
+                "options": {
+                    "A": "Ölçü",
+                    "B": "Kafiye",
+                    "C": "Tema",
+                    "D": "Anlatıcı"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Kafiye, şiir dizelerinin sonunda tekrarlanan ses benzerliğidir."
+            },
+            {
+                "category": "Kültür & Sanat",
+                "difficulty": "Orta",
+                "question": "Tarihî el yazmalarını, tabloları ve eski sanat eserlerini bozulmadan korumak ve onarmakla uğraşan uzmanlık alanı hangisidir?",
+                "image": "images/62.jpg",
+                "options": {
+                    "A": "Arkeoloji",
+                    "B": "Etnografya",
+                    "C": "Restorasyon ve konservasyon",
+                    "D": "Grafik tasarım"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Restorasyon ve konservasyon, kültür varlıklarının korunması ve gerektiğinde onarılmasıyla ilgilenir."
+            },
+            {
+                "category": "Bilim",
+                "difficulty": "Orta",
+                "question": "Bitkilere yeşil rengini veren ve fotosentezde görev alan pigment hangisidir?",
+                "image": "images/63.jpg",
+                "options": {
+                    "A": "Melanin",
+                    "B": "Hemoglobin",
+                    "C": "Klorofil",
+                    "D": "Keratin"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Klorofil, bitkilerin ışık enerjisini soğurmasında görev alan yeşil pigmenttir."
+            },
+            {
+                "category": "Din",
+                "difficulty": "Kolay",
+                "question": "İslam dininde farz olan günlük namaz kaç vakittir?",
+                "image": "images/64.jpg",
+                "options": {
+                    "A": "2",
+                    "B": "3",
+                    "C": "4",
+                    "D": "5"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "İslam'da günlük farz namazlar beş vakittir."
+            },
+            {
+                "category": "Sağlık",
+                "difficulty": "Orta",
+                "question": "Hafıza ve sinir sisteminin normal işleyişinde önemli rol oynayan B12 vitamini hangi besin grubunda doğal olarak bulunur?",
+                "image": "images/65.jpg",
+                "options": {
+                    "A": "Turunçgiller",
+                    "B": "Tahıllar",
+                    "C": "Bitkisel yağlar",
+                    "D": "Balık ve diğer hayvansal besinler"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "B12 vitamini doğal olarak balık, et, yumurta ve süt ürünleri gibi hayvansal besinlerde bulunur."
+            },
+            {
+                "category": "Teknoloji",
+                "difficulty": "Kolay",
+                "question": "Bilgisayarda işlemci tarafından hızlı erişim için kullanılan geçici bellek bileşeni hangisidir?",
+                "image": "images/66.jpg",
+                "options": {
+                    "A": "SSD",
+                    "B": "RAM",
+                    "C": "Ekran kartı",
+                    "D": "Anakart"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "RAM, bilgisayar çalışırken işlemcinin ihtiyaç duyduğu verilere hızlı erişim sağlayan geçici bellektir."
+            },
+            {
+                "category": "Doğa",
+                "difficulty": "Orta",
+                "question": "Bir nehrin taşıdığı alüvyonları denize veya göle döküldüğü yerde biriktirmesiyle oluşan yer şekli hangisidir?",
+                "image": "images/67.jpg",
+                "options": {
+                    "A": "Plato",
+                    "B": "Delta ovası",
+                    "C": "Kanyon",
+                    "D": "Falez"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Nehirlerin ağız kısmında biriktirdiği alüvyonlar delta ovalarını oluşturabilir."
+            },
+            {
+                "category": "Hayvanlar",
+                "difficulty": "Orta",
+                "question": "Kaplumbağaların vücutlarının ayrılmaz bir parçası olan ve omurgalarıyla kaburgalarına bağlı bulunan yapı hangisidir?",
+                "image": "images/68.jpg",
+                "options": {
+                    "A": "Kuyrukları",
+                    "B": "Derileri",
+                    "C": "Kabukları",
+                    "D": "Pençeleri"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Kaplumbağa kabuğu iskeletinin bir parçasıdır; omurga ve kaburgalarla bağlantılıdır."
+            },
+            {
+                "category": "Tarih",
+                "difficulty": "Orta",
+                "question": "Çivi yazısını ilk geliştiren uygarlık hangisidir?",
+                "image": "images/69.jpg",
+                "options": {
+                    "A": "Antik Yunanlar",
+                    "B": "Romalılar",
+                    "C": "Antik Mısırlılar",
+                    "D": "Sümerler"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Çivi yazısı, Mezopotamya'da Sümerler tarafından geliştirilmiştir."
+            },
+            {
+                "category": "Spor",
+                "difficulty": "Orta",
+                "question": "Wimbledon Tenis Turnuvası hangi tür kortta oynanır?",
+                "image": "images/70.jpg",
+                "options": {
+                    "A": "Çim kort",
+                    "B": "Toprak kort",
+                    "C": "Sert kort",
+                    "D": "Sentetik halı kort"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Wimbledon, profesyonel tenis takvimindeki en tanınmış çim kort turnuvasıdır."
+            },
+            {
+                "category": "Müzik",
+                "difficulty": "Orta",
+                "question": "Bir orkestrada müzisyenleri yöneten ve eserin icrasını yönlendiren kişiye ne denir?",
+                "image": "images/71.jpg",
+                "options": {
+                    "A": "Besteci",
+                    "B": "Solist",
+                    "C": "Orkestra şefi",
+                    "D": "Söz yazarı"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Orkestra şefi, müzisyenlerin birlikte ve uyumlu çalmasını yönetir."
+            },
+            {
+                "category": "Bilim",
+                "difficulty": "Kolay",
+                "question": "Dünya'nın çevresindeki cisimleri kendine doğru çeken kuvvet hangisidir?",
+                "image": "images/72.jpg",
+                "options": {
+                    "A": "Manyetik kuvvet",
+                    "B": "Sürtünme kuvveti",
+                    "C": "Elektriksel kuvvet",
+                    "D": "Kütle çekim kuvveti"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Kütle çekim kuvveti, kütlesi olan cisimlerin birbirini çekmesini sağlar."
+            },
+            {
+                "category": "Sağlık",
+                "difficulty": "Orta",
+                "question": "Uzun süre yetersiz uyumak aşağıdakilerden hangisini olumsuz etkileyebilir?",
+                "image": "images/73.jpg",
+                "options": {
+                    "A": "Dikkat ve konsantrasyonu",
+                    "B": "Göz rengini",
+                    "C": "Parmak izlerini",
+                    "D": "Kan grubunu"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Yetersiz uyku dikkat, konsantrasyon ve öğrenme süreçlerini olumsuz etkileyebilir."
+            },
+            {
+                "category": "Kültür & Sanat",
+                "difficulty": "Kolay",
+                "question": "Resim yaparken boyayı yüzeye uygulamak için en yaygın kullanılan araç hangisidir?",
+                "image": "images/74.jpg",
+                "options": {
+                    "A": "Pergel",
+                    "B": "Keski",
+                    "C": "Fırça",
+                    "D": "Cetvel"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Fırça, boyayı resim yüzeyine uygulamak için kullanılan temel araçlardan biridir."
+            },
+            {
+                "category": "Dünya",
+                "difficulty": "Kolay",
+                "question": "Deniz seviyesinden yüksekliği bakımından dünyanın en yüksek dağı hangisidir?",
+                "image": "images/75.jpg",
+                "options": {
+                    "A": "K2",
+                    "B": "Everest",
+                    "C": "Kilimanjaro",
+                    "D": "Mont Blanc"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Everest'in zirvesi deniz seviyesinden yaklaşık 8.849 metre yüksektedir."
+            },
+            {
+                "category": "Teknoloji",
+                "difficulty": "Orta",
+                "question": "Bilgisayarların ve diğer cihazların bir ağ üzerinden nasıl iletişim kuracağını belirleyen kurallar bütününe ne denir?",
+                "image": "images/76.jpg",
+                "options": {
+                    "A": "Donanım",
+                    "B": "İşletim sistemi",
+                    "C": "Arayüz",
+                    "D": "Ağ protokolü"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Ağ protokolleri, cihazların veri alışverişini hangi kurallarla yapacağını tanımlar."
+            },
+            {
+                "category": "Edebiyat",
+                "difficulty": "Kolay",
+                "question": "Toplumun uzun yıllar boyunca edindiği deneyimleri ve öğütleri kısa, kalıplaşmış sözlerle anlatan ifadeler hangileridir?",
+                "image": "images/77.jpg",
+                "options": {
+                    "A": "Atasözleri",
+                    "B": "Romanlar",
+                    "C": "Masallar",
+                    "D": "Tekerlemeler"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Atasözleri, toplumların deneyim ve öğütlerini kısa, kalıplaşmış ifadelerle aktarır."
+            },
+            {
+                "category": "Bilim",
+                "difficulty": "Kolay",
+                "question": "Dünya'daki çoğu ekosistemin temel enerji kaynağı hangisidir?",
+                "image": "images/78.jpg",
+                "options": {
+                    "A": "Ay",
+                    "B": "Rüzgâr",
+                    "C": "Güneş",
+                    "D": "Dünya'nın manyetik alanı"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Güneş ışığı, fotosentez yoluyla çoğu ekosistemin enerji akışını başlatır."
+            },
+            {
+                "category": "Tarih",
+                "difficulty": "Orta",
+                "question": "Osmanlı Devleti'nde sadrazamın başkanlığında devlet işlerinin görüşüldüğü yönetim organı hangisidir?",
+                "image": "images/79.jpg",
+                "options": {
+                    "A": "Enderun",
+                    "B": "Divan-ı Hümayun",
+                    "C": "Yeniçeri Ocağı",
+                    "D": "Lonca Teşkilatı"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Divan-ı Hümayun, Osmanlı Devleti'nde önemli yönetim ve danışma işlerinin görüşüldüğü kuruldu."
+            },
+            {
+                "category": "Spor",
+                "difficulty": "Orta",
+                "question": "Salon voleybolunda, karar seti dışındaki setleri kazanmak için bir takımın en az kaç sayıya ulaşması gerekir?",
+                "image": "images/80.jpg",
+                "options": {
+                    "A": "15",
+                    "B": "20",
+                    "C": "21",
+                    "D": "25"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Salon voleybolunda ilk dört set 25 sayıya oynanır; seti kazanmak için en az iki sayı fark gerekir."
+            },
+            {
+                "category": "Hayvanlar",
+                "difficulty": "Kolay",
+                "question": "Zürafaların uzun boyunları sayesinde ulaşabildiği besinler genellikle nerede bulunur?",
+                "image": "images/81.jpg",
+                "options": {
+                    "A": "Ağaçların yüksek dallarında",
+                    "B": "Yer altındaki yuvalarda",
+                    "C": "Nehirlerin derinliklerinde",
+                    "D": "Kayaların altında"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Zürafalar uzun boyunlarıyla ağaçların yüksek dallarındaki yapraklara ulaşabilir."
+            },
+            {
+                "category": "Din",
+                "difficulty": "Kolay",
+                "question": "Ramazan Bayramı, İslam dünyasında hangi ibadet döneminin sona ermesinin ardından kutlanır?",
+                "image": "images/82.jpg",
+                "options": {
+                    "A": "Hac ibadetinin",
+                    "B": "Kurban kesiminin",
+                    "C": "Ramazan orucunun",
+                    "D": "Zekât döneminin"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Ramazan Bayramı, Ramazan ayındaki oruç ibadetinin tamamlanmasının ardından kutlanır."
+            },
+            {
+                "category": "Dünya",
+                "difficulty": "Orta",
+                "question": "Birleşmiş Milletler'e üye Afrika ülkelerinin sayısı kaçtır?",
+                "image": "images/83.jpg",
+                "options": {
+                    "A": "42",
+                    "B": "54",
+                    "C": "48",
+                    "D": "60"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Birleşmiş Milletler'in 54 üyesi Afrika kıtasındadır."
+            },
+            {
+                "category": "Kültür & Sanat",
+                "difficulty": "Orta",
+                "question": "Oyuncu sahnede repliğini unuttuğunda, kendisine hatırlatmak için verilen kısa ipucuna ne denir?",
+                "image": "images/84.jpg",
+                "options": {
+                    "A": "Sinopsis",
+                    "B": "Sufle",
+                    "C": "Monolog",
+                    "D": "Prolog"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Sufle, oyuncuya unuttuğu repliği hatırlatmak için sahne kenarından verilen sözdür. Sinopsis ise bir eserin kısa özetidir."
+            },
+            {
+                "category": "Müzik",
+                "difficulty": "Kolay",
+                "question": "Bağlama, gitar veya ud gibi telli çalgılarda tellere vurmak ya da telleri çekmek için kullanılan araca ne denir?",
+                "image": "images/85.jpg",
+                "options": {
+                    "A": "Mızrap",
+                    "B": "Yay",
+                    "C": "Baget",
+                    "D": "Akort cihazı"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Mızrap, bazı telli çalgıların tellerini titreştirmek için kullanılan küçük araçtır."
+            },
+            {
+                "category": "Sağlık",
+                "difficulty": "Kolay",
+                "question": "Dişleri çürümeye karşı korumak için diş hekimlerinin önerdiği temel alışkanlıklardan biri hangisidir?",
+                "image": "images/86.jpg",
+                "options": {
+                    "A": "Dişleri yalnızca suyla çalkalamak",
+                    "B": "Sert yiyecekleri sık tüketmek",
+                    "C": "Dişleri günde iki kez florürlü diş macunuyla fırçalamak",
+                    "D": "Diş fırçalamadan önce şekerli içecek tüketmek"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Florürlü diş macunuyla günde iki kez fırçalamak diş minesini güçlendirmeye ve çürük riskini azaltmaya yardımcı olur."
+            },
+            {
+                "category": "Teknoloji",
+                "difficulty": "Kolay",
+                "question": "Ev veya ofis ağında internet bağlantısını birden fazla cihaza kablosuz olarak dağıtan cihaz hangisidir?",
+                "image": "images/87.jpg",
+                "options": {
+                    "A": "Harici disk",
+                    "B": "Ağ kartı",
+                    "C": "Modem kablosu",
+                    "D": "Kablosuz yönlendirici (router)"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Kablosuz yönlendirici, ağ bağlantısını Wi-Fi üzerinden birden fazla cihaza dağıtabilir."
+            },
+            {
+                "category": "Bilim",
+                "difficulty": "Kolay",
+                "question": "Bitki köklerinin temel görevlerinden biri hangisidir?",
+                "image": "images/88.jpg",
+                "options": {
+                    "A": "Güneş ışığını doğrudan besine dönüştürmek",
+                    "B": "Çiçeklerin rengini belirlemek",
+                    "C": "Topraktan su ve mineral almak",
+                    "D": "Polen üretmek"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Bitki kökleri bitkiyi toprağa bağlar ve topraktan su ile mineral maddeleri alır."
+            },
+            {
+                "category": "Edebiyat",
+                "difficulty": "Kolay",
+                "question": "Bir metinde yazarın okuyucuya asıl olarak anlatmak veya düşündürmek istediği temel mesaja ne denir?",
+                "image": "images/89.jpg",
+                "options": {
+                    "A": "Ana düşünce",
+                    "B": "Yardımcı karakter",
+                    "C": "Betimleme",
+                    "D": "Diyalog"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Ana düşünce, metnin okuyucuya aktarmayı amaçladığı temel mesajdır."
+            },
+            {
+                "category": "Spor",
+                "difficulty": "Kolay",
+                "question": "Atletizmde standart bir açık hava pistinde bir turun uzunluğu kaç metredir?",
+                "image": "images/90.jpg",
+                "options": {
+                    "A": "200",
+                    "B": "300",
+                    "C": "400",
+                    "D": "800"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Standart açık hava atletizm pistinin bir kulvarındaki turun uzunluğu 400 metredir."
+            },
+            {
+                "category": "Hayvanlar",
+                "difficulty": "Kolay",
+                "question": "Bir kelebeğin tırtıl evresinden sonra yetişkin kelebeğe dönüşmeden önce bulunduğu evre hangisidir?",
+                "image": "images/91.jpg",
+                "options": {
+                    "A": "Yumurta",
+                    "B": "Larva",
+                    "C": "Ergin",
+                    "D": "Pupa"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Kelebek yaşam döngüsünde tırtıl (larva) evresinden sonra pupa evresine geçer."
+            },
+            {
+                "category": "Dünya",
+                "difficulty": "Kolay",
+                "question": "Bir bölgedeki sıcaklık, yağış, rüzgâr ve nem gibi atmosfer koşullarının kısa süreli durumuna ne denir?",
+                "image": "images/92.jpg",
+                "options": {
+                    "A": "Hava durumu",
+                    "B": "İklim",
+                    "C": "Erozyon",
+                    "D": "Mevsim döngüsü"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Hava durumu, atmosferin belirli bir yerde kısa süre içindeki koşullarını ifade eder."
+            },
+            {
+                "category": "Tarih",
+                "difficulty": "Kolay",
+                "question": "Antik Mısır'daki piramitler öncelikle hangi amaçla inşa edilmiştir?",
+                "image": "images/93.jpg",
+                "options": {
+                    "A": "Halkın yaşadığı konutlar olarak",
+                    "B": "Ticaret merkezleri olarak",
+                    "C": "Kralların mezarı olarak",
+                    "D": "Askerî savunma kaleleri olarak"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Mısır piramitlerinin en bilinenleri firavunlar için anıt mezar olarak inşa edilmiştir."
+            },
+            {
+                "category": "Dünya",
+                "difficulty": "Orta",
+                "question": "Dünyada ana dili olarak en fazla insan tarafından konuşulan dil hangisidir?",
+                "image": "images/94.jpg",
+                "options": {
+                    "A": "İngilizce",
+                    "B": "İspanyolca",
+                    "C": "Hintçe",
+                    "D": "Mandarin Çincesi"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Ana dili konuşuru sayısı bakımından Mandarin Çincesi dünyanın en büyük dilidir."
+            },
+            {
+                "category": "Teknoloji",
+                "difficulty": "Kolay",
+                "question": "İnternet sitelerini görüntülemek ve web sayfaları arasında gezinmek için kullanılan yazılıma ne denir?",
+                "image": "images/95.jpg",
+                "options": {
+                    "A": "Web tarayıcısı",
+                    "B": "İşletim sistemi",
+                    "C": "Veritabanı",
+                    "D": "Dosya sıkıştırma programı"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Web tarayıcısı, internet sitelerini açmak ve web sayfalarında gezinmek için kullanılır."
+            },
+            {
+                "category": "Kültür & Sanat",
+                "difficulty": "Orta",
+                "question": "Binaların tasarımını, işlevsel düzenini ve yapısal özelliklerini planlayan meslek hangisidir?",
+                "image": "images/96.jpg",
+                "options": {
+                    "A": "İç mimarlık",
+                    "B": "Peyzaj mimarlığı",
+                    "C": "Şehir plancılığı",
+                    "D": "Mimarlık"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Mimarlar binaların tasarımını, işlevini ve mekânsal düzenini planlar."
+            },
+            {
+                "category": "Bilim",
+                "difficulty": "Orta",
+                "question": "Fotosentez yapan bitkiler, atmosferdeki hangi gazı kullanır?",
+                "image": "images/97.jpg",
+                "options": {
+                    "A": "Oksijen",
+                    "B": "Azot",
+                    "C": "Karbondioksit",
+                    "D": "Hidrojen"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Bitkiler fotosentez sırasında karbondioksit ve su kullanarak organik madde üretir."
+            },
+            {
+                "category": "Doğa",
+                "difficulty": "Orta",
+                "question": "Tropikal yağmur ormanlarının yıl boyunca yüksek sıcaklık ve bol yağış almasının temel nedeni hangisidir?",
+                "image": "images/98.jpg",
+                "options": {
+                    "A": "Ekvator çevresindeki güneşlenme ve nemli hava koşulları",
+                    "B": "Kutuplardan gelen soğuk hava akımları",
+                    "C": "Yüksek rakımlı dağların sürekli kar üretmesi",
+                    "D": "Denizlerden tamamen uzak olmaları"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Ekvator çevresinde güneş ışınları yıl boyunca güçlüdür; yükselen nemli hava sık yağış oluşturur."
+            },
+            {
+                "category": "Spor",
+                "difficulty": "Orta",
+                "question": "FIBA basketbol kurallarına göre bir oyuncu serbest atış kullanırken topu kaç saniye içinde elinden çıkarmalıdır?",
+                "image": "images/99.jpg",
+                "options": {
+                    "A": "3 saniye",
+                    "B": "8 saniye",
+                    "C": "10 saniye",
+                    "D": "5 saniye"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "FIBA kurallarına göre serbest atışı kullanacak oyuncu, top kendisine verildikten sonra beş saniye içinde atışı yapmalıdır."
+            },
+            {
+                "category": "Müzik",
+                "difficulty": "Orta",
+                "question": "Bir şarkıda kıtalar arasında tekrarlanan ve genellikle eserin en akılda kalıcı bölümünü oluşturan kısma ne denir?",
+                "image": "images/100.jpg",
+                "options": {
+                    "A": "Köprü",
+                    "B": "Giriş",
+                    "C": "Nakarat",
+                    "D": "Solo"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Nakarat, şarkının tekrarlanan ve çoğunlukla ana melodik fikri taşıyan bölümüdür."
+            }
+        ]
     },
     en: {
         startButton: "Start Game",
@@ -158,6 +818,666 @@ const quizData = {
             { category: "History", difficulty: "Easy", question: "What is the primary reason for consuming turkey at holidays and special celebrations?", image: "images/51.jpg", options: { A: "Symbolizing abundance and sharing", B: "Quick cooking time", C: "Inexpensive", D: "Religious obligation" }, correctAnswer: "A", answerDetail: "Turkey symbolizes abundance and celebration in Western culture." },
             { category: "Animals", difficulty: "Easy", question: "Which animal is the most commonly chosen as a pet worldwide?", image: "images/52.jpg", options: { A: "Dog", B: "Bird", C: "Fish", D: "Cat" }, correctAnswer: "D", answerDetail: "Cats are preferred for their independence and easy care requirements." },
             { category: "Sports", difficulty: "Hard", question: "Who was the first athlete to score a perfect 10.00 in gymnastics at the Olympics?", image: "images/53.jpg", options: { A: "Olga Korbut", B: "Larisa Latynina", C: "Nadia Comăneci", D: "Simone Biles" }, correctAnswer: "C", answerDetail: "At the 1976 Montreal Olympics, Nadia Comăneci's perfect 10.00 score could not be displayed on the scoreboard." }
+        ],
+        chapter3: [
+            {
+                "category": "Science",
+                "difficulty": "Easy",
+                "question": "Which is the largest planet in the Solar System?",
+                "image": "images/54.jpg",
+                "options": {
+                    "A": "Mars",
+                    "B": "Jupiter",
+                    "C": "Earth",
+                    "D": "Saturn"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Jupiter is the largest planet in the Solar System."
+            },
+            {
+                "category": "History",
+                "difficulty": "Medium",
+                "question": "Who was the 34th sultan of the Ottoman Empire and the longest-reigning ruler of its late period?",
+                "image": "images/55.jpg",
+                "options": {
+                    "A": "Murad V",
+                    "B": "Abdulhamid II",
+                    "C": "Mahmud II",
+                    "D": "Mehmed V Reşad"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Abdulhamid II was the 34th Ottoman sultan and reigned from 1876 to 1909."
+            },
+            {
+                "category": "Health",
+                "difficulty": "Easy",
+                "question": "How does the human body cool itself by sweating in hot weather?",
+                "image": "images/56.jpg",
+                "options": {
+                    "A": "Evaporation of sweat removes heat from the body",
+                    "B": "Sweat directly raises body temperature",
+                    "C": "Sweating stops blood circulation",
+                    "D": "Sweat increases the amount of oxygen in the body"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "As sweat evaporates from the skin, it absorbs heat and helps cool the body."
+            },
+            {
+                "category": "World",
+                "difficulty": "Easy",
+                "question": "Which is the largest ocean in the world by surface area?",
+                "image": "images/57.jpg",
+                "options": {
+                    "A": "Atlantic Ocean",
+                    "B": "Indian Ocean",
+                    "C": "Pacific Ocean",
+                    "D": "Arctic Ocean"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "The Pacific Ocean is the largest ocean by surface area."
+            },
+            {
+                "category": "Animals",
+                "difficulty": "Easy",
+                "question": "In which hemisphere do penguins naturally live most widely?",
+                "image": "images/58.jpg",
+                "options": {
+                    "A": "Northern Hemisphere",
+                    "B": "Southern Hemisphere",
+                    "C": "Equally in both hemispheres",
+                    "D": "Only around the Equator"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "The natural ranges of penguin species are concentrated in the Southern Hemisphere."
+            },
+            {
+                "category": "Music",
+                "difficulty": "Easy",
+                "question": "Which term describes how fast or slowly a piece of music is performed?",
+                "image": "images/59.jpg",
+                "options": {
+                    "A": "Melody",
+                    "B": "Tempo",
+                    "C": "Harmony",
+                    "D": "Timbre"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Tempo refers to the speed at which music is performed."
+            },
+            {
+                "category": "Sports",
+                "difficulty": "Easy",
+                "question": "What happens when a football player receives a red card?",
+                "image": "images/60.jpg",
+                "options": {
+                    "A": "The player only receives a warning",
+                    "B": "The player is sent off",
+                    "C": "The team takes a penalty",
+                    "D": "The match is restarted"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "A player shown a red card must leave the field and cannot be replaced."
+            },
+            {
+                "category": "Literature",
+                "difficulty": "Medium",
+                "question": "What is the repetition of similar sounds at the ends of poetic lines called?",
+                "image": "images/61.jpg",
+                "options": {
+                    "A": "Meter",
+                    "B": "Rhyme",
+                    "C": "Theme",
+                    "D": "Narrator"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Rhyme is the repetition of similar sounds, often at the ends of poetic lines."
+            },
+            {
+                "category": "Culture & Art",
+                "difficulty": "Medium",
+                "question": "Which field focuses on preserving and repairing historical manuscripts, paintings, and other works of art?",
+                "image": "images/62.jpg",
+                "options": {
+                    "A": "Archaeology",
+                    "B": "Ethnography",
+                    "C": "Restoration and conservation",
+                    "D": "Graphic design"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Restoration and conservation focus on protecting cultural objects and repairing them when necessary."
+            },
+            {
+                "category": "Science",
+                "difficulty": "Medium",
+                "question": "Which pigment gives plants their green color and plays a role in photosynthesis?",
+                "image": "images/63.jpg",
+                "options": {
+                    "A": "Melanin",
+                    "B": "Hemoglobin",
+                    "C": "Chlorophyll",
+                    "D": "Keratin"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Chlorophyll is the green pigment that absorbs light energy for photosynthesis."
+            },
+            {
+                "category": "Religion",
+                "difficulty": "Easy",
+                "question": "How many obligatory daily prayers are there in Islam?",
+                "image": "images/64.jpg",
+                "options": {
+                    "A": "2",
+                    "B": "3",
+                    "C": "4",
+                    "D": "5"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "There are five obligatory daily prayers in Islam."
+            },
+            {
+                "category": "Health",
+                "difficulty": "Medium",
+                "question": "Vitamin B12, which plays an important role in normal memory and nervous system function, is naturally found in which food group?",
+                "image": "images/65.jpg",
+                "options": {
+                    "A": "Citrus fruits",
+                    "B": "Grains",
+                    "C": "Plant oils",
+                    "D": "Fish and other animal-based foods"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Vitamin B12 occurs naturally in animal-based foods such as fish, meat, eggs, and dairy products."
+            },
+            {
+                "category": "Technology",
+                "difficulty": "Easy",
+                "question": "Which computer component provides temporary memory for fast access by the processor?",
+                "image": "images/66.jpg",
+                "options": {
+                    "A": "SSD",
+                    "B": "RAM",
+                    "C": "Graphics card",
+                    "D": "Motherboard"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "RAM is temporary memory that gives the processor fast access to data while the computer is running."
+            },
+            {
+                "category": "Nature",
+                "difficulty": "Medium",
+                "question": "Which landform can form when a river deposits sediment where it flows into a sea or lake?",
+                "image": "images/67.jpg",
+                "options": {
+                    "A": "Plateau",
+                    "B": "Delta",
+                    "C": "Canyon",
+                    "D": "Cliff"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "Sediment deposited near a river mouth can build a delta."
+            },
+            {
+                "category": "Animals",
+                "difficulty": "Medium",
+                "question": "Which structure is an inseparable part of a turtle's body and is connected to its spine and ribs?",
+                "image": "images/68.jpg",
+                "options": {
+                    "A": "Tail",
+                    "B": "Skin",
+                    "C": "Shell",
+                    "D": "Claws"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "A turtle's shell is part of its skeleton and is connected to its spine and ribs."
+            },
+            {
+                "category": "History",
+                "difficulty": "Medium",
+                "question": "Which civilization first developed cuneiform writing?",
+                "image": "images/69.jpg",
+                "options": {
+                    "A": "Ancient Greeks",
+                    "B": "Romans",
+                    "C": "Ancient Egyptians",
+                    "D": "Sumerians"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Cuneiform writing was developed by the Sumerians in Mesopotamia."
+            },
+            {
+                "category": "Sports",
+                "difficulty": "Medium",
+                "question": "What type of court is used for the Wimbledon Tennis Championships?",
+                "image": "images/70.jpg",
+                "options": {
+                    "A": "Grass court",
+                    "B": "Clay court",
+                    "C": "Hard court",
+                    "D": "Synthetic carpet court"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Wimbledon is the best-known grass-court tournament in professional tennis."
+            },
+            {
+                "category": "Music",
+                "difficulty": "Medium",
+                "question": "What is the person who leads an orchestra and guides its performance called?",
+                "image": "images/71.jpg",
+                "options": {
+                    "A": "Composer",
+                    "B": "Soloist",
+                    "C": "Conductor",
+                    "D": "Lyricist"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "The conductor coordinates the musicians and guides the orchestra's performance."
+            },
+            {
+                "category": "Science",
+                "difficulty": "Easy",
+                "question": "Which force pulls objects toward the Earth?",
+                "image": "images/72.jpg",
+                "options": {
+                    "A": "Magnetic force",
+                    "B": "Friction",
+                    "C": "Electric force",
+                    "D": "Gravity"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Gravity is the force that attracts objects with mass toward one another."
+            },
+            {
+                "category": "Health",
+                "difficulty": "Medium",
+                "question": "Which of the following can be negatively affected by long-term insufficient sleep?",
+                "image": "images/73.jpg",
+                "options": {
+                    "A": "Attention and concentration",
+                    "B": "Eye color",
+                    "C": "Fingerprints",
+                    "D": "Blood type"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Insufficient sleep can impair attention, concentration, and learning."
+            },
+            {
+                "category": "Culture & Art",
+                "difficulty": "Easy",
+                "question": "Which tool is most commonly used to apply paint to a surface?",
+                "image": "images/74.jpg",
+                "options": {
+                    "A": "Compass",
+                    "B": "Chisel",
+                    "C": "Paintbrush",
+                    "D": "Ruler"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "A paintbrush is one of the basic tools used to apply paint to an art surface."
+            },
+            {
+                "category": "World",
+                "difficulty": "Easy",
+                "question": "What is the highest mountain in the world measured from sea level?",
+                "image": "images/75.jpg",
+                "options": {
+                    "A": "K2",
+                    "B": "Mount Everest",
+                    "C": "Kilimanjaro",
+                    "D": "Mont Blanc"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "The summit of Mount Everest is about 8,849 meters above sea level."
+            },
+            {
+                "category": "Technology",
+                "difficulty": "Medium",
+                "question": "What is the name for the set of rules that determines how computers and other devices communicate over a network?",
+                "image": "images/76.jpg",
+                "options": {
+                    "A": "Hardware",
+                    "B": "Operating system",
+                    "C": "Interface",
+                    "D": "Network protocol"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Network protocols define the rules devices follow when exchanging data."
+            },
+            {
+                "category": "Literature",
+                "difficulty": "Easy",
+                "question": "What are short, established expressions that pass down a society's experience and advice?",
+                "image": "images/77.jpg",
+                "options": {
+                    "A": "Proverbs",
+                    "B": "Novels",
+                    "C": "Fairy tales",
+                    "D": "Tongue twisters"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Proverbs convey shared experience and advice in short, established expressions."
+            },
+            {
+                "category": "Science",
+                "difficulty": "Easy",
+                "question": "What is the primary energy source for most ecosystems on Earth?",
+                "image": "images/78.jpg",
+                "options": {
+                    "A": "The Moon",
+                    "B": "Wind",
+                    "C": "The Sun",
+                    "D": "Earth's magnetic field"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Sunlight drives energy flow in most ecosystems through photosynthesis."
+            },
+            {
+                "category": "History",
+                "difficulty": "Medium",
+                "question": "In the Ottoman Empire, which governing council discussed state affairs under the grand vizier's leadership?",
+                "image": "images/79.jpg",
+                "options": {
+                    "A": "Enderun",
+                    "B": "Imperial Council (Divan-ı Hümayun)",
+                    "C": "Janissary Corps",
+                    "D": "Guild organization"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "The Imperial Council was an important Ottoman body for discussing government and administrative affairs."
+            },
+            {
+                "category": "Sports",
+                "difficulty": "Medium",
+                "question": "In indoor volleyball, how many points must a team reach to win a set other than the deciding set?",
+                "image": "images/80.jpg",
+                "options": {
+                    "A": "15",
+                    "B": "20",
+                    "C": "21",
+                    "D": "25"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "The first four sets are played to 25 points, and a team must win by at least two points."
+            },
+            {
+                "category": "Animals",
+                "difficulty": "Easy",
+                "question": "Where is the food that giraffes can reach with their long necks usually found?",
+                "image": "images/81.jpg",
+                "options": {
+                    "A": "On high tree branches",
+                    "B": "In underground nests",
+                    "C": "Deep in rivers",
+                    "D": "Under rocks"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Giraffes use their long necks to reach leaves on high tree branches."
+            },
+            {
+                "category": "Religion",
+                "difficulty": "Easy",
+                "question": "Which period of worship ends just before Eid al-Fitr is celebrated?",
+                "image": "images/82.jpg",
+                "options": {
+                    "A": "The Hajj pilgrimage",
+                    "B": "The animal sacrifice",
+                    "C": "The Ramadan fast",
+                    "D": "The zakat period"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Eid al-Fitr is celebrated after the month of fasting during Ramadan."
+            },
+            {
+                "category": "World",
+                "difficulty": "Medium",
+                "question": "How many African countries are members of the United Nations?",
+                "image": "images/83.jpg",
+                "options": {
+                    "A": "42",
+                    "B": "54",
+                    "C": "48",
+                    "D": "60"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "There are 54 African member states in the United Nations."
+            },
+            {
+                "category": "Culture & Art",
+                "difficulty": "Medium",
+                "question": "What is the short prompt given to an actor to remind them of a forgotten line on stage called?",
+                "image": "images/84.jpg",
+                "options": {
+                    "A": "Synopsis",
+                    "B": "Cue (prompt)",
+                    "C": "Monologue",
+                    "D": "Prologue"
+                },
+                "correctAnswer": "B",
+                "answerDetail": "A cue or prompt is a word or line given to help an actor remember forgotten dialogue. A synopsis is a brief summary of a work."
+            },
+            {
+                "category": "Music",
+                "difficulty": "Easy",
+                "question": "What is the small tool used to strike or pluck the strings of instruments such as the bağlama, guitar, or oud called?",
+                "image": "images/85.jpg",
+                "options": {
+                    "A": "Plectrum",
+                    "B": "Bow",
+                    "C": "Drumstick",
+                    "D": "Tuner"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "A plectrum is a small tool used to pluck or strike the strings of certain instruments."
+            },
+            {
+                "category": "Health",
+                "difficulty": "Easy",
+                "question": "Which basic habit do dentists recommend to help protect teeth against decay?",
+                "image": "images/86.jpg",
+                "options": {
+                    "A": "Rinsing with water only",
+                    "B": "Frequently eating hard foods",
+                    "C": "Brushing twice a day with fluoride toothpaste",
+                    "D": "Drinking sugary beverages before brushing"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Brushing twice daily with fluoride toothpaste helps strengthen enamel and reduce the risk of tooth decay."
+            },
+            {
+                "category": "Technology",
+                "difficulty": "Easy",
+                "question": "Which device can distribute an internet connection wirelessly to multiple devices in a home or office network?",
+                "image": "images/87.jpg",
+                "options": {
+                    "A": "External drive",
+                    "B": "Network card",
+                    "C": "Modem cable",
+                    "D": "Wireless router"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "A wireless router can distribute a network connection to multiple devices over Wi-Fi."
+            },
+            {
+                "category": "Science",
+                "difficulty": "Easy",
+                "question": "Which is one of the main functions of plant roots?",
+                "image": "images/88.jpg",
+                "options": {
+                    "A": "Turning sunlight directly into food",
+                    "B": "Determining flower color",
+                    "C": "Absorbing water and minerals from soil",
+                    "D": "Producing pollen"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Plant roots anchor the plant and absorb water and mineral nutrients from the soil."
+            },
+            {
+                "category": "Literature",
+                "difficulty": "Easy",
+                "question": "What is the central message that an author wants readers to understand or consider in a text called?",
+                "image": "images/89.jpg",
+                "options": {
+                    "A": "Main idea",
+                    "B": "Supporting character",
+                    "C": "Description",
+                    "D": "Dialogue"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "The main idea is the central message a text aims to communicate."
+            },
+            {
+                "category": "Sports",
+                "difficulty": "Easy",
+                "question": "How long is one lap of a standard outdoor athletics track?",
+                "image": "images/90.jpg",
+                "options": {
+                    "A": "200 meters",
+                    "B": "300 meters",
+                    "C": "400 meters",
+                    "D": "800 meters"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "One lap in the standard outdoor athletics track's innermost lane is 400 meters."
+            },
+            {
+                "category": "Animals",
+                "difficulty": "Easy",
+                "question": "What is the stage after the caterpillar and before an adult butterfly?",
+                "image": "images/91.jpg",
+                "options": {
+                    "A": "Egg",
+                    "B": "Larva",
+                    "C": "Adult",
+                    "D": "Pupa"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "In a butterfly's life cycle, the caterpillar (larva) develops into the pupa stage."
+            },
+            {
+                "category": "World",
+                "difficulty": "Easy",
+                "question": "What term describes short-term atmospheric conditions such as temperature, rainfall, wind, and humidity in a region?",
+                "image": "images/92.jpg",
+                "options": {
+                    "A": "Weather",
+                    "B": "Climate",
+                    "C": "Erosion",
+                    "D": "Seasonal cycle"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Weather describes atmospheric conditions at a particular place over a short period."
+            },
+            {
+                "category": "History",
+                "difficulty": "Easy",
+                "question": "What was the primary purpose of the pyramids in ancient Egypt?",
+                "image": "images/93.jpg",
+                "options": {
+                    "A": "Homes for the general population",
+                    "B": "Trade centers",
+                    "C": "Tombs for kings",
+                    "D": "Military fortresses"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "The best-known Egyptian pyramids were built as monumental tombs for pharaohs."
+            },
+            {
+                "category": "World",
+                "difficulty": "Medium",
+                "question": "Which language has the largest number of native speakers in the world?",
+                "image": "images/94.jpg",
+                "options": {
+                    "A": "English",
+                    "B": "Spanish",
+                    "C": "Hindi",
+                    "D": "Mandarin Chinese"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Mandarin Chinese has the largest number of native speakers worldwide."
+            },
+            {
+                "category": "Technology",
+                "difficulty": "Easy",
+                "question": "What is the software used to view websites and navigate web pages called?",
+                "image": "images/95.jpg",
+                "options": {
+                    "A": "Web browser",
+                    "B": "Operating system",
+                    "C": "Database",
+                    "D": "File compression program"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "A web browser is used to open websites and navigate web pages."
+            },
+            {
+                "category": "Culture & Art",
+                "difficulty": "Medium",
+                "question": "Which profession plans the design, functional layout, and structural features of buildings?",
+                "image": "images/96.jpg",
+                "options": {
+                    "A": "Interior design",
+                    "B": "Landscape architecture",
+                    "C": "Urban planning",
+                    "D": "Architecture"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Architects plan the design, function, and spatial organization of buildings."
+            },
+            {
+                "category": "Science",
+                "difficulty": "Medium",
+                "question": "Which gas do plants use during photosynthesis?",
+                "image": "images/97.jpg",
+                "options": {
+                    "A": "Oxygen",
+                    "B": "Nitrogen",
+                    "C": "Carbon dioxide",
+                    "D": "Hydrogen"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "Plants use carbon dioxide and water to produce organic matter during photosynthesis."
+            },
+            {
+                "category": "Nature",
+                "difficulty": "Medium",
+                "question": "Why do tropical rainforests generally have high temperatures and abundant rainfall throughout the year?",
+                "image": "images/98.jpg",
+                "options": {
+                    "A": "Strong year-round sunlight and moist air around the Equator",
+                    "B": "Cold air currents from the poles",
+                    "C": "Constant snowfall on high mountains",
+                    "D": "Their great distance from the sea"
+                },
+                "correctAnswer": "A",
+                "answerDetail": "Near the Equator, sunlight is strong throughout the year and rising moist air produces frequent rainfall."
+            },
+            {
+                "category": "Sports",
+                "difficulty": "Medium",
+                "question": "According to FIBA basketball rules, how many seconds does a player have to release a free throw?",
+                "image": "images/99.jpg",
+                "options": {
+                    "A": "3 seconds",
+                    "B": "8 seconds",
+                    "C": "10 seconds",
+                    "D": "5 seconds"
+                },
+                "correctAnswer": "D",
+                "answerDetail": "Under FIBA rules, a player must release a free throw within five seconds after the ball is placed at their disposal."
+            },
+            {
+                "category": "Music",
+                "difficulty": "Medium",
+                "question": "What is the section of a song that repeats between verses and is often its most memorable part called?",
+                "image": "images/100.jpg",
+                "options": {
+                    "A": "Bridge",
+                    "B": "Intro",
+                    "C": "Chorus",
+                    "D": "Solo"
+                },
+                "correctAnswer": "C",
+                "answerDetail": "The chorus is the recurring section of a song and often carries its main melodic idea."
+            }
         ]
     }
 };
@@ -174,8 +1494,8 @@ function setLanguage(lang) {
     }
     
     const chapterNames = lang === 'tr' 
-        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2" }
-        : { 1: "General Culture 1", 2: "General Culture 2" };
+        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2", 3: "Genel Kültür 3" }
+        : { 1: "General Culture 1", 2: "General Culture 2", 3: "General Culture 3" };
     
     document.getElementById('chapter-1-name').textContent = chapterNames[1];
     document.getElementById('chapter-2-name').textContent = chapterNames[2];
@@ -198,8 +1518,8 @@ function backToLanguage() {
 
 function getChapterName(chapter = currentChapter) {
     const chapterNames = currentLang === 'tr'
-        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2" }
-        : { 1: "General Culture 1", 2: "General Culture 2" };
+        ? { 1: "Genel Kültür 1", 2: "Genel Kültür 2", 3: "Genel Kültür 3" }
+        : { 1: "General Culture 1", 2: "General Culture 2", 3: "General Culture 3" };
 
     return chapterNames[chapter] || `${currentLang === 'tr' ? 'Bölüm' : 'Chapter'} ${chapter}`;
 }
