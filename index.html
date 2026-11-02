@@ -12,7 +12,7 @@
 
         <div id="initial-screen" class="panel">
             <img id="initial-image" src="images/opening_image.png" alt="Oyun Açılış Resmi">
-            <p id="welcome-text" class="welcome-text">2 bölüm, 50 kart, zorluk bazlı puanlama!</p>
+            <p id="welcome-text" class="welcome-text">3 bölüm, 100 kart, zorluk bazlı puanlama!</p>
             <div class="language-selection">
                 <button class="lang-btn active" onclick="setLanguage('tr')">🇹🇷 Türkçe</button>
                 <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 English</button>
@@ -28,6 +28,10 @@
                     <button class="chapter-btn" onclick="startGame(false, 2)">
                         <span class="chapter-number">2</span>
                         <span id="chapter-2-name">Genel Kültür 2</span>
+                    </button>
+                    <button class="chapter-btn" onclick="startGame(false, 3)">
+                        <span class="chapter-number">3</span>
+                        <span id="chapter-3-name">Genel Kültür 3</span>
                     </button>
                 </div>
                 <button id="back-button" class="secondary-btn" onclick="backToLanguage()">Geri</button>
