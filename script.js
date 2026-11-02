@@ -1499,6 +1499,7 @@ function setLanguage(lang) {
     
     document.getElementById('chapter-1-name').textContent = chapterNames[1];
     document.getElementById('chapter-2-name').textContent = chapterNames[2];
+    document.getElementById('chapter-3-name').textContent = chapterNames[3];
     document.getElementById('chapter-title').textContent = uiTranslations[lang].chapterTitle;
     document.getElementById('back-button').textContent = uiTranslations[lang].backButton;
     document.getElementById('start-button').textContent = uiTranslations[lang].startButton;
